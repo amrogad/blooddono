@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&family=Playwrite+AU+SA:wght@100..400&display=swap');
+
+@import "tailwindcss";
+@plugin "daisyui";
+
+
+.merriweather-font {
+  font-family: "Merriweather", serif;
+}
+.playwrite-au-sa-font {
+  font-family: "Playwrite AU SA", cursive;
+}
+
+body {
+  font-family: "Merriweather", serif;
+  color: black;
+  background-color: white;
+}
+
+a.active{
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-decoration-color:#ff4136  ;
+  }
