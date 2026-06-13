@@ -1,17 +1,17 @@
 # BloodDono
 
-A frontend UI portfolio project for a blood donation platform, built with React, Vite, Tailwind CSS, and DaisyUI.
+A frontend project for a blood donation platform, built with React, Vite, Tailwind CSS, and DaisyUI.
 
-This project focuses purely on the user interface — donor search, blood donation requests, a role-based dashboard, and a simple blog/content section. All data shown is local sample data, so the app runs fully offline with no backend or database required.
+It's a full frontend — donor search, donation requests, a role-based dashboard, and a small blog/content section, all wired up with routing, forms, and validation. There's no backend; everything runs on local sample data, so you can clone it and click around right away.
 
 ## Features
 
-- Browse and search for blood donors by blood group, district, and city
+- Search for donors by blood group, governorate, and city
 - View and create blood donation requests
-- Role-based dashboard layout (admin / donor views)
+- Role-based dashboard (admin, donor, volunteer)
 - Blog section with a content management UI
-- Simple donation/funding page
-- Fully responsive design with Tailwind CSS and DaisyUI
+- Donation/funding page
+- Responsive layout with Tailwind CSS + DaisyUI
 
 ## Screenshots
 
@@ -40,12 +40,8 @@ npm install
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`.
+Runs at `http://localhost:5173`.
 
 ## Notes
 
-This is a UI-only demo project. The login and register pages are included for layout purposes — all pages use a demo user and sample data instead of a real backend.
-
----
-
-Built by Amro Gad as a frontend portfolio project.
+This is frontend-only — login and register are there for the flow, but every page runs on a demo user and sample data instead of a real backend.
