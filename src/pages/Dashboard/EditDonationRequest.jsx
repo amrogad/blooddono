@@ -104,10 +104,8 @@ const EditDonationRequest = () => {
   const selectedGovernorate = governorates.find(g => g.name === watch('recipient_governorate'));
   const filteredCities = cities.filter(c => c.governorate_id === selectedGovernorate?.id);
 
-  const onSubmit = (data) => {
+  const onSubmit = () => {
     // No backend yet, just pretend the update was saved.
-    console.log('updated donation request', id, data);
-
     Swal.fire('Updated', 'Donation request updated successfully!', 'success');
     navigate('/dashboard/my-donation-requests');
   };

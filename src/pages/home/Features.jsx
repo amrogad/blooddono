@@ -6,7 +6,6 @@ const Features = () => {
         <div className='p-4 my-8'>
 
             <h1 className='text-5xl font-semibold mb-8'>What Makes <span className='text-[#ff4136] playwrite-au-sa-font'>BloodDono</span> a Lifesaving Platform</h1>
-            {/* <p className='mb-8 text-xl text-[#333333]'>We make donating blood simple, meaningful, and impactful—empowering everyday heroes to save lives through connection, convenience, and compassion.</p> */}
 
             <div className='flex justify-center items-center gap-2'>
 
@@ -15,7 +14,7 @@ const Features = () => {
                     <div className="card bg-base-100 shadow-sm">
                         <figure className="px-10 pt-10">
                             <img
-                                src="https://i.ibb.co/N6gK6M1Y/blood-booking.png"
+                                src="/images/blood-booking.png"
                                 alt="Shoes"
                                 className="rounded-xl w-1/2" />
                         </figure>
@@ -28,7 +27,7 @@ const Features = () => {
                     <div className="card bg-base-100 shadow-sm">
                         <figure className="px-10 pt-10">
                             <img
-                                src="https://i.ibb.co/r2y17whw/Blood-Requests.png"
+                                src="/images/blood-requests.png"
                                 alt="Shoes"
                                 className="rounded-xl w-1/2" />
                         </figure>
@@ -41,7 +40,7 @@ const Features = () => {
                     <div className="card bg-base-100 shadow-sm">
                         <figure className="px-10 pt-10">
                             <img
-                                src="https://i.ibb.co/FLfW2hYf/blood-notification.png"
+                                src="/images/blood-notification.png"
                                 alt="Shoes"
                                 className="rounded-xl w-1/2" />
                         </figure>
@@ -54,7 +53,7 @@ const Features = () => {
                     <div className="card bg-base-100 shadow-sm">
                         <figure className="px-10 pt-10">
                             <img
-                                src="https://i.ibb.co/B5td5JWn/blood-blog.png"
+                                src="/images/blood-blog.png"
                                 alt="Shoes"
                                 className="rounded-xl w-1/2" />
                         </figure>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Outlet, useNavigation } from 'react-router';
 import NavBar from '../pages/shared/NavBar';
 import Footer from '../pages/shared/Footer';
@@ -16,7 +16,7 @@ const Root = () => {
             </header>
 
             <main>
-                {state == "loading" ? <Loading></Loading> : <Outlet></Outlet>}
+                {state == "loading" ? <Loading></Loading> : <Suspense fallback={<Loading></Loading>}><Outlet></Outlet></Suspense>}
             </main>
 
             <footer>

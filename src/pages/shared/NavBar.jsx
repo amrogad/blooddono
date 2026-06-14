@@ -1,8 +1,8 @@
-import React, { use, useState } from 'react';
+import React, { useState } from 'react';
 import NavLinks from './NavLinks';
 import RegistrationButtons from './RegistrationButtons';
 import { Link, NavLink } from 'react-router';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 import ProfilePicture from './ProfilePicture';
 
 import { HiMenu } from "react-icons/hi";
@@ -10,7 +10,7 @@ import { RiCloseLargeFill } from "react-icons/ri";
 
 const NavBar = () => {
 
-    const { user } = use(AuthContext);
+    const { user } = useSelector((state) => state.auth);
     const [openMenu, setOpenMenu] = useState(false);
 
     return (

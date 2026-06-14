@@ -3,13 +3,12 @@ import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
-import { use } from 'react';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 
 const CreateDonationRequest = () => {
 
-    const { user } = use(AuthContext);
+    const { user } = useSelector((state) => state.auth);
     const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm();
     const navigate = useNavigate();
 
@@ -23,15 +22,8 @@ const CreateDonationRequest = () => {
     const selectedGovernorate = governorates.find(g => g.name === watch('recipient_governorate'));
     const filteredCities = cities.filter(c => c.governorate_id === selectedGovernorate?.id);
 
-    const onSubmit = (data) => {
+    const onSubmit = () => {
         // No backend yet, just pretend the request was saved.
-        const request = {
-            ...data,
-            donation_status: 'pending',
-            created_at: new Date().toISOString(),
-        };
-        console.log('new donation request', request);
-
         Swal.fire({
             icon: 'success',
             title: 'Donation Request Created!',

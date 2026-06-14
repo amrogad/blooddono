@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router";
+import { lazy } from "react";
 import Root from "../layouts/Root";
 import Home from "../pages/home/Home";
 import ErrorPage from "../pages/shared/ErrorPage";
@@ -6,30 +7,30 @@ import Login from "../pages/Authentication/Login";
 import Register from "../pages/Authentication/Register";
 import DashboardLayout from "../layouts/DashboardLayout";
 import PrivateRoute from "../provider/PrivateRoute";
-import Profile from "../pages/Dashboard/Profile";
-import DashboardHome from "../pages/Dashboard/DashboardHome";
-import CreateDonationRequest from "../pages/Dashboard/CreateDonationRequest";
-import MyDonationRequests from "../pages/Dashboard/MyDonationRequests";
-import DonationRequestDetails from "../pages/Dashboard/DonationRequestDetails";
-import EditDonationRequest from "../pages/Dashboard/EditDonationRequest";
+const Profile = lazy(() => import("../pages/Dashboard/Profile"));
+const DashboardHome = lazy(() => import("../pages/Dashboard/DashboardHome"));
+const CreateDonationRequest = lazy(() => import("../pages/Dashboard/CreateDonationRequest"));
+const MyDonationRequests = lazy(() => import("../pages/Dashboard/MyDonationRequests"));
+const DonationRequestDetails = lazy(() => import("../pages/Dashboard/DonationRequestDetails"));
+const EditDonationRequest = lazy(() => import("../pages/Dashboard/EditDonationRequest"));
 import Forbidden from "../pages/shared/Forbidden";
 import AdminRoute from "../provider/AdminRoute";
-import AllUsersPage from "../pages/Dashboard/AllUsersPage";
-import AllBloodDonationPage from "../pages/Dashboard/AllBloodDonationPage";
-import AdminEditDonationRequest from "../pages/Dashboard/AdminEditDonationRequest";
+const AllUsersPage = lazy(() => import("../pages/Dashboard/AllUsersPage"));
+const AllBloodDonationPage = lazy(() => import("../pages/Dashboard/AllBloodDonationPage"));
+const AdminEditDonationRequest = lazy(() => import("../pages/Dashboard/AdminEditDonationRequest"));
 import MultiRoleRoute from "../provider/MultiRoleRoute";
-import SearchPage from "../pages/Search/SearchPage";
-import BloodDonationRequest from "../pages/BloodDonationRequest/BloodDonationRequest";
-import HomeDonationRequestDetails from "../pages/HomeDonationRequestDetails/HomeDonationRequestDetails";
-import AddBlogPage from "../pages/Dashboard/AddBlogPage";
-import BlogDetails from "../pages/Dashboard/BlogDetails";
-import ContentManagementPage from "../pages/Dashboard/ContentManagementPage";
-import EditBlogPage from "../pages/Dashboard/EditBlogPage";
-import PublicBlogList from "../pages/Blogs/PublicBlogList";
-import PublicBlogDetails from "../pages/Blogs/PublicBlogDetails";
-import FundingPage from "../pages/FundingPage/FundingPage";
-import Payment from "../pages/FundingPage/Payment";
-import AboutUs from "../pages/AboutUs/AboutUs";
+const SearchPage = lazy(() => import("../pages/Search/SearchPage"));
+const BloodDonationRequest = lazy(() => import("../pages/BloodDonationRequest/BloodDonationRequest"));
+const HomeDonationRequestDetails = lazy(() => import("../pages/HomeDonationRequestDetails/HomeDonationRequestDetails"));
+const AddBlogPage = lazy(() => import("../pages/Dashboard/AddBlogPage"));
+const BlogDetails = lazy(() => import("../pages/Dashboard/BlogDetails"));
+const ContentManagementPage = lazy(() => import("../pages/Dashboard/ContentManagementPage"));
+const EditBlogPage = lazy(() => import("../pages/Dashboard/EditBlogPage"));
+const PublicBlogList = lazy(() => import("../pages/Blogs/PublicBlogList"));
+const PublicBlogDetails = lazy(() => import("../pages/Blogs/PublicBlogDetails"));
+const FundingPage = lazy(() => import("../pages/FundingPage/FundingPage"));
+const Payment = lazy(() => import("../pages/FundingPage/Payment"));
+const AboutUs = lazy(() => import("../pages/AboutUs/AboutUs"));
 
 const router = createBrowserRouter([
     {
@@ -159,10 +160,6 @@ const router = createBrowserRouter([
             },  
         ]
     },
-    // {
-    //     path:"/*",
-    //     element: <Error></Error>,
-    // },
 ]);
 
 export default router;

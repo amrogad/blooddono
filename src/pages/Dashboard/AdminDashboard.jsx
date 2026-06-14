@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../../provider/AuthProvider';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { FaUsers, FaHandHoldingUsd, FaTint } from 'react-icons/fa';
 
 const totalUsers = 24;
@@ -7,7 +7,7 @@ const totalFunds = 1500;
 const totalRequests = 15;
 
 const AdminDashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <div className="max-w-6xl mx-auto p-4">

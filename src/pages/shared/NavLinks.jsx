@@ -1,10 +1,9 @@
 import React from 'react';
-import { use } from 'react';
 import { NavLink } from 'react-router';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 
 const NavLinks = () => {
-    const {user} = use(AuthContext);
+    const {user} = useSelector((state) => state.auth);
     return (
         <div className='flex flex-col lg:flex-row justify-center items-center'>
             <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/">Home</NavLink>

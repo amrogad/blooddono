@@ -1,11 +1,10 @@
 import { Navigate } from 'react-router';
-import { use } from 'react';
-import { AuthContext } from './AuthProvider';
+import { useSelector } from 'react-redux';
 import useUserRole from '../hooks/useUserRole';
 import Loading from '../pages/shared/Loading';
 
 const MultiRoleRoute = ({ children, allowedRoles = [] }) => {
-    const { user, loading } = use(AuthContext);
+    const { user, loading } = useSelector((state) => state.auth);
     const { role, loading: roleLoading } = useUserRole(user?.email);
 
     if (loading || roleLoading) {

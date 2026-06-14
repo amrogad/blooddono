@@ -29,6 +29,7 @@ It's a full frontend — donor search, donation requests, a role-based dashboard
 - Vite
 - Tailwind CSS 4 + DaisyUI 5
 - React Router 7
+- Redux Toolkit + React Redux
 - React Hook Form
 - SweetAlert2
 - React Icons
@@ -41,6 +42,16 @@ npm run dev
 ```
 
 Runs at `http://localhost:5173`.
+
+## Testing
+
+End-to-end tests use [Playwright](https://playwright.dev/) and cover navigation, image loading, and the Redux-backed auth/logout flow.
+
+```bash
+npm run test:e2e
+```
+
+This starts the dev server automatically and runs the suite against Chromium.
 
 ## Notes
 

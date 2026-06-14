@@ -1,10 +1,9 @@
 import React from 'react';
-import { use } from 'react';
 import { Link, NavLink } from 'react-router';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 
 const Footer = () => {
-    const { user } = use(AuthContext);
+    const { user } = useSelector((state) => state.auth);
     return (
         <div className='max-w-[1600px] mx-auto'>
             <div className='flex flex-col gap-4 justify-between items-center px-20 py-20 bg-black'>

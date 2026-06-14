@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 
 // Same sample donation requests used across the dashboard pages.
@@ -84,7 +84,7 @@ const sampleRequests = [
 
 const HomeDonationRequestDetails = () => {
   const { id } = useParams();
-  const { user } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const [modalOpen, setModalOpen] = useState(false);

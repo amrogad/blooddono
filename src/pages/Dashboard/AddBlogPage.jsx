@@ -9,10 +9,8 @@ const AddBlogPage = () => {
     const [imageURL, setImageURL] = useState('');
     const navigate = useNavigate();
 
-    const onSubmit = (data) => {
+    const onSubmit = () => {
         // no backend yet, just show a success message and go back to the list
-        console.log('new blog:', { ...data, thumbnail: imageURL, content });
-
         Swal.fire({
             icon: 'success',
             title: 'Blog created as draft!',

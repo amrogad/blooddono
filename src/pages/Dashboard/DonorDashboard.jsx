@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react';
-import { AuthContext } from '../../provider/AuthProvider';
+import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
 
@@ -37,7 +37,7 @@ const sampleRequests = [
 ];
 
 const DonorDashboard = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
   const [donationRequests, setDonationRequests] = useState(sampleRequests);

@@ -16,12 +16,10 @@ const Register = () => {
 
     const navigate = useNavigate();
 
-    // Watch selected governorate_id
     const selectedGovernorateName = watch('governorate');
     const selectedGovernorate = governorates.find((w) => w.name === selectedGovernorateName);
     const selectedGovernorateId = selectedGovernorate?.id;
 
-    // Filter cities based on selected governorate_id
     const filteredCities = cities.filter(
         (c) => c.governorate_id === selectedGovernorateId
     );

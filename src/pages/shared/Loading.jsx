@@ -5,7 +5,7 @@ const Loading = () => {
         <div className='flex flex-col justify-center items-center'>
 
             <div className='w-full md:w-1/4 flex justify-center items-center'>
-                <img className='max-h-64 my-8' src="https://i.ibb.co/3mgpyXC7/loading.gif" alt="" />
+                <img className='max-h-64 my-8' src="/images/loading.gif" alt="" />
             </div>
 
             <p className='text-5xl text-[#ff4136] mt-20 mb-8 mx-2 text-center'>

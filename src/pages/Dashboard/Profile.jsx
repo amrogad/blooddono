@@ -1,12 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
 import Swal from 'sweetalert2';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 
 const Profile = () => {
-  const { user: currentUser } = useContext(AuthContext);
+  const { user: currentUser } = useSelector((state) => state.auth);
 
   const { register, handleSubmit, watch } = useForm({
     defaultValues: {

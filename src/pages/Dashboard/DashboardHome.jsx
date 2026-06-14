@@ -2,14 +2,13 @@ import React from 'react';
 import useUserRole from '../../hooks/useUserRole';
 import Loading from '../shared/Loading';
 import DonorDashboard from './DonorDashboard';
-import { use } from 'react';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 import AdminDashboard from './AdminDashboard';
 import Forbidden from '../shared/Forbidden';
 
 const DashboardHome = () => {
 
-    const { user } = use(AuthContext);
+    const { user } = useSelector((state) => state.auth);
 
     const { role, loading: roleLoading } = useUserRole(user?.email);
 

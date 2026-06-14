@@ -1,14 +1,13 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import useUserRole from '../hooks/useUserRole';
-import { use } from 'react';
-import { AuthContext } from '../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 import Loading from '../pages/shared/Loading';
 import ProfilePicture from '../pages/shared/ProfilePicture';
 
 const DashboardLayout = () => {
 
-    const { user } = use(AuthContext);
+    const { user } = useSelector((state) => state.auth);
     const { role, loading } = useUserRole(user?.email);
 
     if (loading) {
@@ -42,7 +41,9 @@ const DashboardLayout = () => {
                     <ProfilePicture></ProfilePicture>
                 </div>
 
-                <Outlet></Outlet>
+                <Suspense fallback={<Loading></Loading>}>
+                    <Outlet></Outlet>
+                </Suspense>
 
             </div>
             <div className="drawer-side">

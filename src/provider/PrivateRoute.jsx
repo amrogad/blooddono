@@ -1,10 +1,9 @@
 import { Navigate, useLocation } from 'react-router';
-import { use } from 'react';
-import { AuthContext } from './AuthProvider';
+import { useSelector } from 'react-redux';
 import Loading from '../pages/shared/Loading';
 
 const PrivateRoute = ({ children }) => {
-    const { user, loading } = use(AuthContext);
+    const { user, loading } = useSelector((state) => state.auth);
     const location = useLocation();
 
     if (loading) {

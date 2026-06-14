@@ -1,10 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
-import { use } from 'react';
-import { AuthContext } from '../../provider/AuthProvider';
+import { useSelector } from 'react-redux';
 
 const Hero = () => {
-    const { user } = use(AuthContext);
+    const { user } = useSelector((state) => state.auth);
     return (
         <div className='flex flex-col-reverse lg:flex-row justify-between items-center p-4 mb-12'>
             <div className='w-full lg:w-2/3'>
@@ -30,7 +29,7 @@ const Hero = () => {
             </div>
 
             <div className='w-full lg:w-1/3'>
-                <img src="https://i.ibb.co/RkvFR3nW/blood-hero.png" alt="" />
+                <img src="/images/blood-hero.png" alt="" />
             </div>
         </div>
     );

@@ -109,8 +109,7 @@ const AdminEditDonationRequest = () => {
   const selectedGovernorate = governorates.find(d => d.name === watch('recipient_governorate'));
   const filteredCities = cities.filter(c => c.governorate_id === selectedGovernorate?.id);
 
-  const onSubmit = (data) => {
-    console.log('updated donation request', data);
+  const onSubmit = () => {
     Swal.fire('Updated', 'Donation request updated successfully!', 'success');
     navigate('/dashboard/all-blood-donation-request');
   };

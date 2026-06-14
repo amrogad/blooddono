@@ -97,13 +97,11 @@ const SearchPage = () => {
 
     const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 
-    // Input change handler
     const handleChange = (e) => {
         const { name, value } = e.target;
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
-    // Form submit handler - filter the sample donors by the chosen criteria
     const handleSearch = (e) => {
         e.preventDefault();
 
@@ -177,7 +175,7 @@ const SearchPage = () => {
                         {donors.map(donor => (
                             <div key={donor._id} className="card bg-base-100 shadow-md p-4">
                                 <div className="flex items-center gap-4">
-                                    <img src={donor.user_photo_url || "https://i.ibb.co/WRfzKKY/person-avater.png"} alt="avatar" className="w-16 h-16 rounded-full" />
+                                    <img src={donor.user_photo_url || "/images/person-avatar.png"} alt="avatar" className="w-16 h-16 rounded-full" />
                                     <div>
                                         <h3 className="font-bold">{donor.user_full_name}</h3>
                                         <p className="text-sm text-gray-600">{donor.user_email}</p>
