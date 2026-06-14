@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaEye, FaTrash, FaEdit } from 'react-icons/fa';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
-import { useSelector } from 'react-redux';
 import useUserRole from '../../hooks/useUserRole';
 
 // Sample donation requests for the demo (would normally come from the backend)
@@ -94,8 +93,7 @@ const sampleDonations = [
 ];
 
 const AllBloodDonationPage = () => {
-  const { user } = useSelector((state) => state.auth);
-  const { role } = useUserRole(user?.email);
+  const { role } = useUserRole();
 
   const [donations, setDonations] = useState(sampleDonations);
   const [currentPage, setCurrentPage] = useState(1);

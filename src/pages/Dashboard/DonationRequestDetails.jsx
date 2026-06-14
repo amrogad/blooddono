@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate, useParams } from 'react-router';
 
 // Same sample data shown on the "My Donation Requests" page, kept here so

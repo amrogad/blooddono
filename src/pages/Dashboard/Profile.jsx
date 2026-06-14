@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';

@@ -8,7 +8,7 @@ test.describe('Home page', () => {
       page.getByRole('heading', { name: /Where Every Connection is a Lifesaver/i })
     ).toBeVisible();
 
-    await expect(page.locator('img[src="/images/blood-hero.png"]')).toBeVisible();
+    await expect(page.locator('img[src="/images/blood-hero.png"]').first()).toBeVisible();
   });
 
   test('has no broken images on the landing page', async ({ page }) => {

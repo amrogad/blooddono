@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { Outlet, useNavigation } from 'react-router';
 import NavBar from '../pages/shared/NavBar';
 import Footer from '../pages/shared/Footer';

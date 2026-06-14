@@ -1,4 +1,3 @@
-import React from 'react';
 import { useNavigate } from 'react-router';
 
 // Sample pending donation requests for the public list

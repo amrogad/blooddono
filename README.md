@@ -23,6 +23,10 @@ It's a full frontend — donor search, donation requests, a role-based dashboard
 |---|---|
 | ![Donation requests page](screenshots/donation-requests.png) | ![Dashboard](screenshots/dashboard.png) |
 
+## Demo
+
+<video src="screenshots/demo.mp4" controls width="100%"></video>
+
 ## Tech Stack
 
 - React 19

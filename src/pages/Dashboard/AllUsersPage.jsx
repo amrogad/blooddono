@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { FaUserCheck, FaUserSlash, FaTrashAlt, FaEye } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 

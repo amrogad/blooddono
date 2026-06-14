@@ -1,14 +1,12 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import useUserRole from '../hooks/useUserRole';
-import { useSelector } from 'react-redux';
 import Loading from '../pages/shared/Loading';
 import ProfilePicture from '../pages/shared/ProfilePicture';
 
 const DashboardLayout = () => {
 
-    const { user } = useSelector((state) => state.auth);
-    const { role, loading } = useUserRole(user?.email);
+    const { role, loading } = useUserRole();
 
     if (loading) {
         return <Loading></Loading>;

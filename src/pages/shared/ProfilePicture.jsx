@@ -1,7 +1,6 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
-import { logOut } from '../../redux/authSlice';
+import { logOut, setRole } from '../../redux/authSlice';
 
 const ProfilePicture = () => {
 
@@ -14,6 +13,8 @@ const ProfilePicture = () => {
         localStorage.removeItem("token");
         navigate('/');
     }
+
+    const roles = ['admin', 'donor', 'volunteer'];
 
     return (
         <div className="dropdown dropdown-end">
@@ -30,6 +31,19 @@ const ProfilePicture = () => {
 
                     </li></Link>
                 }
+
+                <li className="menu-title">Demo role</li>
+                {roles.map((r) => (
+                    <li key={r}>
+                        <button
+                            type="button"
+                            className={`btn btn-sm w-full mb-1 ${user.role === r ? 'btn-primary' : 'btn-outline'}`}
+                            onClick={() => dispatch(setRole(r))}
+                        >
+                            {r.charAt(0).toUpperCase() + r.slice(1)}
+                        </button>
+                    </li>
+                ))}
 
                 <li><p className='btn btn-error btn-outline hover:text-white' onClick={handleLogOut}>Logout</p></li>
             </ul>

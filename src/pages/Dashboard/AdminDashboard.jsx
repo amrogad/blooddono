@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { FaUsers, FaHandHoldingUsd, FaTint } from 'react-icons/fa';
 

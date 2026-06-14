@@ -1,4 +1,3 @@
-import React from 'react';
 
 import { TbDeviceMobilePlus } from "react-icons/tb";
 import { FaPeopleGroup } from "react-icons/fa6";

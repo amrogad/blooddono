@@ -72,7 +72,7 @@ const router = createBrowserRouter([
                 element: <PrivateRoute><Payment></Payment></PrivateRoute>,
             },
             {
-                path:'/aboutUs',
+                path: 'about-us',
                 element: <AboutUs></AboutUs>,
             },
             {

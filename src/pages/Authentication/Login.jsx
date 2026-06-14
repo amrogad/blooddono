@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
@@ -65,10 +64,6 @@ const Login = () => {
                         {errors.password && (
                             <p className="text-red-500 text-sm">{errors.password.message}</p>
                         )}
-
-                        <div>
-                            <Link className="link link-hover text-indigo-700" to="/login">Forgot password?</Link>
-                        </div>
 
                         <button type='submit' className="btn bg-black text-white mt-4">Login</button>
                     </form>

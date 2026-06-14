@@ -1,7 +1,11 @@
+import { useSelector } from 'react-redux';
+
 const useUserRole = () => {
+  const { user, loading } = useSelector((state) => state.auth);
+
   return {
-    role: 'admin',
-    loading: false,
+    role: user?.role,
+    loading,
     error: null,
   };
 };

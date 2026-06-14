@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
-import { useSelector } from 'react-redux';
 import useUserRole from '../../hooks/useUserRole';
 
 const sampleBlogs = [
@@ -48,8 +47,7 @@ const sampleBlogs = [
 ];
 
 const ContentManagementPage = () => {
-  const { user } = useSelector((state) => state.auth);
-  const { role } = useUserRole(user?.email);
+  const { role } = useUserRole();
 
   const [blogs, setBlogs] = useState(sampleBlogs);
   const [filter, setFilter] = useState('all');

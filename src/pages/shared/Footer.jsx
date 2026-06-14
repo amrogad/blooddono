@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, NavLink } from 'react-router';
 import { useSelector } from 'react-redux';
 
@@ -21,7 +20,7 @@ const Footer = () => {
                     {
                         user && <NavLink className="mr-5 text-lg text-white hover:underline decoration-2" to="/funds">Funds</NavLink>
                     }
-                    <NavLink className="mr-5 text-lg text-white hover:underline decoration-2" to="/aboutUs">About Us</NavLink>
+                    <NavLink className="mr-5 text-lg text-white hover:underline decoration-2" to="/about-us">About Us</NavLink>
                 </div>
                 <div className=' flex justify-center items-center gap-4 text-white'>
                     <svg

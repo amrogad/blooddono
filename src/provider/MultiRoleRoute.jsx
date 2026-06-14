@@ -5,7 +5,7 @@ import Loading from '../pages/shared/Loading';
 
 const MultiRoleRoute = ({ children, allowedRoles = [] }) => {
     const { user, loading } = useSelector((state) => state.auth);
-    const { role, loading: roleLoading } = useUserRole(user?.email);
+    const { role, loading: roleLoading } = useUserRole();
 
     if (loading || roleLoading) {
         return <Loading></Loading>;

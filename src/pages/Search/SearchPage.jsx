@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
 
@@ -99,6 +99,10 @@ const SearchPage = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        if (name === 'governorate') {
+            setForm(prev => ({ ...prev, governorate: value, city: '' }));
+            return;
+        }
         setForm(prev => ({ ...prev, [name]: value }));
     };
 
@@ -123,7 +127,7 @@ const SearchPage = () => {
 
     return (
         <div className="max-w-5xl mx-auto p-6 min-h-screen">
-            <h2 className="text-3xl font-bold mb-6 text-center">Find Blood Donor 🧨</h2>
+            <h2 className="text-3xl font-bold mb-6 text-center">Find Blood Donor 🩸</h2>
 
             <form onSubmit={handleSearch} className="grid md:grid-cols-3 gap-4 mb-8">
                 <select

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import NavLinks from './NavLinks';
 import RegistrationButtons from './RegistrationButtons';
 import { Link, NavLink } from 'react-router';
@@ -31,10 +31,18 @@ const NavBar = () => {
                         user ? <ProfilePicture></ProfilePicture> : <RegistrationButtons></RegistrationButtons>
                     }
 
-                    <div className='flex flex-col lg:hidden' onClick={() => setOpenMenu(!openMenu)}>
-                        {
-                            openMenu ? <RiCloseLargeFill className='text-3xl lg:hidden' /> : <HiMenu className='text-3xl lg:hidden' />
-                        }
+                    <div className='flex flex-col lg:hidden'>
+                        <button
+                            type="button"
+                            onClick={() => setOpenMenu(!openMenu)}
+                            aria-expanded={openMenu}
+                            aria-label="Toggle menu"
+                            className="lg:hidden"
+                        >
+                            {
+                                openMenu ? <RiCloseLargeFill className='text-3xl' /> : <HiMenu className='text-3xl' />
+                            }
+                        </button>
 
                         <div className={`z-100 lg:hidden absolute flex flex-col justify-end duration-800 gap-2 rounded-md p-4 border border-gray-300 bg-white ${openMenu ? 'top-20 right-4' : '-top-130 right-4'}`}>
 
@@ -45,7 +53,7 @@ const NavBar = () => {
                             {
                                 user && <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/funds">Funds</NavLink>
                             }
-                            <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/aboutUs">About Us</NavLink>
+                            <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/about-us">About Us</NavLink>
 
                             <Link to="/register">
                                 <button className=' w-full text-white hover:cursor-pointer bg-black font-bold text-xl px-6 py-3 rounded-sm border-2 border-black hover:border-[#ff4136] '>Register</button>
