@@ -64,7 +64,7 @@ const DonorDashboard = () => {
 
   return (
     <div className="p-4">
-      <h1 className="text-3xl font-bold mb-6">Welcome, {user?.displayName}</h1>
+      <h1 className="text-3xl font-bold mb-6">Welcome, {user?.displayName}!</h1>
 
       {donationRequests.length > 0 && (
         <div>

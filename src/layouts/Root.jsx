@@ -3,11 +3,13 @@ import { Outlet, useNavigation } from 'react-router';
 import NavBar from '../pages/shared/NavBar';
 import Footer from '../pages/shared/Footer';
 import Loading from '../pages/shared/Loading';
+import useAuthBootstrap from '../hooks/useAuthBootstrap';
 
 
 const Root = () => {
 
     const { state } = useNavigation();
+    useAuthBootstrap();
 
     return (
         <div>

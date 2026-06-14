@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import { supabase } from '../../lib/supabaseClient';
 
 import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
@@ -31,10 +32,28 @@ const Register = () => {
         }
     }
 
-    const onSubmit = () => {
+    const onSubmit = async (data) => {
+        const { error } = await supabase.auth.signUp({
+            email: data.email,
+            password: data.password,
+            options: {
+                data: {
+                    display_name: data.name,
+                    blood_group: data.bloodGroup,
+                    governorate: data.governorate,
+                    city: data.city,
+                },
+            },
+        });
+
+        if (error) {
+            Swal.fire({ icon: "error", title: "Registration failed", text: error.message });
+            return;
+        }
+
         Swal.fire({
             icon: "success",
-            title: "Registered Successfully !",
+            title: "Registered Successfully!",
             showConfirmButton: true,
         })
             .then((result) => {
@@ -58,7 +77,7 @@ const Register = () => {
                         <input
                             type="text"
                             {...register('name', {
-                                required: 'Name is required !', minLength: {
+                                required: 'Name is required!', minLength: {
                                     value: 5,
                                     message: 'Name should be more than 5 characters!',
                                 },
@@ -74,9 +93,9 @@ const Register = () => {
                         <input
                             type="email"
                             {...register('email', {
-                                required: 'Email is required !', pattern: {
+                                required: 'Email is required!', pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: 'Please provide a CORRECT email address !',
+                                    message: 'Please provide a CORRECT email address!',
                                 },
                             })}
                             className="input" placeholder="Email" />
@@ -123,7 +142,7 @@ const Register = () => {
 
                         <label className="block mb-1">Governorate</label>
                         <select
-                            {...register('governorate', { required: 'Please select a governorate !' })}
+                            {...register('governorate', { required: 'Please select a governorate!' })}
                             className="select select-bordered"
                         >
                             <option value="">Select Governorate</option>
@@ -196,7 +215,7 @@ const Register = () => {
                     </form>
 
                     <p className='font-medium'>Already have an account? Please {" "}
-                        <Link to='/login' className='text-indigo-700 underline text-lg'>
+                        <Link to='/login' className='text-[#ff4136] font-bold text-lg'>
                             Log in!
                         </Link>
                     </p>

@@ -30,11 +30,11 @@ const Payment = () => {
     return (
         <div className='min-h-screen flex items-start justify-center'>
             <form onSubmit={handleSubmit} className="mt-24 space-y-4 bg-white p-6 rounded-xl shadow-md w-full max-w-md mx-auto">
-                <h1 className="text-4xl font-bold my-8">Donation Form !</h1>
+                <h1 className="text-4xl font-bold my-8">Donation Form!</h1>
 
                 <label className="input w-full">
                     <span className="label">EGP</span>
-                    <input name='amount' type="number" placeholder="Donation Amount !" required />
+                    <input name='amount' type="number" placeholder="Donation Amount!" required />
                 </label>
                 {
                     amountError && <p className='text-red-500 text-sm'>{amountError}</p>

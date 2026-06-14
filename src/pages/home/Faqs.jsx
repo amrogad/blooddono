@@ -51,9 +51,9 @@ const Faqs = () => {
 
                 <div className="collapse collapse-plus border border-base-300 mb-2">
                     <input type="radio" name="my-accordion-3" />
-                    <div className="collapse-title font-medium text-xl">Is it safe to donate blood (first) and receive the COVID vaccination on the same day?</div>
+                    <div className="collapse-title font-medium text-xl">Is it safe to donate blood and then receive the COVID vaccination on the same day?</div>
                     <div className="collapse-content text-lg">
-                        If donors have recovered well after donating blood it’s unlikely to impact their vaccination. However, just to be safe we recommend donors schedule their blood donation and COVID vaccination on different days if possible. This is to ensure donors are feeling well on the day of vaccination, as there is a small chance of side effects due to the blood donation, which could impact on your vaccination appointment.
+                        If donors have recovered well after donating blood it's unlikely to impact their vaccination. However, just to be safe we recommend donors schedule their blood donation and COVID vaccination on different days if possible. This is to ensure donors are feeling well on the day of vaccination, as there is a small chance of side effects due to the blood donation, which could impact on your vaccination appointment.
                     </div>
                 </div>
             </div>

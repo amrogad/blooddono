@@ -1,6 +1,8 @@
 import { Link, useLocation, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import { supabase } from '../../lib/supabaseClient';
+import { DEMO_ACCOUNTS } from '../../constants/demoAccounts';
 
 const Login = () => {
 
@@ -8,18 +10,29 @@ const Login = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const onSubmit = () => {
+    const goToRedirect = () => navigate(location.state ? location.state : '/');
+
+    const signIn = async (email, password) => {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+        if (error) {
+            Swal.fire({ icon: "error", title: "Login failed", text: error.message });
+            return;
+        }
+
         Swal.fire({
             icon: "success",
-            title: "Logged In Successfully !",
+            title: "Logged In Successfully!",
             showConfirmButton: true,
         })
             .then((result) => {
                 if (result.isConfirmed) {
-                    navigate(`${location.state ? location.state : '/'}`);
+                    goToRedirect();
                 }
             });
     }
+
+    const onSubmit = (data) => signIn(data.email, data.password);
 
 
     return (
@@ -35,9 +48,9 @@ const Login = () => {
                         <input
                             type="email"
                             {...register('email', {
-                                required: 'Email is required !', pattern: {
+                                required: 'Email is required!', pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: 'Please provide a CORRECT email address !',
+                                    message: 'Please provide a CORRECT email address!',
                                 },
                             })}
                             className="input" placeholder="Email" />
@@ -68,9 +81,23 @@ const Login = () => {
                         <button type='submit' className="btn bg-black text-white mt-4">Login</button>
                     </form>
 
+                    <div className="divider">Demo logins</div>
+                    <div className="flex flex-col gap-2">
+                        {DEMO_ACCOUNTS.map((acc) => (
+                            <button
+                                key={acc.role}
+                                type="button"
+                                className="btn btn-outline btn-sm"
+                                onClick={() => signIn(acc.email, acc.password)}
+                            >
+                                {acc.label}
+                            </button>
+                        ))}
+                    </div>
+
                     <p className='font-medium'>Don't have an account? Please {" "}
-                        <Link to='/register' className='text-indigo-700 underline text-lg'>
-                            Register !
+                        <Link to='/register' className='text-[#ff4136] font-bold text-lg'>
+                            Register!
                         </Link>
                     </p>
                 </div>

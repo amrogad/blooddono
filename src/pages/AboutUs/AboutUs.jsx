@@ -97,13 +97,13 @@ const AboutUs = () => {
                 <h1 className='text-5xl font-bold'><span className='border-b-2 border-[#ff4136]'>About This Project</span></h1>
                 <br />
                 <p className='text-2xl text-justify'>
-                    BloodDono is a frontend portfolio project built to practice and showcase UI development with React, Tailwind CSS, and DaisyUI.
+                    BloodDono is a full-stack portfolio project — React and Tailwind CSS on the frontend, Supabase (Postgres, authentication, and Row Level Security) on the backend.
                     <br />
                     <br />
-                    Every page on this site — from the donor search to the role-based dashboard — runs on local sample data, so the full interface can be explored without any backend or real accounts.
+                    Every account is real. Sign up for your own, or use one of the demo logins on the login page to jump straight into the admin, donor, or volunteer dashboard.
                     <br />
                     <br />
-                    Built by Amro Gad as a demonstration of frontend skills:
+                    Built by Amro Gad as a demonstration of full-stack skills:
                     <br />
                     <br />
                     <span className='text-[#ff4136] font-bold text-3xl text-center'>A network that saves lives.</span>

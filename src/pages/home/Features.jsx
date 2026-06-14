@@ -44,7 +44,7 @@ const Features = () => {
                                 className="rounded-xl w-1/2" />
                         </figure>
                         <div className="card-body items-center text-center">
-                            <h2 className="card-title"> Donor History & Reminders</h2>
+                            <h2 className="card-title">Donor History & Reminders</h2>
                             <p>Easily track your donation history and receive timely reminders when you're eligible to donate again.</p>
                         </div>
                     </div>

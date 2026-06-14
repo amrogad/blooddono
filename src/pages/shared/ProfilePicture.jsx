@@ -1,20 +1,16 @@
 import { Link, useNavigate } from 'react-router';
-import { useSelector, useDispatch } from 'react-redux';
-import { logOut, setRole } from '../../redux/authSlice';
+import { useSelector } from 'react-redux';
+import { supabase } from '../../lib/supabaseClient';
 
 const ProfilePicture = () => {
 
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
 
-    const handleLogOut = () => {
-        dispatch(logOut());
-        localStorage.removeItem("token");
+    const handleLogOut = async () => {
+        await supabase.auth.signOut();
         navigate('/');
     }
-
-    const roles = ['admin', 'donor', 'volunteer'];
 
     return (
         <div className="dropdown dropdown-end">
@@ -31,19 +27,6 @@ const ProfilePicture = () => {
 
                     </li></Link>
                 }
-
-                <li className="menu-title">Demo role</li>
-                {roles.map((r) => (
-                    <li key={r}>
-                        <button
-                            type="button"
-                            className={`btn btn-sm w-full mb-1 ${user.role === r ? 'btn-primary' : 'btn-outline'}`}
-                            onClick={() => dispatch(setRole(r))}
-                        >
-                            {r.charAt(0).toUpperCase() + r.slice(1)}
-                        </button>
-                    </li>
-                ))}
 
                 <li><p className='btn btn-error btn-outline hover:text-white' onClick={handleLogOut}>Logout</p></li>
             </ul>

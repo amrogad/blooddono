@@ -7,7 +7,7 @@ const Hero = () => {
         <div className='flex flex-col-reverse lg:flex-row justify-between items-center p-4 mb-12'>
             <div className='w-full lg:w-2/3'>
                 <h1 className='playwrite-au-sa-font text-5xl font-bold leading-16 text-[#ff4136]'>
-                    Where Every Connection is a Lifesaver !
+                    Where Every Connection is a Lifesaver!
                 </h1>
                 <div className='text-2xl my-8 text-[#333333]'>
                     <p> Join our mission to save lives — one donor, one drop, one heartbeat at a time. <br /> Make a difference. Be someone's reason to smile again.</p>
