@@ -2,7 +2,7 @@
 const Features = () => {
     return (
 
-        <div className='p-4 my-8'>
+        <div className='p-4 my-8 bg-gray-50 rounded-xl'>
 
             <h1 className='text-5xl font-semibold mb-8'>What Makes <span className='text-[#ff4136] playwrite-au-sa-font'>BloodDono</span> a Lifesaving Platform</h1>
 
@@ -10,7 +10,7 @@ const Features = () => {
 
                 <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 my-8'>
 
-                    <div className="card bg-base-100 shadow-sm">
+                    <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
                         <figure className="px-10 pt-10">
                             <img
                                 src="/images/blood-booking.png"
@@ -23,7 +23,7 @@ const Features = () => {
                         </div>
                     </div>
 
-                    <div className="card bg-base-100 shadow-sm">
+                    <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
                         <figure className="px-10 pt-10">
                             <img
                                 src="/images/blood-requests.png"
@@ -36,7 +36,7 @@ const Features = () => {
                         </div>
                     </div>
 
-                    <div className="card bg-base-100 shadow-sm">
+                    <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
                         <figure className="px-10 pt-10">
                             <img
                                 src="/images/blood-notification.png"
@@ -49,7 +49,7 @@ const Features = () => {
                         </div>
                     </div>
 
-                    <div className="card bg-base-100 shadow-sm">
+                    <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
                         <figure className="px-10 pt-10">
                             <img
                                 src="/images/blood-blog.png"

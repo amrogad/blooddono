@@ -5,7 +5,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 
 const BeADonor = () => {
     return (
-        <div className='p-4 my-8'>
+        <div className='p-6 my-8 bg-gray-50 rounded-xl'>
             <div className='flex justify-between items-center gap-4'>
                 <div className='w-full md:w-1/2'>
                     <img src="/images/blood-hero.png" alt="" />
@@ -17,7 +17,7 @@ const BeADonor = () => {
                     </p>
 
                     <div className=' flex my-4'>
-                        <Link to="/login" className='btn bg-[#ff4136] px-16 text-lg'>
+                        <Link to="/login" className='btn bg-[#ff4136] hover:bg-[#d63027] text-white px-16 text-lg'>
                             Join Now
                             <FaArrowRightLong className='text-xl' />
                         </Link>
