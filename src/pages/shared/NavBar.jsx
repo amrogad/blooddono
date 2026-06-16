@@ -14,8 +14,8 @@ const NavBar = () => {
     const [openMenu, setOpenMenu] = useState(false);
 
     return (
-        <div className='max-w-[1600px] mx-auto p-4 border-b border-b-[#ff4136]'>
-            <div className='flex gap-2 flex-row justify-between items-center px-4 py-2'>
+        <div className='max-w-[1600px] mx-auto px-6 py-3'>
+            <div className='flex gap-2 flex-row justify-between items-center'>
                 <Link to="/" className="flex items-center">
                     <span className="text-3xl font-extrabold">
                         Blood<span className="text-[#ff4136]">Dono</span>
@@ -56,11 +56,11 @@ const NavBar = () => {
                             <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/about-us">About Us</NavLink>
 
                             <Link to="/register">
-                                <button className=' w-full text-white hover:cursor-pointer bg-black font-bold text-xl px-6 py-3 rounded-sm border-2 border-black hover:border-[#ff4136] '>Register</button>
+                                <button className='w-full text-white hover:cursor-pointer bg-black font-bold text-xl px-6 py-3 rounded-md border-2 border-black hover:bg-gray-800 transition-colors duration-200'>Register</button>
                             </Link>
 
                             <Link to="/login">
-                                <button className='w-full mr-6 border-2 border-[#ff4136] hover:border-[#333333]  hover:cursor-pointer font-bold text-xl px-6 py-3 rounded-sm bg-[#ff4136]'>Login</button>
+                                <button className='w-full border-2 border-[#ff4136] hover:bg-[#d63027] hover:border-[#d63027] hover:cursor-pointer font-bold text-xl px-6 py-3 rounded-md bg-[#ff4136] text-white transition-colors duration-200'>Login</button>
                             </Link>
                         </div>
                     </div>
