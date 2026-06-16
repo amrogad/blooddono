@@ -16,13 +16,13 @@ const Hero = () => {
                     {
                         !user && <>
                             <Link to="/register">
-                                <button className='mr-6 border-2 border-[#ff4136] hover:border-[#333333] hover:cursor-pointer font-bold text-xl px-6 py-3 rounded-sm bg-[#ff4136]'>Join as a donor</button>
+                                <button className='border-2 border-[#ff4136] hover:bg-[#d63027] hover:border-[#d63027] hover:cursor-pointer font-bold text-xl px-6 py-3 rounded-md bg-[#ff4136] text-white transition-colors duration-200'>Join as a donor</button>
                             </Link>
                         </>
                     }
 
                     <Link to="/search">
-                        <button className='mr-6 border-2 border-[#ff4136] hover:border-[#333333] hover:cursor-pointer font-bold text-xl px-6 py-3 rounded-sm bg-[#ff4136]'>Search Donors</button>
+                        <button className='border-2 border-[#ff4136] hover:bg-[#d63027] hover:border-[#d63027] hover:cursor-pointer font-bold text-xl px-6 py-3 rounded-md bg-[#ff4136] text-white transition-colors duration-200'>Search Donors</button>
                     </Link>
                 </div>
             </div>
