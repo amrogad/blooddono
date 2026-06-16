@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 const Footer = () => {
     const { user } = useSelector((state) => state.auth);
     return (
-        <div className='max-w-[1600px] mx-auto'>
-            <div className='flex flex-col gap-4 justify-between items-center px-20 py-20 bg-black'>
+        <div className='bg-gray-900'>
+            <div className='max-w-[1600px] mx-auto flex flex-col gap-4 justify-between items-center px-20 py-20'>
                 <Link to='/'>
                     <span className="text-3xl font-extrabold text-white">
                         Blood<span className="text-[#ff4136]">Dono</span>
