@@ -37,9 +37,12 @@ const Login = () => {
 
     return (
         <div className='max-w-[1600px] mx-auto py-20 flex justify-center items-center'>
-            <div className="card w-full max-w-sm shrink-0 shadow-2xl">
+            <div className="card w-full max-w-sm shrink-0 shadow-2xl overflow-hidden">
+                <div className='bg-gradient-to-r from-[#8B0000] to-[#C41230] px-6 py-5'>
+                    <h2 className='text-white text-2xl font-bold'>Login</h2>
+                    <p className='text-white/70 text-sm'>Welcome back</p>
+                </div>
                 <div className="card-body">
-                    <h1 className="text-4xl font-bold text-center">Login now!</h1>
 
                     <form onSubmit={handleSubmit(onSubmit)} className="fieldset">
 
