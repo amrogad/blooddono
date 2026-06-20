@@ -10,9 +10,9 @@ import AverageUsers from './AverageUsers';
 const Home = () => {
 
     return (
-        <div className='max-w-[1600px] mx-auto px-4 py-2 lg:py-8'>
-
+        <div>
             <Hero></Hero>
+            <div className='max-w-[1600px] mx-auto px-4 py-2 lg:py-8'>
             <BeADonor></BeADonor>
             <Features></Features>
             <PopularPages></PopularPages>
@@ -20,7 +20,7 @@ const Home = () => {
             <LatestBlog></LatestBlog>
             <Faqs></Faqs>
             <ContactUs></ContactUs>
-            
+            </div>
         </div>
     );
 };
