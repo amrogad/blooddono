@@ -1,10 +1,12 @@
 import { Link, useNavigate } from 'react-router';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { supabase } from '../../lib/supabaseClient';
+import { setRole } from '../../redux/authSlice';
 
 const ProfilePicture = () => {
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { user } = useSelector((state) => state.auth);
 
     const handleLogOut = async () => {
@@ -22,13 +24,23 @@ const ProfilePicture = () => {
             <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
                 {
                     user && <Link to='/dashboard'><li>
-
                         <p className='btn btn-neutral btn-outline hover:text-white mb-2 w-full'>Dashboard</p>
-
                     </li></Link>
                 }
 
-                <li><p className='btn btn-error btn-outline hover:text-white' onClick={handleLogOut}>Logout</p></li>
+                <li className="menu-title pt-2 text-xs text-gray-400">Demo role</li>
+                {['admin', 'donor', 'volunteer'].map(r => (
+                    <li key={r}>
+                        <button
+                            onClick={() => dispatch(setRole(r))}
+                            className={`capitalize ${user.role === r ? 'font-bold text-[#ff4136]' : ''}`}
+                        >
+                            {r}
+                        </button>
+                    </li>
+                ))}
+
+                <li className="mt-2"><p className='btn btn-error btn-outline hover:text-white w-full' onClick={handleLogOut}>Logout</p></li>
             </ul>
         </div>
     );
