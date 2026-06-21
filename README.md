@@ -1,6 +1,6 @@
 # BloodDono
 
-A blood donation platform built with React, Vite, Tailwind CSS, and Supabase.
+A blood donation portfolio project, it's built with React, Vite, Tailwind CSS, and Supabase.
 
 Donors and recipients can search for matches by blood group and location, post and manage donation requests, and get a role-based dashboard once they log in. Auth, profiles, and access control are backed by a real Supabase project (Postgres + Row Level Security), not mock data — so the admin/donor/volunteer experiences you see are driven by actual roles stored in the database.
 
