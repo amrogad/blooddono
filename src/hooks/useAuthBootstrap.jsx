@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { supabase } from '../lib/supabaseClient';
 import { setUser, logOut } from '../redux/authSlice';
+import { getProfile } from '../services/profileService';
 
 let latestAuthToken;
 
@@ -15,11 +16,7 @@ const useAuthBootstrap = () => {
                 return;
             }
 
-            const { data: profile } = await supabase
-                .from('profiles')
-                .select('display_name, photo_url, role, blood_group, governorate, city')
-                .eq('id', session.user.id)
-                .single();
+            const profile = await getProfile(session.user.id);
 
             if (token !== latestAuthToken) return;
 
