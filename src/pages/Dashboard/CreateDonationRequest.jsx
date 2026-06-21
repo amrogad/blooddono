@@ -22,7 +22,7 @@ const CreateDonationRequest = () => {
     const selectedGovernorate = governorates.find(g => g.name === watch('recipient_governorate'));
     const filteredCities = cities.filter(c => c.governorate_id === selectedGovernorate?.id);
 
-    const onSubmit = async (data) => {
+    const onSubmit = async () => {
         Swal.fire({
             icon: 'success',
             title: 'Donation Request Created!',
