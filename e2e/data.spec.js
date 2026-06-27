@@ -25,4 +25,17 @@ test.describe('Supabase-backed data', () => {
 
     await expect(page.getByText('Demo Donor')).toBeVisible();
   });
+
+  test('search matches by blood-type compatibility, not exact equality', async ({ page }) => {
+    // Demo Donor is O+; an A+ patient can receive from O+, so a compatible
+    // search surfaces them even though the groups are not equal.
+    await page.goto('/search');
+
+    await page.locator('select[name="bloodGroup"]').selectOption('A+');
+    await page.locator('select[name="governorate"]').selectOption('Cairo');
+    await page.locator('select[name="city"]').selectOption('Nasr City');
+    await page.getByRole('button', { name: 'Search' }).click();
+
+    await expect(page.getByText('Demo Donor')).toBeVisible();
+  });
 });

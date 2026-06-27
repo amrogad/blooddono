@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import Loading from '../shared/Loading';
-import { getDonationRequest, acceptRequest } from '../../services/donationService';
+import { getRequestDetails, acceptRequest } from '../../services/donationService';
 
 const HomeDonationRequestDetails = () => {
   const { id } = useParams();
@@ -16,7 +16,7 @@ const HomeDonationRequestDetails = () => {
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
-    getDonationRequest(id)
+    getRequestDetails(id)
       .then(setRequest)
       .catch(() => setRequest(null))
       .finally(() => setLoading(false));

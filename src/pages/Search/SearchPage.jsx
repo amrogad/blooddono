@@ -46,7 +46,11 @@ const SearchPage = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 min-h-screen">
-      <h2 className="text-3xl font-bold mb-6 text-center">Find Blood Donor 🩸</h2>
+      <h2 className="text-3xl font-bold mb-2 text-center">Find Blood Donor 🩸</h2>
+      <p className="text-center text-gray-500 mb-6">
+        Enter the patient's blood group — results include every compatible donor (O- can give to
+        anyone, AB+ can receive from anyone).
+      </p>
 
       <form onSubmit={handleSearch} className="grid md:grid-cols-3 gap-4 mb-8">
         <select
@@ -56,7 +60,7 @@ const SearchPage = () => {
           onChange={handleChange}
           required
         >
-          <option value="">Select Blood Group</option>
+          <option value="">Patient's Blood Group</option>
           {bloodGroups.map((group) => (
             <option key={group} value={group}>
               {group}

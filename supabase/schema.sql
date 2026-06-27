@@ -102,10 +102,33 @@ begin
 end;
 $$;
 
+-- Which donor blood types can give red cells to a recipient of the given
+-- type. O- is the universal donor, AB+ the universal recipient. Used by
+-- search_donors so a patient finds every compatible donor, not just an
+-- exact blood-group match.
+create function public.compatible_donor_types(recipient text)
+returns text[]
+language sql
+immutable
+as $$
+  select case recipient
+    when 'O-'  then array['O-']
+    when 'O+'  then array['O-','O+']
+    when 'A-'  then array['O-','A-']
+    when 'A+'  then array['O-','O+','A-','A+']
+    when 'B-'  then array['O-','B-']
+    when 'B+'  then array['O-','O+','B-','B+']
+    when 'AB-' then array['O-','A-','B-','AB-']
+    when 'AB+' then array['O-','O+','A-','A+','B-','B+','AB-','AB+']
+    else array[]::text[]
+  end;
+$$;
+
 -- Donor search: SECURITY DEFINER function that returns ONLY non-PII columns
 -- (no email) and only for donors who opted in via is_searchable. This is
 -- why there is no public SELECT policy on profiles - we never want to expose
--- contact info to anonymous queries.
+-- contact info to anonymous queries. p_blood_group is the RECIPIENT's type;
+-- results are donors whose blood is compatible to donate to them.
 create function public.search_donors(
   p_blood_group text,
   p_governorate text,
@@ -127,7 +150,7 @@ as $$
   from public.profiles
   where is_searchable = true
     and status = 'active'
-    and blood_group = p_blood_group
+    and blood_group = any(public.compatible_donor_types(p_blood_group))
     and governorate = p_governorate
     and city = p_city;
 $$;
@@ -186,10 +209,11 @@ create table public.blood_donation_requests (
 
 alter table public.blood_donation_requests enable row level security;
 
--- Anyone (even logged out) can see pending requests on the public page.
-create policy "anyone can view pending requests"
-  on public.blood_donation_requests for select
-  using (donation_status = 'pending');
+-- NOTE: there is deliberately NO public/anon SELECT policy on this table.
+-- A row-level "view pending" policy would expose every column (requester
+-- email, name, address...) to anonymous PostgREST queries via ?select=.
+-- Public/donor access goes through the SECURITY DEFINER functions below,
+-- which return non-PII columns only — same approach as search_donors.
 
 -- Owners see all their own requests; staff see everything.
 create policy "owner or staff can view requests"
@@ -234,6 +258,62 @@ end;
 $$;
 
 grant execute on function public.accept_request(uuid) to authenticated;
+
+-- Public, PII-safe pending list: no requester email/name, no address.
+-- SECURITY DEFINER so anon can read it despite there being no table SELECT
+-- policy for anonymous users.
+create function public.get_pending_requests()
+returns table (
+  id uuid,
+  recipient_name text,
+  recipient_governorate text,
+  recipient_city text,
+  blood_group text,
+  donation_date date,
+  donation_time time
+)
+language sql
+security definer set search_path = public
+stable
+as $$
+  select id, recipient_name, recipient_governorate, recipient_city,
+         blood_group, donation_date, donation_time
+  from public.blood_donation_requests
+  where donation_status = 'pending'
+  order by created_at desc;
+$$;
+
+grant execute on function public.get_pending_requests() to anon, authenticated;
+
+-- Single-request details for a signed-in donor deciding whether to help.
+-- Includes hospital + address (a donor needs to know where to go) but never
+-- the requester's email or name. Authenticated only.
+create function public.get_request_details(p_id uuid)
+returns table (
+  id uuid,
+  recipient_name text,
+  recipient_governorate text,
+  recipient_city text,
+  hospital_name text,
+  full_address text,
+  blood_group text,
+  donation_date date,
+  donation_time time,
+  request_message text,
+  donation_status text
+)
+language sql
+security definer set search_path = public
+stable
+as $$
+  select id, recipient_name, recipient_governorate, recipient_city,
+         hospital_name, full_address, blood_group, donation_date,
+         donation_time, request_message, donation_status
+  from public.blood_donation_requests
+  where id = p_id;
+$$;
+
+grant execute on function public.get_request_details(uuid) to authenticated;
 
 
 -- ============================================================
