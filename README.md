@@ -2,7 +2,7 @@
 
 A blood donation portfolio project, it's built with React, Vite, Tailwind CSS, and Supabase.
 
-Donors and recipients can search for matches by blood group and location, post and manage donation requests, and get a role-based dashboard once they log in. Auth, profiles, and access control are backed by a real Supabase project (Postgres + Row Level Security), not mock data — so the admin/donor/volunteer experiences you see are driven by actual roles stored in the database.
+Donors and recipients can search for matches by blood group and location, post and manage donation requests, and get a role-based dashboard once they log in. Auth, profiles, and access control run on Supabase, so the admin/donor/volunteer experiences are driven by real accounts, not mock data.
 
 🔗 **Live demo:** [blooddono-two.vercel.app](https://blooddono-two.vercel.app/)
 
@@ -23,7 +23,7 @@ Each role sees a different dashboard — admin gets user/content management and 
 - Search for donors by blood group, governorate, and city
 - View, create, and manage blood donation requests
 - Real authentication with Supabase (sign up, log in, persistent sessions)
-- Role-based dashboard (admin, donor, volunteer) backed by Postgres + Row Level Security
+- Role-based dashboard (admin, donor, volunteer) with protected, role-aware routes
 - Route guards that redirect unauthorized roles to a `/forbidden` page
 - Blog section with a content management UI
 - Donation/funding page
@@ -54,8 +54,8 @@ Each role sees a different dashboard — admin gets user/content management and 
 - SweetAlert2
 - React Icons
 
-**Backend**
-- [Supabase](https://supabase.com/) — Postgres database, authentication, and Row Level Security
+**Backend (managed service)**
+- [Supabase](https://supabase.com/) — hosted authentication and database (BaaS)
 
 **Testing**
 - Playwright (end-to-end)
@@ -81,18 +81,6 @@ npm run dev
 ```
 
 Runs at `http://localhost:5173`.
-
-## Backend Setup
-
-If you want to run this against your own Supabase project (rather than just using the live demo above):
-
-1. Create a new Supabase project and copy its URL + anon key into `.env`.
-2. Run **STEPs 1–5** of `supabase/schema.sql` in the Supabase SQL editor. These create the tables (`profiles`, `blood_donation_requests`, `blogs`, `funds`), enable Row Level Security, add the helper functions (`is_admin`, `search_donors`, the admin role/status RPCs), and create the `avatars` and `blog-images` storage buckets. Column-level grants let a user update their own profile fields but never their own `role` — that's set server-side only.
-3. Seed the three demo accounts:
-   ```bash
-   node --env-file=.env scripts/seed-demo-accounts.mjs
-   ```
-4. Run **STEP 6** of `supabase/schema.sql`. It promotes the admin and volunteer demo accounts to their roles (the donor keeps the default), makes the donor searchable, and seeds demo donation requests, blogs, and funding records so the app isn't empty.
 
 ## Testing
 

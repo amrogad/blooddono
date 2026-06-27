@@ -115,15 +115,15 @@ const AboutUs = () => {
         </h1>
         <br />
         <p className="text-2xl text-justify">
-          BloodDono is a full-stack portfolio project — React and Tailwind CSS on the frontend,
-          Supabase (Postgres, authentication, and Row Level Security) on the backend.
+          BloodDono is a React frontend portfolio project — built with React and Tailwind CSS,
+          and powered by Supabase for authentication and data.
           <br />
           <br />
           Every account is real. Sign up for your own, or use one of the demo logins on the login
           page to jump straight into the admin, donor, or volunteer dashboard.
           <br />
           <br />
-          Built by Amro Gad as a demonstration of full-stack skills:
+          Built by Amro Gad as a demonstration of modern React skills:
           <br />
           <br />
           <span className="text-[#ff4136] font-bold text-3xl text-center">

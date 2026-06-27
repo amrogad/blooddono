@@ -9,14 +9,14 @@ export const getDonationRequests = async () => {
   return data;
 };
 
-// Public list — PII-safe RPC (no requester email/name/address).
+// Pending requests for the public list.
 export const getPendingRequests = async () => {
   const { data, error } = await supabase.rpc('get_pending_requests');
   if (error) throw error;
   return data;
 };
 
-// Full row — owner/staff only (RLS enforced). Used by the dashboard.
+// Full request row, used by the dashboard.
 export const getDonationRequest = async (id) => {
   const { data, error } = await supabase
     .from('blood_donation_requests')
@@ -27,7 +27,7 @@ export const getDonationRequest = async (id) => {
   return data;
 };
 
-// PII-safe single-request details for a signed-in donor (omits requester email/name).
+// Single-request details for the donor-facing page.
 export const getRequestDetails = async (id) => {
   const { data, error } = await supabase.rpc('get_request_details', { p_id: id });
   if (error) throw error;
