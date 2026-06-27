@@ -5,7 +5,7 @@ test.describe('Home page', () => {
     await page.goto('/');
 
     await expect(
-      page.getByRole('heading', { name: /Where Every Connection is a Lifesaver/i })
+      page.getByRole('heading', { name: /Where Every Connection is a Lifesaver/i }),
     ).toBeVisible();
 
     await expect(page.locator('img[src="/images/blood-hero.png"]').first()).toBeVisible();
@@ -18,7 +18,7 @@ test.describe('Home page', () => {
     const brokenImages = await page.evaluate(() =>
       Array.from(document.images)
         .filter((img) => !img.complete || img.naturalWidth === 0)
-        .map((img) => img.src)
+        .map((img) => img.src),
     );
 
     expect(brokenImages).toEqual([]);

@@ -1,95 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-
-// Sample requests for the demo user (Amro Gad). In a real app this would
-// come from the backend, but for now we just keep it in state so the
-// delete/status buttons still feel like they do something.
-const sampleRequests = [
-  {
-    _id: '1',
-    recipient_name: 'Mona Khaled',
-    recipient_governorate: 'Cairo',
-    recipient_city: 'Nasr City',
-    hospital_name: 'Cairo University Hospital',
-    full_address: '12 El Saleh Ayoub St, Nasr City, Cairo',
-    blood_group: 'A+',
-    donation_date: '2026-06-20',
-    donation_time: '10:00',
-    donation_status: 'pending',
-    request_message: 'Need a blood donor urgently for a scheduled surgery.',
-    requester_name: 'Amro Gad',
-    requester_email: 'amro@blooddono.com',
-  },
-  {
-    _id: '2',
-    recipient_name: 'Tarek Aboul Fotouh',
-    recipient_governorate: 'Giza',
-    recipient_city: '6th of October',
-    hospital_name: 'Cairo University Hospital',
-    full_address: '4 Central Axis, 6th of October, Giza',
-    blood_group: 'O-',
-    donation_date: '2026-06-15',
-    donation_time: '14:30',
-    donation_status: 'inprogress',
-    request_message: 'Patient needs O- blood for a transfusion this week.',
-    requester_name: 'Sara Mostafa',
-    requester_email: 'sara.mostafa@example.com',
-  },
-  {
-    _id: '3',
-    recipient_name: 'Yasmin Saeed',
-    recipient_governorate: 'Alexandria',
-    recipient_city: 'Sidi Gaber',
-    hospital_name: 'Alexandria Medical Center',
-    full_address: '21 Port Said St, Sidi Gaber, Alexandria',
-    blood_group: 'B+',
-    donation_date: '2026-05-28',
-    donation_time: '09:00',
-    donation_status: 'done',
-    request_message: 'Thanks to everyone who came forward, donor found.',
-    requester_name: 'Karim Hossam',
-    requester_email: 'karim.hossam@example.com',
-  },
-  {
-    _id: '4',
-    recipient_name: 'Ahmed Sami',
-    recipient_governorate: 'Cairo',
-    recipient_city: 'Heliopolis',
-    hospital_name: 'Cairo University Hospital',
-    full_address: '8 Cleopatra St, Heliopolis, Cairo',
-    blood_group: 'AB+',
-    donation_date: '2026-05-10',
-    donation_time: '11:15',
-    donation_status: 'canceled',
-    request_message: 'Request canceled, patient was discharged early.',
-    requester_name: 'Amro Gad',
-    requester_email: 'amro@blooddono.com',
-  },
-  {
-    _id: '5',
-    recipient_name: 'Nour El-Din',
-    recipient_governorate: 'Giza',
-    recipient_city: 'Giza City',
-    hospital_name: 'Alexandria Medical Center',
-    full_address: '3 Pyramids Rd, Giza City, Giza',
-    blood_group: 'O+',
-    donation_date: '2026-06-25',
-    donation_time: '16:00',
-    donation_status: 'pending',
-    request_message: 'Looking for an O+ donor for an upcoming procedure.',
-    requester_name: 'Amro Gad',
-    requester_email: 'amro@blooddono.com',
-  },
-];
+import Loading from '../shared/Loading';
+import {
+  getMyDonationRequests,
+  updateDonationRequest,
+  deleteDonationRequest,
+} from '../../services/donationService';
 
 const MyDonationRequests = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
 
-  const [requests, setRequests] = useState(sampleRequests);
+  const [requests, setRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const requestsPerPage = 5;
+
+  useEffect(() => {
+    if (!user?.uid) return;
+    getMyDonationRequests(user.uid)
+      .then(setRequests)
+      .catch((error) =>
+        Swal.fire({ icon: 'error', title: 'Could not load requests', text: error.message }),
+      )
+      .finally(() => setLoading(false));
+  }, [user?.uid]);
 
   const handleDelete = (id) => {
     Swal.fire({
@@ -98,23 +36,26 @@ const MyDonationRequests = () => {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setRequests((prev) => prev.filter((req) => req._id !== id));
-        Swal.fire({
-          icon: 'success',
-          title: 'Deleted',
-          showConfirmButton: false,
-          timer: 1200,
-        });
+        try {
+          await deleteDonationRequest(id);
+          setRequests((prev) => prev.filter((req) => req.id !== id));
+          Swal.fire({ icon: 'success', title: 'Deleted', showConfirmButton: false, timer: 1200 });
+        } catch (error) {
+          Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
+        }
       }
     });
   };
 
-  const handleStatusUpdate = (id, donation_status) => {
-    setRequests((prev) =>
-      prev.map((req) => (req._id === id ? { ...req, donation_status } : req))
-    );
+  const handleStatusUpdate = async (id, donation_status) => {
+    try {
+      await updateDonationRequest(id, { donation_status });
+      setRequests((prev) => prev.map((req) => (req.id === id ? { ...req, donation_status } : req)));
+    } catch (error) {
+      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
+    }
   };
 
   const filteredRequests =
@@ -124,6 +65,8 @@ const MyDonationRequests = () => {
   const indexOfFirst = indexOfLast - requestsPerPage;
   const currentRequests = filteredRequests.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(filteredRequests.length / requestsPerPage);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="p-4">
@@ -165,7 +108,7 @@ const MyDonationRequests = () => {
           <tbody>
             {currentRequests.length > 0 ? (
               currentRequests.map((req) => (
-                <tr key={req._id}>
+                <tr key={req.id}>
                   <td>{req.recipient_name}</td>
                   <td>
                     {req.recipient_governorate}, {req.recipient_city}
@@ -177,8 +120,8 @@ const MyDonationRequests = () => {
                   <td>
                     {req.donation_status === 'inprogress' && (
                       <div>
-                        <p>{req.requester_name}</p>
-                        <p className="text-sm">{req.requester_email}</p>
+                        <p>{req.donor_name}</p>
+                        <p className="text-sm">{req.donor_email}</p>
                       </div>
                     )}
                   </td>
@@ -186,13 +129,13 @@ const MyDonationRequests = () => {
                     {req.donation_status === 'inprogress' && (
                       <>
                         <button
-                          onClick={() => handleStatusUpdate(req._id, 'done')}
+                          onClick={() => handleStatusUpdate(req.id, 'done')}
                           className="btn btn-xs btn-success"
                         >
                           Done
                         </button>
                         <button
-                          onClick={() => handleStatusUpdate(req._id, 'canceled')}
+                          onClick={() => handleStatusUpdate(req.id, 'canceled')}
                           className="btn btn-xs btn-error"
                         >
                           Cancel
@@ -200,19 +143,16 @@ const MyDonationRequests = () => {
                       </>
                     )}
                     <button
-                      onClick={() => navigate(`/dashboard/edit-donation-request/${req._id}`)}
+                      onClick={() => navigate(`/dashboard/edit-donation-request/${req.id}`)}
                       className="btn btn-xs btn-info"
                     >
                       Edit
                     </button>
-                    <button
-                      onClick={() => handleDelete(req._id)}
-                      className="btn btn-xs btn-outline"
-                    >
+                    <button onClick={() => handleDelete(req.id)} className="btn btn-xs btn-outline">
                       Delete
                     </button>
                     <button
-                      onClick={() => navigate(`/dashboard/donation-details/${req._id}`)}
+                      onClick={() => navigate(`/dashboard/donation-details/${req.id}`)}
                       className="btn btn-xs"
                     >
                       View

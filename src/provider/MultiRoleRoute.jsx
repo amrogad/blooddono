@@ -4,22 +4,22 @@ import useUserRole from '../hooks/useUserRole';
 import Loading from '../pages/shared/Loading';
 
 const MultiRoleRoute = ({ children, allowedRoles = [] }) => {
-    const { user, loading } = useSelector((state) => state.auth);
-    const { role, loading: roleLoading } = useUserRole();
+  const { user, loading } = useSelector((state) => state.auth);
+  const { role, loading: roleLoading } = useUserRole();
 
-    if (loading || roleLoading) {
-        return <Loading></Loading>;
-    }
+  if (loading || roleLoading) {
+    return <Loading></Loading>;
+  }
 
-    if (!user) {
-        return <Navigate to="/login" replace />;
-    }
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
 
-    if (!allowedRoles.includes(role)) {
-        return <Navigate to="/forbidden" replace />;
-    }
+  if (!allowedRoles.includes(role)) {
+    return <Navigate to="/forbidden" replace />;
+  }
 
-    return children;
+  return children;
 };
 
 export default MultiRoleRoute;

@@ -1,21 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Playwrite+AU+SA:wght@100..400&display=swap');
 
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "daisyui";
 
-
 .playwrite-au-sa-font {
-  font-family: "Playwrite AU SA", cursive;
+  font-family: 'Playwrite AU SA', cursive;
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   color: black;
   background-color: white;
 }
 
-a.active{
-    text-decoration: underline;
-    text-decoration-thickness: 2px;
-    text-decoration-color:#ff4136  ;
-  }
+a.active {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-decoration-color: #ff4136;
+}

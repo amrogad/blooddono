@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 const ProfilePicture = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector(state => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const handleLogOut = async () => {
     try {
@@ -43,7 +43,7 @@ const ProfilePicture = () => {
         )}
 
         <li className="menu-title pt-2 text-xs text-gray-400">Demo role</li>
-        {['admin', 'donor', 'volunteer'].map(r => (
+        {['admin', 'donor', 'volunteer'].map((r) => (
           <li key={r}>
             <button
               onClick={() => dispatch(setRole(r))}

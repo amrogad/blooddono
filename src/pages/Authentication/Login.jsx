@@ -23,7 +23,7 @@ const Login = () => {
         icon: 'success',
         title: 'Logged In Successfully!',
         showConfirmButton: true,
-      }).then(result => {
+      }).then((result) => {
         if (result.isConfirmed) {
           goToRedirect();
         }
@@ -34,7 +34,7 @@ const Login = () => {
     }
   };
 
-  const onSubmit = data => handleSignIn(data.email, data.password);
+  const onSubmit = (data) => handleSignIn(data.email, data.password);
 
   return (
     <div className="max-w-[1600px] mx-auto py-20 flex justify-center items-center">
@@ -88,7 +88,7 @@ const Login = () => {
 
           <div className="divider">Demo logins</div>
           <div className="flex flex-col gap-2">
-            {DEMO_ACCOUNTS.map(acc => (
+            {DEMO_ACCOUNTS.map((acc) => (
               <button
                 key={acc.role}
                 type="button"

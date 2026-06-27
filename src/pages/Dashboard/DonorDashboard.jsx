@@ -1,51 +1,40 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
-
-const sampleRequests = [
-  {
-    _id: '1',
-    recipient_name: 'Hassan Ibrahim',
-    recipient_governorate: 'Cairo',
-    recipient_city: 'Nasr City',
-    donation_date: '2026-06-15',
-    donation_time: '10:00 AM',
-    blood_group: 'A+',
-    donation_status: 'inprogress',
-  },
-  {
-    _id: '2',
-    recipient_name: 'Dina Samir',
-    recipient_governorate: 'Giza',
-    recipient_city: '6th of October',
-    donation_date: '2026-06-08',
-    donation_time: '02:30 PM',
-    blood_group: 'O-',
-    donation_status: 'done',
-  },
-  {
-    _id: '3',
-    recipient_name: 'Tarek Younes',
-    recipient_governorate: 'Alexandria',
-    recipient_city: 'Sidi Gaber',
-    donation_date: '2026-06-20',
-    donation_time: '09:00 AM',
-    blood_group: 'B+',
-    donation_status: 'pending',
-  },
-];
+import Loading from '../shared/Loading';
+import {
+  getMyDonationRequests,
+  updateDonationRequest,
+  deleteDonationRequest,
+} from '../../services/donationService';
 
 const DonorDashboard = () => {
   const { user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  const [donationRequests, setDonationRequests] = useState(sampleRequests);
+  const [donationRequests, setDonationRequests] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const handleStatusUpdate = (id, status) => {
-    setDonationRequests((prev) =>
-      prev.map((req) => (req._id === id ? { ...req, donation_status: status } : req))
-    );
+  useEffect(() => {
+    if (!user?.uid) return;
+    getMyDonationRequests(user.uid)
+      .then((data) => setDonationRequests(data.slice(0, 5)))
+      .catch((error) =>
+        Swal.fire({ icon: 'error', title: 'Could not load requests', text: error.message }),
+      )
+      .finally(() => setLoading(false));
+  }, [user?.uid]);
+
+  const handleStatusUpdate = async (id, status) => {
+    try {
+      await updateDonationRequest(id, { donation_status: status });
+      setDonationRequests((prev) =>
+        prev.map((req) => (req.id === id ? { ...req, donation_status: status } : req)),
+      );
+    } catch (error) {
+      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
+    }
   };
 
   const handleDelete = (id) => {
@@ -55,18 +44,25 @@ const DonorDashboard = () => {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        setDonationRequests((prev) => prev.filter((req) => req._id !== id));
+        try {
+          await deleteDonationRequest(id);
+          setDonationRequests((prev) => prev.filter((req) => req.id !== id));
+        } catch (error) {
+          Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
+        }
       }
     });
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className="p-4">
       <h1 className="text-3xl font-bold mb-6">Welcome, {user?.displayName}!</h1>
 
-      {donationRequests.length > 0 && (
+      {donationRequests.length > 0 ? (
         <div>
           <h2 className="text-2xl font-semibold mb-4">Your Recent Donation Requests</h2>
           <div className="overflow-x-auto">
@@ -85,9 +81,11 @@ const DonorDashboard = () => {
               </thead>
               <tbody>
                 {donationRequests.map((req) => (
-                  <tr key={req._id}>
+                  <tr key={req.id}>
                     <td>{req.recipient_name}</td>
-                    <td>{req.recipient_governorate}, {req.recipient_city}</td>
+                    <td>
+                      {req.recipient_governorate}, {req.recipient_city}
+                    </td>
                     <td>{req.donation_date}</td>
                     <td>{req.donation_time}</td>
                     <td>{req.blood_group}</td>
@@ -95,21 +93,46 @@ const DonorDashboard = () => {
                     <td>
                       {req.donation_status === 'inprogress' && (
                         <div>
-                          <p>{user?.displayName}</p>
-                          <p className="text-sm">{user?.email}</p>
+                          <p>{req.donor_name}</p>
+                          <p className="text-sm">{req.donor_email}</p>
                         </div>
                       )}
                     </td>
                     <td className="flex gap-1 flex-wrap">
                       {req.donation_status === 'inprogress' && (
                         <>
-                          <button onClick={() => handleStatusUpdate(req._id, 'done')} className="btn btn-xs btn-success">Done</button>
-                          <button onClick={() => handleStatusUpdate(req._id, 'canceled')} className="btn btn-xs btn-error">Cancel</button>
+                          <button
+                            onClick={() => handleStatusUpdate(req.id, 'done')}
+                            className="btn btn-xs btn-success"
+                          >
+                            Done
+                          </button>
+                          <button
+                            onClick={() => handleStatusUpdate(req.id, 'canceled')}
+                            className="btn btn-xs btn-error"
+                          >
+                            Cancel
+                          </button>
                         </>
                       )}
-                      <button onClick={() => navigate(`/dashboard/edit-donation-request/${req._id}`)} className="btn btn-xs btn-info">Edit</button>
-                      <button onClick={() => handleDelete(req._id)} className="btn btn-xs btn-outline">Delete</button>
-                      <button onClick={() => navigate(`/dashboard/donation-details/${req._id}`)} className="btn btn-xs">View</button>
+                      <button
+                        onClick={() => navigate(`/dashboard/edit-donation-request/${req.id}`)}
+                        className="btn btn-xs btn-info"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDelete(req.id)}
+                        className="btn btn-xs btn-outline"
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={() => navigate(`/dashboard/donation-details/${req.id}`)}
+                        className="btn btn-xs"
+                      >
+                        View
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -118,11 +141,16 @@ const DonorDashboard = () => {
           </div>
 
           <div className="mt-4">
-            <button onClick={() => navigate('/dashboard/my-donation-requests')} className="btn btn-neutral">
+            <button
+              onClick={() => navigate('/dashboard/my-donation-requests')}
+              className="btn btn-neutral"
+            >
               View My All Requests
             </button>
           </div>
         </div>
+      ) : (
+        <p className="text-gray-500">You have no donation requests yet.</p>
       )}
     </div>
   );

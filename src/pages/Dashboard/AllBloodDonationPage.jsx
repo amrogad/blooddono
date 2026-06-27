@@ -1,113 +1,46 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaEye, FaTrash, FaEdit } from 'react-icons/fa';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
 import useUserRole from '../../hooks/useUserRole';
-
-// Sample donation requests for the demo (would normally come from the backend)
-const sampleDonations = [
-  {
-    _id: '1',
-    recipient_name: 'Mona Khaled',
-    recipient_governorate: 'Cairo',
-    recipient_city: 'Nasr City',
-    donation_date: '2026-06-15',
-    donation_time: '10:00',
-    blood_group: 'A+',
-    donation_status: 'pending',
-    hospital_name: 'Cairo University Hospital',
-    full_address: '12 El Nasr Street, Nasr City, Cairo',
-    requester_name: '',
-    requester_email: '',
-  },
-  {
-    _id: '2',
-    recipient_name: 'Tarek Aboul Fotouh',
-    recipient_governorate: 'Alexandria',
-    recipient_city: 'Montaza',
-    donation_date: '2026-06-18',
-    donation_time: '14:30',
-    blood_group: 'O-',
-    donation_status: 'inprogress',
-    hospital_name: 'Alexandria Medical Center',
-    full_address: '5 Corniche Road, Montaza, Alexandria',
-    requester_name: 'Amro Gad',
-    requester_email: 'amro@blooddono.com',
-  },
-  {
-    _id: '3',
-    recipient_name: 'Yasmin Saeed',
-    recipient_governorate: 'Giza',
-    recipient_city: '6th of October',
-    donation_date: '2026-06-10',
-    donation_time: '09:00',
-    blood_group: 'B+',
-    donation_status: 'done',
-    hospital_name: 'Cairo University Hospital',
-    full_address: '21 Central Axis, 6th of October, Giza',
-    requester_name: 'Sara Hassan',
-    requester_email: 'sara.hassan@example.com',
-  },
-  {
-    _id: '4',
-    recipient_name: 'Hassan Ibrahim',
-    recipient_governorate: 'Cairo',
-    recipient_city: 'Heliopolis',
-    donation_date: '2026-06-20',
-    donation_time: '17:00',
-    blood_group: 'AB+',
-    donation_status: 'pending',
-    hospital_name: 'Cairo University Hospital',
-    full_address: '8 El Higaz Street, Heliopolis, Cairo',
-    requester_name: '',
-    requester_email: '',
-  },
-  {
-    _id: '5',
-    recipient_name: 'Dina Farouk',
-    recipient_governorate: 'Dakahlia',
-    recipient_city: 'Mansoura',
-    donation_date: '2026-05-28',
-    donation_time: '11:15',
-    blood_group: 'O+',
-    donation_status: 'canceled',
-    hospital_name: 'Tanta General Hospital',
-    full_address: '3 Gomhouria Street, Mansoura, Dakahlia',
-    requester_name: '',
-    requester_email: '',
-  },
-  {
-    _id: '6',
-    recipient_name: 'Mona Khaled',
-    recipient_governorate: 'Cairo',
-    recipient_city: 'Maadi',
-    donation_date: '2026-06-25',
-    donation_time: '08:30',
-    blood_group: 'A-',
-    donation_status: 'inprogress',
-    hospital_name: 'Cairo University Hospital',
-    full_address: '17 Road 9, Maadi, Cairo',
-    requester_name: 'Karim Fathy',
-    requester_email: 'karim.fathy@example.com',
-  },
-];
+import Loading from '../shared/Loading';
+import {
+  getDonationRequests,
+  updateDonationRequest,
+  deleteDonationRequest,
+} from '../../services/donationService';
 
 const AllBloodDonationPage = () => {
   const { role } = useUserRole();
 
-  const [donations, setDonations] = useState(sampleDonations);
+  const [donations, setDonations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [filter, setFilter] = useState('all');
 
-  const handleStatusChange = (id, newStatus) => {
-    setDonations((prev) =>
-      prev.map((donation) =>
-        donation._id === id ? { ...donation, donation_status: newStatus } : donation
+  useEffect(() => {
+    getDonationRequests()
+      .then(setDonations)
+      .catch((error) =>
+        Swal.fire({ icon: 'error', title: 'Could not load requests', text: error.message }),
       )
-    );
-    Swal.fire('Success', 'Status updated!', 'success');
+      .finally(() => setLoading(false));
+  }, []);
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await updateDonationRequest(id, { donation_status: newStatus });
+      setDonations((prev) =>
+        prev.map((donation) =>
+          donation.id === id ? { ...donation, donation_status: newStatus } : donation,
+        ),
+      );
+      Swal.fire('Success', 'Status updated!', 'success');
+    } catch (error) {
+      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
+    }
   };
 
   const handleDelete = async (id) => {
@@ -120,8 +53,13 @@ const AllBloodDonationPage = () => {
     });
 
     if (confirm.isConfirmed) {
-      setDonations((prev) => prev.filter((donation) => donation._id !== id));
-      Swal.fire('Deleted!', 'Request deleted.', 'success');
+      try {
+        await deleteDonationRequest(id);
+        setDonations((prev) => prev.filter((donation) => donation.id !== id));
+        Swal.fire('Deleted!', 'Request deleted.', 'success');
+      } catch (error) {
+        Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
+      }
     }
   };
 
@@ -135,6 +73,8 @@ const AllBloodDonationPage = () => {
   const currentDonations = filteredDonations.slice(indexOfFirstItem, indexOfLastItem);
 
   const totalPages = Math.ceil(filteredDonations.length / itemsPerPage);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="p-4">
@@ -171,7 +111,7 @@ const AllBloodDonationPage = () => {
           </thead>
           <tbody>
             {currentDonations.map((donation, index) => (
-              <tr key={donation._id}>
+              <tr key={donation.id}>
                 <td>{indexOfFirstItem + index + 1}</td>
                 <td>{donation.recipient_name}</td>
                 <td>
@@ -184,9 +124,8 @@ const AllBloodDonationPage = () => {
                   <select
                     className="select select-bordered select-sm"
                     value={donation.donation_status}
-                    onChange={(e) =>
-                      handleStatusChange(donation._id, e.target.value)
-                    }
+                    onChange={(e) => handleStatusChange(donation.id, e.target.value)}
+                    disabled={role !== 'admin'}
                   >
                     <option value="pending">Pending</option>
                     <option value="inprogress">In Progress</option>
@@ -197,8 +136,8 @@ const AllBloodDonationPage = () => {
                 <td>
                   {donation.donation_status === 'inprogress' && (
                     <div>
-                      <p>{donation.requester_name}</p>
-                      <p className="text-sm">{donation.requester_email}</p>
+                      <p>{donation.donor_name}</p>
+                      <p className="text-sm">{donation.donor_email}</p>
                     </div>
                   )}
                 </td>
@@ -209,14 +148,14 @@ const AllBloodDonationPage = () => {
                   {role === 'admin' && (
                     <>
                       <Link
-                        to={`/dashboard/admin-edit-donation/${donation._id}`}
+                        to={`/dashboard/admin-edit-donation/${donation.id}`}
                         className="btn btn-sm"
                       >
                         <FaEdit />
                       </Link>
                       <button
                         className="btn btn-sm btn-error"
-                        onClick={() => handleDelete(donation._id)}
+                        onClick={() => handleDelete(donation.id)}
                       >
                         <FaTrash />
                       </button>
@@ -236,8 +175,9 @@ const AllBloodDonationPage = () => {
             <button
               key={page + 1}
               onClick={() => setCurrentPage(page + 1)}
-              className={`join-item btn ${currentPage === page + 1 ? 'btn-neutral' : 'btn-outline'
-                }`}
+              className={`join-item btn ${
+                currentPage === page + 1 ? 'btn-neutral' : 'btn-outline'
+              }`}
             >
               {page + 1}
             </button>
@@ -267,8 +207,8 @@ const AllBloodDonationPage = () => {
               <strong>Full Address:</strong> {selectedRequest.full_address}
             </p>
             <p>
-              <strong>Donation Date & Time:</strong>{' '}
-              {selectedRequest.donation_date} at {selectedRequest.donation_time}
+              <strong>Donation Date & Time:</strong> {selectedRequest.donation_date} at{' '}
+              {selectedRequest.donation_time}
             </p>
             <p>
               <strong>Status:</strong> {selectedRequest.donation_status}

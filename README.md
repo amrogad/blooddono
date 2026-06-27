@@ -87,12 +87,12 @@ Runs at `http://localhost:5173`.
 If you want to run this against your own Supabase project (rather than just using the live demo above):
 
 1. Create a new Supabase project and copy its URL + anon key into `.env`.
-2. Run `supabase/schema.sql` **STEP 1** in the Supabase SQL editor. This creates the `profiles` table, enables Row Level Security, and sets up column-level grants so a user can update their own profile fields but can never change their own `role` — that's set server-side only.
+2. Run **STEPs 1–5** of `supabase/schema.sql` in the Supabase SQL editor. These create the tables (`profiles`, `blood_donation_requests`, `blogs`, `funds`), enable Row Level Security, add the helper functions (`is_admin`, `search_donors`, the admin role/status RPCs), and create the `avatars` and `blog-images` storage buckets. Column-level grants let a user update their own profile fields but never their own `role` — that's set server-side only.
 3. Seed the three demo accounts:
    ```bash
    node --env-file=.env scripts/seed-demo-accounts.mjs
    ```
-4. Run **STEP 2** of `supabase/schema.sql` to promote the admin and volunteer demo accounts to their roles (the donor account keeps the default `role`).
+4. Run **STEP 6** of `supabase/schema.sql`. It promotes the admin and volunteer demo accounts to their roles (the donor keeps the default), makes the donor searchable, and seeds demo donation requests, blogs, and funding records so the app isn't empty.
 
 ## Testing
 

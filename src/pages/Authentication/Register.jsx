@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
@@ -7,8 +6,6 @@ import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
 
 const Register = () => {
-  const [profilePic, setProfilePic] = useState('');
-
   const {
     register,
     handleSubmit,
@@ -20,26 +17,19 @@ const Register = () => {
   const navigate = useNavigate();
 
   const selectedGovernorateName = watch('governorate');
-  const selectedGovernorate = governorates.find(w => w.name === selectedGovernorateName);
+  const selectedGovernorate = governorates.find((w) => w.name === selectedGovernorateName);
   const selectedGovernorateId = selectedGovernorate?.id;
 
-  const filteredCities = cities.filter(c => c.governorate_id === selectedGovernorateId);
+  const filteredCities = cities.filter((c) => c.governorate_id === selectedGovernorateId);
 
-  const handleImageUpload = e => {
-    const image = e.target.files[0];
-    if (image) {
-      setProfilePic(URL.createObjectURL(image));
-    }
-  };
-
-  const onSubmit = async data => {
+  const onSubmit = async (data) => {
     try {
       await signUp(data);
       Swal.fire({
         icon: 'success',
         title: 'Registered Successfully!',
         showConfirmButton: true,
-      }).then(result => {
+      }).then((result) => {
         if (result.isConfirmed) {
           navigate('/');
         }
@@ -93,26 +83,6 @@ const Register = () => {
 
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
 
-            {/* image upload  */}
-
-            <legend className="fieldset-legend">Upload Photo</legend>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="file-input"
-              required
-            />
-            <label className="label">Max size 32MB</label>
-
-            {profilePic && (
-              <img
-                src={profilePic}
-                alt="Profile preview"
-                className="w-16 h-16 rounded-full object-cover mt-2"
-              />
-            )}
-
             {/* blood group  */}
 
             <label className="block">
@@ -145,7 +115,7 @@ const Register = () => {
               className="select select-bordered"
             >
               <option value="">Select Governorate</option>
-              {governorates.map(governorate => (
+              {governorates.map((governorate) => (
                 <option key={governorate.id} value={governorate.name}>
                   {governorate.name}
                 </option>
@@ -163,7 +133,7 @@ const Register = () => {
               className="select select-bordered"
             >
               <option value="">Select City</option>
-              {filteredCities.map(city => (
+              {filteredCities.map((city) => (
                 <option key={city.id} value={city.name}>
                   {city.name}
                 </option>
@@ -196,7 +166,7 @@ const Register = () => {
               type="password"
               {...register('confirm_password', {
                 required: 'Please confirm your password',
-                validate: value => value === password || 'Passwords do not match',
+                validate: (value) => value === password || 'Passwords do not match',
               })}
               className="input"
             />

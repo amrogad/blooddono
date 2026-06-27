@@ -9,7 +9,10 @@ test.describe('Lazy-loaded route navigation', () => {
 
   test('navigates to the donation request page', async ({ page }) => {
     await page.goto('/');
-    await page.getByRole('banner').getByRole('link', { name: 'Donation Request', exact: true }).click();
+    await page
+      .getByRole('banner')
+      .getByRole('link', { name: 'Donation Request', exact: true })
+      .click();
     await expect(page).toHaveURL(/\/blood-donation-request$/);
   });
 
@@ -22,7 +25,7 @@ test.describe('Lazy-loaded route navigation', () => {
     const brokenImages = await page.evaluate(() =>
       Array.from(document.images)
         .filter((img) => !img.complete || img.naturalWidth === 0)
-        .map((img) => img.src)
+        .map((img) => img.src),
     );
     expect(brokenImages).toEqual([]);
   });

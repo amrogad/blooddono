@@ -1,33 +1,37 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-
-const sampleFunds = [
-  { _id: '1', name: 'Ahmed Mostafa', email: 'ahmed.mostafa@example.com', amount: 50, paid_at: '2026-05-02T10:15:00' },
-  { _id: '2', name: 'Sara Hassan', email: 'sara.hassan@example.com', amount: 100, paid_at: '2026-05-10T14:30:00' },
-  { _id: '3', name: 'Mohamed Ali', email: 'mohamed.ali@example.com', amount: 25, paid_at: '2026-05-18T09:00:00' },
-  { _id: '4', name: 'Nourhan Tarek', email: 'nourhan.tarek@example.com', amount: 75, paid_at: '2026-05-25T16:45:00' },
-  { _id: '5', name: 'Youssef Adel', email: 'youssef.adel@example.com', amount: 200, paid_at: '2026-06-01T11:20:00' },
-  { _id: '6', name: 'Mona Khaled', email: 'mona.khaled@example.com', amount: 40, paid_at: '2026-06-05T13:10:00' },
-];
+import Swal from 'sweetalert2';
+import Loading from '../shared/Loading';
+import { getFunds } from '../../services/fundService';
 
 const FundingPage = () => {
   const navigate = useNavigate();
+  const [funds, setFunds] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  useEffect(() => {
+    getFunds()
+      .then(setFunds)
+      .catch((error) =>
+        Swal.fire({ icon: 'error', title: 'Could not load funds', text: error.message }),
+      )
+      .finally(() => setLoading(false));
+  }, []);
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentFunds = sampleFunds.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(sampleFunds.length / itemsPerPage);
+  const currentFunds = funds.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(funds.length / itemsPerPage);
+
+  if (loading) return <Loading />;
 
   return (
     <div className="p-6 max-w-6xl mx-auto min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Funding Records</h2>
-        <button
-          className="btn bg-[#ff4136]"
-          onClick={() => navigate('/funds/payment')}
-        >
+        <button className="btn bg-[#ff4136]" onClick={() => navigate('/funds/payment')}>
           Give Fund
         </button>
       </div>
@@ -46,7 +50,7 @@ const FundingPage = () => {
           </thead>
           <tbody>
             {currentFunds.map((fund, index) => (
-              <tr key={fund._id}>
+              <tr key={fund.id}>
                 <td>{indexOfFirstItem + index + 1}</td>
                 <td>{fund.name}</td>
                 <td>{fund.email}</td>
@@ -65,8 +69,7 @@ const FundingPage = () => {
           {[...Array(totalPages).keys()].map((num) => (
             <button
               key={num}
-              className={`join-item btn ${currentPage === num + 1 ? 'btn-neutral' : 'btn-outline'
-                }`}
+              className={`join-item btn ${currentPage === num + 1 ? 'btn-neutral' : 'btn-outline'}`}
               onClick={() => setCurrentPage(num + 1)}
             >
               {num + 1}

@@ -7,38 +7,44 @@ import { getProfile } from '../services/profileService';
 let latestAuthToken;
 
 const useAuthBootstrap = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    useEffect(() => {
-        const loadProfile = async (session, token) => {
-            if (!session) {
-                dispatch(logOut());
-                return;
-            }
+  useEffect(() => {
+    const loadProfile = async (session, token) => {
+      if (!session) {
+        dispatch(logOut());
+        return;
+      }
 
-            const profile = await getProfile(session.user.id);
+      const profile = await getProfile(session.user.id);
 
-            if (token !== latestAuthToken) return;
+      if (token !== latestAuthToken) return;
 
-            dispatch(setUser({
-                uid: session.user.id,
-                email: session.user.email,
-                displayName: profile?.display_name ?? session.user.email,
-                photoURL: profile?.photo_url ?? null,
-                role: profile?.role ?? 'donor',
-                bloodGroup: profile?.blood_group ?? null,
-                governorate: profile?.governorate ?? null,
-                city: profile?.city ?? null,
-            }));
-        };
+      dispatch(
+        setUser({
+          uid: session.user.id,
+          email: session.user.email,
+          displayName: profile?.display_name ?? session.user.email,
+          photoURL: profile?.photo_url ?? null,
+          role: profile?.role ?? 'donor',
+          status: profile?.status ?? 'active',
+          bloodGroup: profile?.blood_group ?? null,
+          governorate: profile?.governorate ?? null,
+          city: profile?.city ?? null,
+          isSearchable: profile?.is_searchable ?? false,
+        }),
+      );
+    };
 
-        const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-            const token = (latestAuthToken = {});
-            loadProfile(session, token);
-        });
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      const token = (latestAuthToken = {});
+      loadProfile(session, token);
+    });
 
-        return () => subscription.unsubscribe();
-    }, [dispatch]);
+    return () => subscription.unsubscribe();
+  }, [dispatch]);
 };
 
 export default useAuthBootstrap;
