@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { Outlet, useNavigation } from 'react-router';
-import NavBar from '../pages/shared/NavBar';
-import Footer from '../pages/shared/Footer';
-import Loading from '../pages/shared/Loading';
+import NavBar from '../components/NavBar';
+import Footer from '../components/Footer';
+import Loading from '../components/Loading';
 
 const Root = () => {
   const { state } = useNavigation();

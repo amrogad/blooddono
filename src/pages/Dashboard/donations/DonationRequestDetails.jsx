@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import Loading from '../shared/Loading';
-import { getDonationRequest } from '../../services/donationService';
+import Loading from '../../../components/Loading';
+import { getDonationRequest } from '../../../services/donationService';
 
 const DonationRequestDetails = () => {
   const { id } = useParams();

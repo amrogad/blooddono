@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
-import useUserRole from '../../hooks/useUserRole';
-import Loading from '../shared/Loading';
-import { getAllBlogs, updateBlog, deleteBlog } from '../../services/blogService';
+import useUserRole from '../../../hooks/useUserRole';
+import Loading from '../../../components/Loading';
+import { getAllBlogs, updateBlog, deleteBlog } from '../../../services/blogService';
 
 const ContentManagementPage = () => {
   const { role } = useUserRole();

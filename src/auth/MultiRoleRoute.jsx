@@ -1,7 +1,7 @@
 import { Navigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import useUserRole from '../hooks/useUserRole';
-import Loading from '../pages/shared/Loading';
+import Loading from '../components/Loading';
 
 const MultiRoleRoute = ({ children, allowedRoles = [] }) => {
   const { user, loading } = useSelector((state) => state.auth);

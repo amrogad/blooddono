@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import Loading from '../shared/Loading';
+import Loading from '../../components/Loading';
 import { getPendingRequests } from '../../services/donationService';
 
 const BloodDonationRequest = () => {

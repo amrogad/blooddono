@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router';
-import { createBlog, uploadBlogImage } from '../../services/blogService';
+import { createBlog, uploadBlogImage } from '../../../services/blogService';
 
 const AddBlogPage = () => {
   const { register, handleSubmit, reset } = useForm();

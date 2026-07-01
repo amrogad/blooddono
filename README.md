@@ -1,14 +1,14 @@
 # BloodDono
 
-A blood donation portfolio project, it's built with React, Vite, Tailwind CSS, and Supabase.
+Blood donation platform built with React, Vite, Tailwind CSS, and Supabase.
 
-Donors and recipients can search for matches by blood group and location, post and manage donation requests, and get a role-based dashboard once they log in. Auth, profiles, and access control run on Supabase, so the admin/donor/volunteer experiences are driven by real accounts, not mock data.
+Donors and recipients can search for matches by blood group and location, post donation requests, and manage them through a role-based dashboard. Auth, profiles, and access control run on Supabase with real accounts, not mock data.
 
 🔗 **Live demo:** [blooddono-two.vercel.app](https://blooddono-two.vercel.app/)
 
 ## Try it yourself
 
-The login page has one-click **Demo logins** for all three roles — no signup needed:
+The login page has one-click **Demo logins** for all three roles, no signup needed:
 
 | Role | Email | Password |
 |---|---|---|
@@ -16,7 +16,7 @@ The login page has one-click **Demo logins** for all three roles — no signup n
 | Donor | `donor@blooddono.demo` | `Demo123!` |
 | Volunteer | `volunteer@blooddono.demo` | `Demo123!` |
 
-Each role sees a different dashboard — admin gets user/content management and platform-wide stats, donors get their own donation requests, and volunteers get a scoped-down view. Try `/dashboard/all-users` as the donor account to see the route guard kick in and redirect to `/forbidden`.
+Each role gets a different dashboard: admin covers user/content management and platform-wide stats, donors see their own donation requests, and volunteers get a scoped view. Try `/dashboard/all-users` as the donor account to see the route guard kick in and redirect to `/forbidden`.
 
 ## Features
 
@@ -43,9 +43,9 @@ Each role sees a different dashboard — admin gets user/content management and 
 |---|---|
 | ![Admin dashboard](screenshots/dashboard.png) | ![Donor dashboard](screenshots/dashboard-donor.png) |
 
-## Tech Stack
+## Tech stack
 
-**Frontend**
+### Frontend
 - React 19 + Vite
 - Tailwind CSS 4 + DaisyUI 5
 - React Router 7
@@ -54,13 +54,14 @@ Each role sees a different dashboard — admin gets user/content management and 
 - SweetAlert2
 - React Icons
 
-**Backend (managed service)**
-- [Supabase](https://supabase.com/) — hosted authentication and database (BaaS)
+### Backend (managed service)
+- [Supabase](https://supabase.com/) (hosted authentication and database)
 
-**Testing**
+### Testing
 - Playwright (end-to-end)
+- Vitest + Testing Library (component)
 
-## Getting Started
+## Getting started
 
 ```bash
 npm install
@@ -84,7 +85,7 @@ Runs at `http://localhost:5173`.
 
 ## Testing
 
-End-to-end tests use [Playwright](https://playwright.dev/) and cover navigation, authentication (including the demo logins), and role-based access control.
+End-to-end tests use [Playwright](https://playwright.dev/) and cover navigation, auth flows (including demo logins), and role-based access control.
 
 ```bash
 npm run test:e2e
@@ -92,6 +93,12 @@ npm run test:e2e
 
 This starts the dev server automatically and runs the suite against Chromium.
 
+Component tests use Vitest and Testing Library:
+
+```bash
+npm test
+```
+
 ## Deployment
 
-Deployed on [Vercel](https://vercel.com/) — `vercel.json` handles the SPA rewrite so client-side routes work on refresh and direct links. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as environment variables in the Vercel project settings.
+Deployed on [Vercel](https://vercel.com/). `vercel.json` handles the SPA rewrite so client-side routes work on refresh and direct links. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as environment variables in the Vercel project settings.

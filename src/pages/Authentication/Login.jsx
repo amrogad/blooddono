@@ -2,7 +2,12 @@ import { Link, useLocation, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
 import { signIn } from '../../services/authService';
-import { DEMO_ACCOUNTS } from '../../constants/demoAccounts';
+
+const DEMO_ACCOUNTS = [
+  { role: 'admin', label: 'Admin', email: 'admin@blooddono.demo', password: 'Demo123!' },
+  { role: 'donor', label: 'Donor', email: 'donor@blooddono.demo', password: 'Demo123!' },
+  { role: 'volunteer', label: 'Volunteer', email: 'volunteer@blooddono.demo', password: 'Demo123!' },
+];
 
 const Login = () => {
   const {

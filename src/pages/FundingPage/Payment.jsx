@@ -7,14 +7,15 @@ import { createFund } from '../../services/fundService';
 const Payment = () => {
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.auth);
+  const [amount, setAmount] = useState('');
   const [amountError, setAmountError] = useState('');
   const [paying, setPaying] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const amount = parseFloat(e.target.amount.value);
+    const parsed = parseFloat(amount);
 
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(parsed) || parsed <= 0) {
       setAmountError('Please enter a valid amount');
       return;
     }
@@ -26,7 +27,7 @@ const Payment = () => {
         user_id: user.uid,
         name: user.displayName,
         email: user.email,
-        amount,
+        amount: parsed,
       });
 
       Swal.fire({
@@ -54,7 +55,14 @@ const Payment = () => {
 
         <label className="input w-full">
           <span className="label">EGP</span>
-          <input name="amount" type="number" placeholder="Donation Amount!" required />
+          <input
+            name="amount"
+            type="number"
+            placeholder="Donation Amount!"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            required
+          />
         </label>
         {amountError && <p className="text-red-500 text-sm">{amountError}</p>}
 

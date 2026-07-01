@@ -1,40 +1,40 @@
 import { createBrowserRouter } from 'react-router';
 import { lazy } from 'react';
-import Root from '../layouts/Root';
-import Home from '../pages/home/Home';
-import ErrorPage from '../pages/shared/ErrorPage';
-import Login from '../pages/Authentication/Login';
-import Register from '../pages/Authentication/Register';
-import DashboardLayout from '../layouts/DashboardLayout';
-import PrivateRoute from '../provider/PrivateRoute';
-const Profile = lazy(() => import('../pages/Dashboard/Profile'));
-const DashboardHome = lazy(() => import('../pages/Dashboard/DashboardHome'));
-const CreateDonationRequest = lazy(() => import('../pages/Dashboard/CreateDonationRequest'));
-const MyDonationRequests = lazy(() => import('../pages/Dashboard/MyDonationRequests'));
-const DonationRequestDetails = lazy(() => import('../pages/Dashboard/DonationRequestDetails'));
-const EditDonationRequest = lazy(() => import('../pages/Dashboard/EditDonationRequest'));
-import Forbidden from '../pages/shared/Forbidden';
-import AdminRoute from '../provider/AdminRoute';
-const AllUsersPage = lazy(() => import('../pages/Dashboard/AllUsersPage'));
-const AllBloodDonationPage = lazy(() => import('../pages/Dashboard/AllBloodDonationPage'));
-const AdminEditDonationRequest = lazy(() => import('../pages/Dashboard/AdminEditDonationRequest'));
-import MultiRoleRoute from '../provider/MultiRoleRoute';
-const SearchPage = lazy(() => import('../pages/Search/SearchPage'));
+import Root from './layouts/Root';
+import Home from './pages/home/Home';
+import ErrorPage from './components/ErrorPage';
+import Login from './pages/Authentication/Login';
+import Register from './pages/Authentication/Register';
+import DashboardLayout from './layouts/DashboardLayout';
+import PrivateRoute from './auth/PrivateRoute';
+const Profile = lazy(() => import('./pages/Dashboard/Profile'));
+const DashboardHome = lazy(() => import('./pages/Dashboard/DashboardHome'));
+const CreateDonationRequest = lazy(() => import('./pages/Dashboard/donations/CreateDonationRequest'));
+const MyDonationRequests = lazy(() => import('./pages/Dashboard/donations/MyDonationRequests'));
+const DonationRequestDetails = lazy(() => import('./pages/Dashboard/donations/DonationRequestDetails'));
+const EditDonationRequest = lazy(() => import('./pages/Dashboard/donations/EditDonationRequest'));
+import Forbidden from './components/Forbidden';
+import AdminRoute from './auth/AdminRoute';
+const AllUsersPage = lazy(() => import('./pages/Dashboard/AllUsersPage'));
+const AllBloodDonationPage = lazy(() => import('./pages/Dashboard/donations/AllBloodDonationPage'));
+const AdminEditDonationRequest = lazy(() => import('./pages/Dashboard/donations/AdminEditDonationRequest'));
+import MultiRoleRoute from './auth/MultiRoleRoute';
+const SearchPage = lazy(() => import('./pages/Search/SearchPage'));
 const BloodDonationRequest = lazy(
-  () => import('../pages/BloodDonationRequest/BloodDonationRequest'),
+  () => import('./pages/BloodDonationRequest/BloodDonationRequest'),
 );
 const HomeDonationRequestDetails = lazy(
-  () => import('../pages/HomeDonationRequestDetails/HomeDonationRequestDetails'),
+  () => import('./pages/HomeDonationRequestDetails/HomeDonationRequestDetails'),
 );
-const AddBlogPage = lazy(() => import('../pages/Dashboard/AddBlogPage'));
-const BlogDetails = lazy(() => import('../pages/Dashboard/BlogDetails'));
-const ContentManagementPage = lazy(() => import('../pages/Dashboard/ContentManagementPage'));
-const EditBlogPage = lazy(() => import('../pages/Dashboard/EditBlogPage'));
-const PublicBlogList = lazy(() => import('../pages/Blogs/PublicBlogList'));
-const PublicBlogDetails = lazy(() => import('../pages/Blogs/PublicBlogDetails'));
-const FundingPage = lazy(() => import('../pages/FundingPage/FundingPage'));
-const Payment = lazy(() => import('../pages/FundingPage/Payment'));
-const AboutUs = lazy(() => import('../pages/AboutUs/AboutUs'));
+const AddBlogPage = lazy(() => import('./pages/Dashboard/content/AddBlogPage'));
+const BlogDetails = lazy(() => import('./pages/Dashboard/content/BlogDetails'));
+const ContentManagementPage = lazy(() => import('./pages/Dashboard/content/ContentManagementPage'));
+const EditBlogPage = lazy(() => import('./pages/Dashboard/content/EditBlogPage'));
+const PublicBlogList = lazy(() => import('./pages/Blogs/PublicBlogList'));
+const PublicBlogDetails = lazy(() => import('./pages/Blogs/PublicBlogDetails'));
+const FundingPage = lazy(() => import('./pages/FundingPage/FundingPage'));
+const Payment = lazy(() => import('./pages/FundingPage/Payment'));
+const AboutUs = lazy(() => import('./pages/AboutUs/AboutUs'));
 
 const router = createBrowserRouter([
   {

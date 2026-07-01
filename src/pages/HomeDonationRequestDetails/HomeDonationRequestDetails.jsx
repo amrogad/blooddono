@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
-import Loading from '../shared/Loading';
+import Loading from '../../components/Loading';
 import { getRequestDetails, acceptRequest } from '../../services/donationService';
 
 const HomeDonationRequestDetails = () => {

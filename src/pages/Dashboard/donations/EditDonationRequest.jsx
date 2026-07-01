@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
-import governorates from '../../assets/governorates.json';
-import cities from '../../assets/cities.json';
-import Loading from '../shared/Loading';
-import { getDonationRequest, updateDonationRequest } from '../../services/donationService';
+import governorates from '../../../assets/governorates.json';
+import cities from '../../../assets/cities.json';
+import Loading from '../../../components/Loading';
+import { getDonationRequest, updateDonationRequest } from '../../../services/donationService';
 
 const EDITABLE_FIELDS = [
   'recipient_name',
@@ -16,11 +16,10 @@ const EDITABLE_FIELDS = [
   'blood_group',
   'donation_date',
   'donation_time',
-  'donation_status',
   'request_message',
 ];
 
-const AdminEditDonationRequest = () => {
+const EditDonationRequest = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
@@ -37,12 +36,14 @@ const AdminEditDonationRequest = () => {
 
   useEffect(() => {
     getDonationRequest(id)
-      .then((data) => EDITABLE_FIELDS.forEach((key) => setValue(key, data[key])))
+      .then((data) => {
+        EDITABLE_FIELDS.forEach((key) => setValue(key, data[key]));
+      })
       .catch(() => setNotFound(true))
       .finally(() => setLoading(false));
   }, [id, setValue]);
 
-  const selectedGovernorate = governorates.find((d) => d.name === watch('recipient_governorate'));
+  const selectedGovernorate = governorates.find((g) => g.name === watch('recipient_governorate'));
   const filteredCities = cities.filter((c) => c.governorate_id === selectedGovernorate?.id);
 
   const onSubmit = async (data) => {
@@ -51,7 +52,7 @@ const AdminEditDonationRequest = () => {
       const updates = Object.fromEntries(EDITABLE_FIELDS.map((key) => [key, data[key]]));
       await updateDonationRequest(id, updates);
       Swal.fire('Updated', 'Donation request updated successfully!', 'success');
-      navigate('/dashboard/all-blood-donation-request');
+      navigate('/dashboard/my-donation-requests');
     } catch (error) {
       Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
     } finally {
@@ -65,11 +66,12 @@ const AdminEditDonationRequest = () => {
     return (
       <div className="max-w-4xl mx-auto py-10 px-4 text-center">
         <h2 className="text-2xl font-bold mb-4">Request Not Found</h2>
+        <p className="mb-4">We couldn't find a donation request with that id.</p>
         <button
           className="btn btn-neutral"
-          onClick={() => navigate('/dashboard/all-blood-donation-request')}
+          onClick={() => navigate('/dashboard/my-donation-requests')}
         >
-          Back to All Requests
+          Back to My Requests
         </button>
       </div>
     );
@@ -98,9 +100,9 @@ const AdminEditDonationRequest = () => {
             className="select select-bordered w-full"
           >
             <option value="">Select Governorate</option>
-            {governorates.map((d) => (
-              <option key={d.id} value={d.name}>
-                {d.name}
+            {governorates.map((g) => (
+              <option key={g.id} value={g.name}>
+                {g.name}
               </option>
             ))}
           </select>
@@ -173,19 +175,6 @@ const AdminEditDonationRequest = () => {
         </div>
 
         <div className="md:col-span-2">
-          <label className="label">Status</label>
-          <select
-            {...register('donation_status', { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="pending">Pending</option>
-            <option value="inprogress">In Progress</option>
-            <option value="done">Done</option>
-            <option value="canceled">Canceled</option>
-          </select>
-        </div>
-
-        <div className="md:col-span-2">
           <label className="label">Request Message</label>
           <textarea
             className="textarea textarea-bordered w-full"
@@ -204,4 +193,4 @@ const AdminEditDonationRequest = () => {
   );
 };
 
-export default AdminEditDonationRequest;
+export default EditDonationRequest;

@@ -38,4 +38,27 @@ test.describe('Role-based access control', () => {
 
     await expect(page).toHaveURL(/\/forbidden/);
   });
+
+  test('admin sees admin links and can open the All Users page', async ({ page }) => {
+    await loginAsDemo(page, 'Admin');
+    await page.goto('/dashboard');
+    await expect(page.getByRole('link', { name: 'All Users' })).toBeVisible();
+
+    await page.goto('/dashboard/all-users');
+    await expect(page).toHaveURL(/\/dashboard\/all-users/);
+    await expect(page.getByRole('heading', { name: 'All Users' })).toBeVisible();
+  });
+
+  test('volunteer gets the scoped volunteer dashboard', async ({ page }) => {
+    await loginAsDemo(page, 'Volunteer');
+    await page.goto('/dashboard');
+
+    await expect(page.getByText(/As a volunteer you can review/i)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'All Users' })).not.toBeVisible();
+  });
+
+  test('unauthenticated visitor is redirected to login from a private route', async ({ page }) => {
+    await page.goto('/dashboard');
+    await expect(page).toHaveURL(/\/login/);
+  });
 });

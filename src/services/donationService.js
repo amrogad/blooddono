@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../supabase';
 
 export const getDonationRequests = async () => {
   const { data, error } = await supabase

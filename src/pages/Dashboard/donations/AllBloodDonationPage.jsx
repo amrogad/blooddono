@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { FaEye, FaTrash, FaEdit } from 'react-icons/fa';
 import { Link } from 'react-router';
 import Swal from 'sweetalert2';
-import useUserRole from '../../hooks/useUserRole';
-import Loading from '../shared/Loading';
+import useUserRole from '../../../hooks/useUserRole';
+import Loading from '../../../components/Loading';
 import {
   getDonationRequests,
   updateDonationRequest,
   deleteDonationRequest,
-} from '../../services/donationService';
+} from '../../../services/donationService';
 
 const AllBloodDonationPage = () => {
   const { role } = useUserRole();

@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
 import useUserRole from '../hooks/useUserRole';
-import Loading from '../pages/shared/Loading';
-import ProfilePicture from '../pages/shared/ProfilePicture';
+import Loading from '../components/Loading';
+import ProfilePicture from '../components/ProfilePicture';
 
 const DashboardLayout = () => {
   const { role, loading } = useUserRole();

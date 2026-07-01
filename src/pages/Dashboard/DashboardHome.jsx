@@ -1,9 +1,9 @@
 import useUserRole from '../../hooks/useUserRole';
-import Loading from '../shared/Loading';
+import Loading from '../../components/Loading';
 import DonorDashboard from './DonorDashboard';
 import AdminDashboard from './AdminDashboard';
 import VolunteerDashboard from './VolunteerDashboard';
-import Forbidden from '../shared/Forbidden';
+import Forbidden from '../../components/Forbidden';
 
 const DashboardHome = () => {
   const { role, loading: roleLoading } = useUserRole();

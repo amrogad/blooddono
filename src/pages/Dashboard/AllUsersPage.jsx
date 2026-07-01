@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { FaUserCheck, FaUserSlash, FaTrashAlt, FaEye } from 'react-icons/fa';
 import Swal from 'sweetalert2';
-import Loading from '../shared/Loading';
+import Loading from '../../components/Loading';
 import { getAllProfiles, setUserRole, setUserStatus } from '../../services/profileService';
 
 const USERS_PER_PAGE = 5;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
-import Loading from '../shared/Loading';
-import { getBlog, updateBlog } from '../../services/blogService';
+import Loading from '../../../components/Loading';
+import { getBlog, updateBlog } from '../../../services/blogService';
 
 const EditBlogPage = () => {
   const { id } = useParams();

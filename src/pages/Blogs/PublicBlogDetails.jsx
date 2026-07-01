@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
-import Loading from '../shared/Loading';
+import Loading from '../../components/Loading';
 import { getBlog } from '../../services/blogService';
 
 const PublicBlogDetails = () => {

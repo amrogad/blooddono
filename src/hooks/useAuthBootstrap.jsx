@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../supabase';
 import { setUser, logOut } from '../redux/authSlice';
 import { getProfile } from '../services/profileService';
 

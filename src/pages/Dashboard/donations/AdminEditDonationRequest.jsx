@@ -1,14 +1,28 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useParams, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
-import governorates from '../../assets/governorates.json';
-import cities from '../../assets/cities.json';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
-import { createDonationRequest } from '../../services/donationService';
+import governorates from '../../../assets/governorates.json';
+import cities from '../../../assets/cities.json';
+import Loading from '../../../components/Loading';
+import { getDonationRequest, updateDonationRequest } from '../../../services/donationService';
 
-const CreateDonationRequest = () => {
-  const { user } = useSelector((state) => state.auth);
+const EDITABLE_FIELDS = [
+  'recipient_name',
+  'recipient_governorate',
+  'recipient_city',
+  'hospital_name',
+  'full_address',
+  'blood_group',
+  'donation_date',
+  'donation_time',
+  'donation_status',
+  'request_message',
+];
+
+const AdminEditDonationRequest = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -16,77 +30,55 @@ const CreateDonationRequest = () => {
     setValue,
     formState: { errors },
   } = useForm();
-  const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      setValue('requester_name', user?.displayName);
-      setValue('requester_email', user?.email);
-    }
-  }, [user, setValue]);
+    getDonationRequest(id)
+      .then((data) => EDITABLE_FIELDS.forEach((key) => setValue(key, data[key])))
+      .catch(() => setNotFound(true))
+      .finally(() => setLoading(false));
+  }, [id, setValue]);
 
-  const selectedGovernorate = governorates.find((g) => g.name === watch('recipient_governorate'));
+  const selectedGovernorate = governorates.find((d) => d.name === watch('recipient_governorate'));
   const filteredCities = cities.filter((c) => c.governorate_id === selectedGovernorate?.id);
 
   const onSubmit = async (data) => {
     setSaving(true);
     try {
-      await createDonationRequest({
-        requester_id: user.uid,
-        requester_name: user.displayName,
-        requester_email: user.email,
-        recipient_name: data.recipient_name,
-        recipient_governorate: data.recipient_governorate,
-        recipient_city: data.recipient_city,
-        hospital_name: data.hospital_name,
-        full_address: data.full_address,
-        blood_group: data.blood_group,
-        donation_date: data.donation_date,
-        donation_time: data.donation_time,
-        request_message: data.request_message,
-      });
-
-      Swal.fire({
-        icon: 'success',
-        title: 'Donation Request Created!',
-        text: 'Your donation request has been submitted.',
-        timer: 1800,
-        showConfirmButton: false,
-      });
-
-      navigate('/dashboard/my-donation-requests');
+      const updates = Object.fromEntries(EDITABLE_FIELDS.map((key) => [key, data[key]]));
+      await updateDonationRequest(id, updates);
+      Swal.fire('Updated', 'Donation request updated successfully!', 'success');
+      navigate('/dashboard/all-blood-donation-request');
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Could not create request', text: error.message });
+      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
     } finally {
       setSaving(false);
     }
   };
 
+  if (loading) return <Loading />;
+
+  if (notFound) {
+    return (
+      <div className="max-w-4xl mx-auto py-10 px-4 text-center">
+        <h2 className="text-2xl font-bold mb-4">Request Not Found</h2>
+        <button
+          className="btn btn-neutral"
+          onClick={() => navigate('/dashboard/all-blood-donation-request')}
+        >
+          Back to All Requests
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold mb-6">Create Donation Request</h2>
+      <h2 className="text-3xl font-bold mb-6">Edit Donation Request</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="label">Requester Name</label>
-          <input
-            type="text"
-            className="input input-bordered w-full"
-            {...register('requester_name')}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label className="label">Requester Email</label>
-          <input
-            type="email"
-            className="input input-bordered w-full"
-            {...register('requester_email')}
-            disabled
-          />
-        </div>
-
         <div className="md:col-span-2">
           <label className="label">Recipient Name</label>
           <input
@@ -106,15 +98,12 @@ const CreateDonationRequest = () => {
             className="select select-bordered w-full"
           >
             <option value="">Select Governorate</option>
-            {governorates.map((g) => (
-              <option key={g.id} value={g.name}>
-                {g.name}
+            {governorates.map((d) => (
+              <option key={d.id} value={d.name}>
+                {d.name}
               </option>
             ))}
           </select>
-          {errors.recipient_governorate && (
-            <p className="text-red-500 text-sm">Governorate is required</p>
-          )}
         </div>
 
         <div>
@@ -130,7 +119,6 @@ const CreateDonationRequest = () => {
               </option>
             ))}
           </select>
-          {errors.recipient_city && <p className="text-red-500 text-sm">City is required</p>}
         </div>
 
         <div className="md:col-span-2">
@@ -151,7 +139,7 @@ const CreateDonationRequest = () => {
           />
         </div>
 
-        <div>
+        <div className="md:col-span-2">
           <label className="label">Blood Group</label>
           <select
             {...register('blood_group', { required: true })}
@@ -185,6 +173,19 @@ const CreateDonationRequest = () => {
         </div>
 
         <div className="md:col-span-2">
+          <label className="label">Status</label>
+          <select
+            {...register('donation_status', { required: true })}
+            className="select select-bordered w-full"
+          >
+            <option value="pending">Pending</option>
+            <option value="inprogress">In Progress</option>
+            <option value="done">Done</option>
+            <option value="canceled">Canceled</option>
+          </select>
+        </div>
+
+        <div className="md:col-span-2">
           <label className="label">Request Message</label>
           <textarea
             className="textarea textarea-bordered w-full"
@@ -195,7 +196,7 @@ const CreateDonationRequest = () => {
 
         <div className="md:col-span-2">
           <button type="submit" className="btn btn-neutral w-full" disabled={saving}>
-            {saving ? 'Submitting...' : 'Request'}
+            {saving ? 'Updating...' : 'Update Request'}
           </button>
         </div>
       </form>
@@ -203,4 +204,4 @@ const CreateDonationRequest = () => {
   );
 };
 
-export default CreateDonationRequest;
+export default AdminEditDonationRequest;

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut } from '../../services/authService';
-import { setRole } from '../../redux/authSlice';
+import { logOut } from '../services/authService';
+import { setRole } from '../redux/authSlice';
 import Swal from 'sweetalert2';
 
 const ProfilePicture = () => {

@@ -1,27 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useParams, useNavigate } from 'react-router';
 import Swal from 'sweetalert2';
-import governorates from '../../assets/governorates.json';
-import cities from '../../assets/cities.json';
-import Loading from '../shared/Loading';
-import { getDonationRequest, updateDonationRequest } from '../../services/donationService';
+import governorates from '../../../assets/governorates.json';
+import cities from '../../../assets/cities.json';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { createDonationRequest } from '../../../services/donationService';
 
-const EDITABLE_FIELDS = [
-  'recipient_name',
-  'recipient_governorate',
-  'recipient_city',
-  'hospital_name',
-  'full_address',
-  'blood_group',
-  'donation_date',
-  'donation_time',
-  'request_message',
-];
-
-const EditDonationRequest = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
+const CreateDonationRequest = () => {
+  const { user } = useSelector((state) => state.auth);
   const {
     register,
     handleSubmit,
@@ -29,19 +16,15 @@ const EditDonationRequest = () => {
     setValue,
     formState: { errors },
   } = useForm();
-
-  const [loading, setLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+  const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
-    getDonationRequest(id)
-      .then((data) => {
-        EDITABLE_FIELDS.forEach((key) => setValue(key, data[key]));
-      })
-      .catch(() => setNotFound(true))
-      .finally(() => setLoading(false));
-  }, [id, setValue]);
+    if (user) {
+      setValue('requester_name', user?.displayName);
+      setValue('requester_email', user?.email);
+    }
+  }, [user, setValue]);
 
   const selectedGovernorate = governorates.find((g) => g.name === watch('recipient_governorate'));
   const filteredCities = cities.filter((c) => c.governorate_id === selectedGovernorate?.id);
@@ -49,38 +32,61 @@ const EditDonationRequest = () => {
   const onSubmit = async (data) => {
     setSaving(true);
     try {
-      const updates = Object.fromEntries(EDITABLE_FIELDS.map((key) => [key, data[key]]));
-      await updateDonationRequest(id, updates);
-      Swal.fire('Updated', 'Donation request updated successfully!', 'success');
+      await createDonationRequest({
+        requester_id: user.uid,
+        requester_name: user.displayName,
+        requester_email: user.email,
+        recipient_name: data.recipient_name,
+        recipient_governorate: data.recipient_governorate,
+        recipient_city: data.recipient_city,
+        hospital_name: data.hospital_name,
+        full_address: data.full_address,
+        blood_group: data.blood_group,
+        donation_date: data.donation_date,
+        donation_time: data.donation_time,
+        request_message: data.request_message,
+      });
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Donation Request Created!',
+        text: 'Your donation request has been submitted.',
+        timer: 1800,
+        showConfirmButton: false,
+      });
+
       navigate('/dashboard/my-donation-requests');
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
+      Swal.fire({ icon: 'error', title: 'Could not create request', text: error.message });
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) return <Loading />;
-
-  if (notFound) {
-    return (
-      <div className="max-w-4xl mx-auto py-10 px-4 text-center">
-        <h2 className="text-2xl font-bold mb-4">Request Not Found</h2>
-        <p className="mb-4">We couldn't find a donation request with that id.</p>
-        <button
-          className="btn btn-neutral"
-          onClick={() => navigate('/dashboard/my-donation-requests')}
-        >
-          Back to My Requests
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="max-w-4xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold mb-6">Edit Donation Request</h2>
+      <h2 className="text-3xl font-bold mb-6">Create Donation Request</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="label">Requester Name</label>
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            {...register('requester_name')}
+            disabled
+          />
+        </div>
+
+        <div>
+          <label className="label">Requester Email</label>
+          <input
+            type="email"
+            className="input input-bordered w-full"
+            {...register('requester_email')}
+            disabled
+          />
+        </div>
+
         <div className="md:col-span-2">
           <label className="label">Recipient Name</label>
           <input
@@ -106,6 +112,9 @@ const EditDonationRequest = () => {
               </option>
             ))}
           </select>
+          {errors.recipient_governorate && (
+            <p className="text-red-500 text-sm">Governorate is required</p>
+          )}
         </div>
 
         <div>
@@ -121,6 +130,7 @@ const EditDonationRequest = () => {
               </option>
             ))}
           </select>
+          {errors.recipient_city && <p className="text-red-500 text-sm">City is required</p>}
         </div>
 
         <div className="md:col-span-2">
@@ -141,7 +151,7 @@ const EditDonationRequest = () => {
           />
         </div>
 
-        <div className="md:col-span-2">
+        <div>
           <label className="label">Blood Group</label>
           <select
             {...register('blood_group', { required: true })}
@@ -185,7 +195,7 @@ const EditDonationRequest = () => {
 
         <div className="md:col-span-2">
           <button type="submit" className="btn btn-neutral w-full" disabled={saving}>
-            {saving ? 'Updating...' : 'Update Request'}
+            {saving ? 'Submitting...' : 'Request'}
           </button>
         </div>
       </form>
@@ -193,4 +203,4 @@ const EditDonationRequest = () => {
   );
 };
 
-export default EditDonationRequest;
+export default CreateDonationRequest;
