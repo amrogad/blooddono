@@ -32,7 +32,7 @@ const FundingPage = () => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold">Funding Records</h2>
         <button className="btn bg-[#ff4136]" onClick={() => navigate('/funds/payment')}>
-          Give Fund
+          Donate
         </button>
       </div>
 

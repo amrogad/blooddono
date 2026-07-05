@@ -23,7 +23,7 @@ const Footer = () => {
             className="mr-5 text-lg text-white hover:underline decoration-2"
             to="/blood-donation-request"
           >
-            Donation Request
+            Donation Requests
           </NavLink>
           <NavLink className="mr-5 text-lg text-white hover:underline decoration-2" to="/blogs">
             Blogs
@@ -39,6 +39,7 @@ const Footer = () => {
         </div>
         <div className=" flex justify-center items-center gap-4 text-white">
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
@@ -59,6 +60,7 @@ const Footer = () => {
           </svg>
 
           <svg
+            aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"

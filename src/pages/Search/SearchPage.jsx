@@ -53,58 +53,70 @@ const SearchPage = () => {
       </p>
 
       <form onSubmit={handleSearch} className="grid md:grid-cols-3 gap-4 mb-8">
-        <select
-          name="bloodGroup"
-          className="select select-bordered w-full"
-          value={form.bloodGroup}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Patient's Blood Group</option>
-          {bloodGroups.map((group) => (
-            <option key={group} value={group}>
-              {group}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label htmlFor="bloodGroup" className="sr-only">Patient's Blood Group</label>
+          <select
+            id="bloodGroup"
+            name="bloodGroup"
+            className="select select-bordered w-full"
+            value={form.bloodGroup}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Patient's Blood Group</option>
+            {bloodGroups.map((group) => (
+              <option key={group} value={group}>
+                {group}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <select
-          name="governorate"
-          className="select select-bordered w-full"
-          value={form.governorate}
-          onChange={handleChange}
-          required
-        >
-          <option value="">Select Governorate</option>
-          {governorates.map((governorate) => (
-            <option key={governorate.id} value={governorate.name}>
-              {governorate.name}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label htmlFor="governorate" className="sr-only">Governorate</label>
+          <select
+            id="governorate"
+            name="governorate"
+            className="select select-bordered w-full"
+            value={form.governorate}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Governorate</option>
+            {governorates.map((governorate) => (
+              <option key={governorate.id} value={governorate.name}>
+                {governorate.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <select
-          name="city"
-          className="select select-bordered w-full"
-          value={form.city}
-          onChange={handleChange}
-          disabled={!form.governorate}
-          required
-        >
-          <option value="">Select City</option>
-          {filteredCities.map((city) => (
-            <option key={city.id} value={city.name}>
-              {city.name}
-            </option>
-          ))}
-        </select>
+        <div>
+          <label htmlFor="city" className="sr-only">City</label>
+          <select
+            id="city"
+            name="city"
+            className="select select-bordered w-full"
+            value={form.city}
+            onChange={handleChange}
+            disabled={!form.governorate}
+            required
+          >
+            <option value="">Select City</option>
+            {filteredCities.map((city) => (
+              <option key={city.id} value={city.name}>
+                {city.name}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <button
           type="submit"
           className="btn btn-neutral text-lg col-span-full md:col-span-3"
           disabled={searching}
         >
-          {searching ? 'Searching...' : 'Search'}
+          {searching ? 'Searching…' : 'Search'}
         </button>
       </form>
 

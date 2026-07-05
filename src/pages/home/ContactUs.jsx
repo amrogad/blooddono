@@ -62,20 +62,29 @@ const ContactUs = () => {
 
           <div className="col-span-2 h-full">
             <div className="flex-col justify-centre items-center">
-              <h1 className="text-4xl text-center font-semibold lg:mt-8">Email</h1>
+              <h2 className="text-4xl text-center font-semibold lg:mt-8">Email</h2>
 
               <div className="card w-full">
                 <div className="card-body">
                   <form onSubmit={handleSend} className="fieldset">
-                    <label className="label">Email</label>
-                    <input type="email" className="input w-full bg-white" placeholder="Email" />
+                    <label htmlFor="contact-email" className="label">Email</label>
+                    <input
+                      id="contact-email"
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      spellCheck={false}
+                      className="input w-full bg-white"
+                      placeholder="Email…"
+                    />
                     <br />
 
-                    <label className="label">Message</label>
+                    <label htmlFor="contact-message" className="label">Message</label>
                     <textarea
-                      type="text"
+                      id="contact-message"
+                      name="message"
                       className="textarea h-24 w-full bg-white"
-                      placeholder="Message"
+                      placeholder="Message…"
                     ></textarea>
                     <br />
 

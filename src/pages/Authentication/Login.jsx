@@ -23,7 +23,6 @@ const Login = () => {
   const handleSignIn = async (email, password) => {
     try {
       await signIn(email, password);
-      // show success Swal and navigate here
       Swal.fire({
         icon: 'success',
         title: 'Logged In Successfully!',
@@ -50,27 +49,30 @@ const Login = () => {
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)} className="fieldset">
-            {/* email  */}
-            <label className="label">Email</label>
+            <label htmlFor="login-email" className="label">Email</label>
             <input
+              id="login-email"
               type="email"
+              autoComplete="email"
+              spellCheck={false}
               {...register('email', {
                 required: 'Email is required!',
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Please provide a CORRECT email address!',
+                  message: 'Please provide a correct email address.',
                 },
               })}
               className="input"
-              placeholder="Email"
+              placeholder="Email…"
             />
-
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
 
-            {/* password  */}
-            <label>Password:</label>
+            <label htmlFor="login-password" className="label">Password</label>
             <input
+              id="login-password"
               type="password"
+              autoComplete="current-password"
+              placeholder="Password…"
               {...register('password', {
                 required: 'Password is required',
                 minLength: {

@@ -89,7 +89,7 @@ const Profile = () => {
         <div></div>
         <img
           src={profilePic || '/images/developer-avatar.jpg'}
-          alt="avatar"
+          alt="Profile avatar"
           className="w-48 h-48 mt-2 rounded-full border-2 border-zinc-400 mb-8 object-cover"
         />
         <button onClick={() => setEditMode(!editMode)} className="btn bg-[#ff4136]">
@@ -99,8 +99,9 @@ const Profile = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="w-full">
-          <label className="label">Full Name</label>
+          <label htmlFor="profile-name" className="label">Full Name</label>
           <input
+            id="profile-name"
             type="text"
             className="input input-bordered w-full"
             {...register('display_name', { required: true })}
@@ -109,8 +110,9 @@ const Profile = () => {
         </div>
 
         <div>
-          <label className="label">Email (not editable)</label>
+          <label htmlFor="profile-email" className="label">Email (not editable)</label>
           <input
+            id="profile-email"
             type="email"
             className="input input-bordered w-full"
             {...register('email')}
@@ -119,8 +121,9 @@ const Profile = () => {
         </div>
 
         <div>
-          <label className="label">Governorate</label>
+          <label htmlFor="profile-governorate" className="label">Governorate</label>
           <select
+            id="profile-governorate"
             {...register('governorate', { required: true })}
             className="select select-bordered w-full"
             disabled={!editMode}
@@ -135,8 +138,9 @@ const Profile = () => {
         </div>
 
         <div>
-          <label className="label">City</label>
+          <label htmlFor="profile-city" className="label">City</label>
           <select
+            id="profile-city"
             {...register('city', { required: true })}
             className="select select-bordered w-full"
             disabled={!editMode}
@@ -151,8 +155,9 @@ const Profile = () => {
         </div>
 
         <div className="col-span-2">
-          <label className="label">Blood Group</label>
+          <label htmlFor="profile-blood-group" className="label">Blood Group</label>
           <select
+            id="profile-blood-group"
             {...register('blood_group', { required: true })}
             className="select select-bordered w-full"
             disabled={!editMode}
@@ -179,8 +184,11 @@ const Profile = () => {
         </div>
 
         <div className="col-span-2">
-          <label className="label"> {editMode && <>Profile Photo ( Max size 32MB )</>}</label>
+          <label htmlFor="profile-photo" className="label">
+            {editMode && <>Profile Photo (Max size 32&nbsp;MB)</>}
+          </label>
           <input
+            id="profile-photo"
             type="file"
             accept="image/*"
             onChange={handleImageUpload}
@@ -192,7 +200,7 @@ const Profile = () => {
         {editMode && (
           <div className="col-span-2">
             <button type="submit" className="btn btn-neutral" disabled={saving}>
-              {saving ? 'Saving...' : 'Save Changes'}
+              {saving ? 'Saving…' : 'Save Changes'}
             </button>
           </div>
         )}

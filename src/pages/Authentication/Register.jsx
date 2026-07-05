@@ -49,10 +49,11 @@ const Register = () => {
         </div>
         <div className="card-body">
           <form onSubmit={handleSubmit(onSubmit)} className="fieldset">
-            {/* name  */}
-            <label className="label">Full Name</label>
+            <label htmlFor="reg-name" className="label">Full Name</label>
             <input
+              id="reg-name"
               type="text"
+              autoComplete="name"
               {...register('name', {
                 required: 'Name is required!',
                 minLength: {
@@ -61,33 +62,32 @@ const Register = () => {
                 },
               })}
               className="input"
-              placeholder="Full Name"
+              placeholder="Full Name…"
             />
-
             {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
 
-            {/* email  */}
-            <label className="label">Email</label>
+            <label htmlFor="reg-email" className="label">Email</label>
             <input
+              id="reg-email"
               type="email"
+              autoComplete="email"
+              spellCheck={false}
               {...register('email', {
                 required: 'Email is required!',
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Please provide a CORRECT email address!',
+                  message: 'Please provide a correct email address.',
                 },
               })}
               className="input"
-              placeholder="Email"
+              placeholder="Email…"
             />
-
             {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
 
-            {/* blood group  */}
-
-            <label className="block">
+            <label htmlFor="reg-blood-group" className="block">
               Blood Group
               <select
+                id="reg-blood-group"
                 {...register('bloodGroup', { required: 'Please select your blood group.' })}
                 className="select"
               >
@@ -102,15 +102,13 @@ const Register = () => {
                 <option value="O-">O-</option>
               </select>
             </label>
-
             {errors.bloodGroup && (
               <p className="text-red-500 text-sm mt-1">{errors.bloodGroup.message}</p>
             )}
 
-            {/* Governorate Selector */}
-
-            <label className="block mb-1">Governorate</label>
+            <label htmlFor="reg-governorate" className="block mb-1">Governorate</label>
             <select
+              id="reg-governorate"
               {...register('governorate', { required: 'Please select a governorate!' })}
               className="select select-bordered"
             >
@@ -125,10 +123,9 @@ const Register = () => {
               <p className="text-red-500 text-sm">{errors.governorate.message}</p>
             )}
 
-            {/* City Selector */}
-
-            <label className="block mb-1">City</label>
+            <label htmlFor="reg-city" className="block mb-1">City</label>
             <select
+              id="reg-city"
               {...register('city', { required: 'Please select a city' })}
               className="select select-bordered"
             >
@@ -141,10 +138,12 @@ const Register = () => {
             </select>
             {errors.city && <p className="text-red-500 text-sm">{errors.city.message}</p>}
 
-            {/* password  */}
-            <label>Password:</label>
+            <label htmlFor="reg-password" className="label">Password</label>
             <input
+              id="reg-password"
               type="password"
+              autoComplete="new-password"
+              placeholder="Password…"
               {...register('password', {
                 required: 'Password is required',
                 minLength: {
@@ -160,10 +159,12 @@ const Register = () => {
             />
             {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
 
-            {/* Confirm Password */}
-            <label>Confirm Password:</label>
+            <label htmlFor="reg-confirm-password" className="label">Confirm Password</label>
             <input
+              id="reg-confirm-password"
               type="password"
+              autoComplete="new-password"
+              placeholder="Confirm password…"
               {...register('confirm_password', {
                 required: 'Please confirm your password',
                 validate: (value) => value === password || 'Passwords do not match',

@@ -19,7 +19,7 @@ describe('CreateDonationRequest', () => {
     const user = userEvent.setup();
     renderWithProviders(<CreateDonationRequest />, { user: donorUser });
 
-    await user.click(screen.getByRole('button', { name: 'Request' }));
+    await user.click(screen.getByRole('button', { name: 'Submit Request' }));
 
     expect(await screen.findByText('Recipient name is required')).toBeInTheDocument();
     expect(createDonationRequest).not.toHaveBeenCalled();

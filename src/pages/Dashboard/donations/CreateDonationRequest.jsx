@@ -68,8 +68,9 @@ const CreateDonationRequest = () => {
       <h2 className="text-3xl font-bold mb-6">Create Donation Request</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label className="label">Requester Name</label>
+          <label htmlFor="req-requester-name" className="label">Requester Name</label>
           <input
+            id="req-requester-name"
             type="text"
             className="input input-bordered w-full"
             {...register('requester_name')}
@@ -78,8 +79,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Requester Email</label>
+          <label htmlFor="req-requester-email" className="label">Requester Email</label>
           <input
+            id="req-requester-email"
             type="email"
             className="input input-bordered w-full"
             {...register('requester_email')}
@@ -88,8 +90,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div className="md:col-span-2">
-          <label className="label">Recipient Name</label>
+          <label htmlFor="req-recipient-name" className="label">Recipient Name</label>
           <input
+            id="req-recipient-name"
             type="text"
             className="input input-bordered w-full"
             {...register('recipient_name', { required: true })}
@@ -100,8 +103,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Recipient Governorate</label>
+          <label htmlFor="req-governorate" className="label">Recipient Governorate</label>
           <select
+            id="req-governorate"
             {...register('recipient_governorate', { required: true })}
             className="select select-bordered w-full"
           >
@@ -118,8 +122,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Recipient City</label>
+          <label htmlFor="req-city" className="label">Recipient City</label>
           <select
+            id="req-city"
             {...register('recipient_city', { required: true })}
             className="select select-bordered w-full"
           >
@@ -134,8 +139,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div className="md:col-span-2">
-          <label className="label">Hospital Name</label>
+          <label htmlFor="req-hospital" className="label">Hospital Name</label>
           <input
+            id="req-hospital"
             type="text"
             className="input input-bordered w-full"
             {...register('hospital_name', { required: true })}
@@ -143,8 +149,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div className="md:col-span-2">
-          <label className="label">Full Address</label>
+          <label htmlFor="req-address" className="label">Full Address</label>
           <input
+            id="req-address"
             type="text"
             className="input input-bordered w-full"
             {...register('full_address', { required: true })}
@@ -152,8 +159,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Blood Group</label>
+          <label htmlFor="req-blood-group" className="label">Blood Group</label>
           <select
+            id="req-blood-group"
             {...register('blood_group', { required: true })}
             className="select select-bordered w-full"
           >
@@ -167,8 +175,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Donation Date</label>
+          <label htmlFor="req-date" className="label">Donation Date</label>
           <input
+            id="req-date"
             type="date"
             className="input input-bordered w-full"
             {...register('donation_date', { required: true })}
@@ -176,8 +185,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Donation Time</label>
+          <label htmlFor="req-time" className="label">Donation Time</label>
           <input
+            id="req-time"
             type="time"
             className="input input-bordered w-full"
             {...register('donation_time', { required: true })}
@@ -185,8 +195,9 @@ const CreateDonationRequest = () => {
         </div>
 
         <div className="md:col-span-2">
-          <label className="label">Request Message</label>
+          <label htmlFor="req-message" className="label">Request Message</label>
           <textarea
+            id="req-message"
             className="textarea textarea-bordered w-full"
             rows="4"
             {...register('request_message', { required: true })}
@@ -195,7 +206,7 @@ const CreateDonationRequest = () => {
 
         <div className="md:col-span-2">
           <button type="submit" className="btn btn-neutral w-full" disabled={saving}>
-            {saving ? 'Submitting...' : 'Request'}
+            {saving ? 'Submitting…' : 'Submit Request'}
           </button>
         </div>
       </form>

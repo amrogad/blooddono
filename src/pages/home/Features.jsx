@@ -8,7 +8,7 @@ const Features = () => {
 
       <div className="flex justify-center items-center gap-2">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8 my-8">
-          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-[transform,box-shadow] duration-200">
             <figure className="px-10 pt-10">
               <img
                 src="/images/blood-booking.png"
@@ -25,7 +25,7 @@ const Features = () => {
             </div>
           </div>
 
-          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-[transform,box-shadow] duration-200">
             <figure className="px-10 pt-10">
               <img
                 src="/images/blood-requests.png"
@@ -42,7 +42,7 @@ const Features = () => {
             </div>
           </div>
 
-          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-[transform,box-shadow] duration-200">
             <figure className="px-10 pt-10">
               <img
                 src="/images/blood-notification.png"
@@ -59,7 +59,7 @@ const Features = () => {
             </div>
           </div>
 
-          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200">
+          <div className="card bg-white border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-[transform,box-shadow] duration-200">
             <figure className="px-10 pt-10">
               <img
                 src="/images/blood-blog.png"

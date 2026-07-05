@@ -37,9 +37,9 @@ const NavBar = () => {
               className="lg:hidden"
             >
               {openMenu ? (
-                <RiCloseLargeFill className="text-3xl" />
+                <RiCloseLargeFill aria-hidden="true" className="text-3xl" />
               ) : (
-                <HiMenu className="text-3xl" />
+                <HiMenu aria-hidden="true" className="text-3xl" />
               )}
             </button>
 
@@ -56,7 +56,7 @@ const NavBar = () => {
                 className={`mr-8 text-2xl hover:underline decoration-2`}
                 to="/blood-donation-request"
               >
-                Donation Request
+                Donation Requests
               </NavLink>
               <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/blogs">
                 Blogs
@@ -70,16 +70,18 @@ const NavBar = () => {
                 About Us
               </NavLink>
 
-              <Link to="/register">
-                <button className="w-full text-white hover:cursor-pointer bg-black font-bold text-xl px-6 py-3 rounded-md border-2 border-black hover:bg-gray-800 transition-colors duration-200">
-                  Register
-                </button>
+              <Link
+                to="/register"
+                className="w-full text-center text-white bg-black font-bold text-xl px-6 py-3 rounded-md border-2 border-black hover:bg-gray-800 transition-colors duration-200"
+              >
+                Register
               </Link>
 
-              <Link to="/login">
-                <button className="w-full border-2 border-[#ff4136] hover:bg-[#d63027] hover:border-[#d63027] hover:cursor-pointer font-bold text-xl px-6 py-3 rounded-md bg-[#ff4136] text-white transition-colors duration-200">
-                  Login
-                </button>
+              <Link
+                to="/login"
+                className="w-full text-center border-2 border-[#ff4136] hover:bg-[#d63027] hover:border-[#d63027] font-bold text-xl px-6 py-3 rounded-md bg-[#ff4136] text-white transition-colors duration-200"
+              >
+                Login
               </Link>
             </div>
           </div>

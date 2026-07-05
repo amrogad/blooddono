@@ -17,16 +17,18 @@ const Hero = () => {
           </p>
           <div className="flex flex-wrap gap-4">
             {!user && (
-              <Link to="/register">
-                <button className="bg-black hover:bg-gray-800 text-white font-bold text-xl px-8 py-3 rounded-md transition-colors duration-200">
-                  Join as a donor
-                </button>
+              <Link
+                to="/register"
+                className="bg-black hover:bg-gray-800 text-white font-bold text-xl px-8 py-3 rounded-md transition-colors duration-200"
+              >
+                Join as a donor
               </Link>
             )}
-            <Link to="/search">
-              <button className="bg-white hover:bg-gray-100 text-[#8B0000] font-bold text-xl px-8 py-3 rounded-md transition-colors duration-200">
-                Search Donors
-              </button>
+            <Link
+              to="/search"
+              className="bg-white hover:bg-gray-100 text-[#8B0000] font-bold text-xl px-8 py-3 rounded-md transition-colors duration-200"
+            >
+              Search Donors
             </Link>
           </div>
         </div>
@@ -34,6 +36,7 @@ const Hero = () => {
 
       {/* Organic curve separator — desktop only */}
       <svg
+        aria-hidden="true"
         className="hidden lg:block absolute top-0 z-10 pointer-events-none"
         style={{ left: 'calc(60% - 40px)', height: '100%', width: '80px' }}
         viewBox="0 0 80 500"

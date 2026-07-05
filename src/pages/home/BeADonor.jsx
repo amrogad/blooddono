@@ -7,7 +7,7 @@ const BeADonor = () => {
     <div className="p-6 my-8 bg-gray-50 rounded-xl">
       <div className="flex justify-between items-center gap-4">
         <div className="w-full md:w-1/2">
-          <img src="/images/blood-hero.png" alt="" />
+          <img src="/images/blood-hero.png" alt="Blood donation illustration" />
         </div>
         <div className="w-full md:w-1/2">
           <h3 className="text-5xl font-semibold">Be a Donor!</h3>

@@ -26,8 +26,8 @@ test.describe('Supabase auth flow', () => {
     await page.getByText('Logout', { exact: true }).click({ force: true });
 
     await expect(page).toHaveURL('/');
-    await expect(page.getByRole('button', { name: 'Register' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
     await expect(profileTrigger).not.toBeVisible();
   });
 });
