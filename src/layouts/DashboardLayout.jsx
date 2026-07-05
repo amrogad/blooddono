@@ -87,7 +87,7 @@ const DashboardLayout = () => {
               </li>
               <li>
                 <NavLink to="/dashboard/all-blood-donation-request">
-                  All Blood Donation Request
+                  All Blood Donation Requests
                 </NavLink>
               </li>
               <li>
@@ -101,7 +101,7 @@ const DashboardLayout = () => {
             <>
               <li>
                 <NavLink to="/dashboard/all-blood-donation-request">
-                  All Blood Donation Request
+                  All Blood Donation Requests
                 </NavLink>
               </li>
               <li>

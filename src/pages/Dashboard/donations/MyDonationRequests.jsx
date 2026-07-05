@@ -70,7 +70,15 @@ const MyDonationRequests = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">My Donation Requests</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-bold">My Donation Requests</h2>
+        <button
+          onClick={() => navigate('/dashboard/create-donation-request')}
+          className="btn btn-neutral btn-sm"
+        >
+          + New Request
+        </button>
+      </div>
 
       {/* Filter Dropdown */}
       <div className="mb-4">

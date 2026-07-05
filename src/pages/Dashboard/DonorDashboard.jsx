@@ -140,17 +140,31 @@ const DonorDashboard = () => {
             </table>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 flex gap-2">
             <button
               onClick={() => navigate('/dashboard/my-donation-requests')}
               className="btn btn-neutral"
             >
-              View My All Requests
+              View All Requests
+            </button>
+            <button
+              onClick={() => navigate('/dashboard/create-donation-request')}
+              className="btn btn-outline"
+            >
+              + New Request
             </button>
           </div>
         </div>
       ) : (
-        <p className="text-gray-500">You have no donation requests yet.</p>
+        <div>
+          <p className="text-gray-500 mb-4">You have no donation requests yet.</p>
+          <button
+            onClick={() => navigate('/dashboard/create-donation-request')}
+            className="btn btn-neutral"
+          >
+            + New Request
+          </button>
+        </div>
       )}
     </div>
   );

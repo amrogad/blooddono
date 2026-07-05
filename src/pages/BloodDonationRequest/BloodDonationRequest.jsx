@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useSelector } from 'react-redux';
 import Loading from '../../components/Loading';
 import { getPendingRequests } from '../../services/donationService';
 
 const BloodDonationRequest = () => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.auth);
+  const canCreate = user?.role === 'donor' || user?.role === 'admin';
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +24,17 @@ const BloodDonationRequest = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 min-h-screen">
-      <h2 className="text-3xl font-bold mb-6 text-center">Pending Blood Donation Requests 🩸</h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-bold">Donation Requests</h2>
+        {canCreate && (
+          <button
+            onClick={() => navigate('/dashboard/create-donation-request')}
+            className="btn btn-neutral"
+          >
+            + New Request
+          </button>
+        )}
+      </div>
 
       {loading ? (
         <Loading />

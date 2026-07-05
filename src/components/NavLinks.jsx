@@ -15,7 +15,7 @@ const NavLinks = () => {
         className={`mr-8 text-2xl hover:underline decoration-2`}
         to="/blood-donation-request"
       >
-        Donation Request
+        Donation Requests
       </NavLink>
       <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/blogs">
         Blogs
