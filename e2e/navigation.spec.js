@@ -11,7 +11,7 @@ test.describe('Lazy-loaded route navigation', () => {
     await page.goto('/');
     await page
       .getByRole('banner')
-      .getByRole('link', { name: 'Donation Request', exact: true })
+      .getByRole('link', { name: 'Donation Requests', exact: true })
       .click();
     await expect(page).toHaveURL(/\/blood-donation-request$/);
   });
