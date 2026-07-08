@@ -88,7 +88,7 @@ const Profile = () => {
       <div className="flex justify-between items-start mb-4">
         <div></div>
         <img
-          src={profilePic || '/images/developer-avatar.jpg'}
+          src={profilePic || '/images/person-avatar.png'}
           alt="Profile avatar"
           className="w-48 h-48 mt-2 rounded-full border-2 border-zinc-400 mb-8 object-cover"
         />
