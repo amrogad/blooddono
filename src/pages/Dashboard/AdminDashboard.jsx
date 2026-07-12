@@ -1,63 +1,108 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { FaUsers, FaHandHoldingUsd, FaTint } from 'react-icons/fa';
+import { Link } from 'react-router';
+import { LuUsers, LuDroplet, LuHeart } from 'react-icons/lu';
 import { getAllProfiles } from '../../services/profileService';
 import { getDonationRequests } from '../../services/donationService';
 import { getFundsTotal } from '../../services/fundService';
+import BloodRoundel from '../../components/BloodRoundel';
+import { StatusPill } from '../../components/Pills';
+import { formatNeededBy } from '../../utils/urgency';
+
+const StatCard = ({ to, label, value, sub, icon: Icon }) => (
+  <Link
+    to={to}
+    className="rounded-2xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-16px_rgba(33,20,22,0.2)]"
+  >
+    <div className="flex items-center justify-between">
+      <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">{label}</span>
+      <Icon className="h-4 w-4 text-crimson" strokeWidth={2} />
+    </div>
+    <div className="mt-2 font-display text-3xl font-semibold text-ink">{value}</div>
+    {sub && <div className="mt-1 text-[12.5px] text-muted">{sub}</div>}
+  </Link>
+);
 
 const AdminDashboard = () => {
-  const { user } = useSelector((state) => state.auth);
-
-  const [stats, setStats] = useState({ totalUsers: 0, totalRequests: 0, totalFunds: 0 });
+  const [users, setUsers] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [funds, setFunds] = useState(0);
 
   useEffect(() => {
     Promise.all([getAllProfiles(), getDonationRequests(), getFundsTotal()])
-      .then(([users, requests, fundsTotal]) =>
-        setStats({
-          totalUsers: users.length,
-          totalRequests: requests.length,
-          totalFunds: fundsTotal,
-        }),
-      )
+      .then(([u, r, f]) => {
+        setUsers(u);
+        setRequests(r);
+        setFunds(f);
+      })
       .catch(() => {});
   }, []);
 
+  const openCount = requests.filter((r) => r.donation_status === 'pending').length;
+
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-6">Welcome, {user?.displayName}!</h2>
+    <div className="mx-auto max-w-5xl px-6 py-8">
+      <h1 className="mb-6 font-display text-[28px] font-semibold tracking-tight text-ink">
+        Network overview
+      </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Total Users */}
-        <div className="card bg-white shadow-xl p-6 rounded-xl border border-gray-200">
-          <div className="flex items-center gap-4">
-            <FaUsers className="text-4xl text-blue-500" />
-            <div>
-              <p className="text-xl font-semibold">{stats.totalUsers}</p>
-              <p className="text-gray-600">Total Users</p>
-            </div>
-          </div>
+      <div className="grid gap-3 sm:grid-cols-3">
+        <StatCard
+          to="/dashboard/all-blood-donation-request"
+          label="Open requests"
+          value={openCount}
+          sub={`${requests.length} total`}
+          icon={LuDroplet}
+        />
+        <StatCard
+          to="/dashboard/all-users"
+          label="Registered users"
+          value={users.length}
+          sub="donors, volunteers, admins"
+          icon={LuUsers}
+        />
+        <StatCard
+          to="/funds"
+          label="Community fund"
+          value={`EGP ${funds.toLocaleString()}`}
+          sub="total raised"
+          icon={LuHeart}
+        />
+      </div>
+
+      <div className="mt-8">
+        <div className="mb-3 flex items-baseline justify-between">
+          <h2 className="font-display text-lg font-semibold text-ink">Recent requests</h2>
+          <Link
+            to="/dashboard/all-blood-donation-request"
+            className="text-[13px] font-semibold text-crimson hover:text-crimson-deep"
+          >
+            All requests →
+          </Link>
         </div>
-
-        {/* Total Funding */}
-        <div className="card bg-white shadow-xl p-6 rounded-xl border border-gray-200">
-          <div className="flex items-center gap-4">
-            <FaHandHoldingUsd className="text-4xl text-green-500" />
-            <div>
-              <p className="text-xl font-semibold">{stats.totalFunds.toLocaleString()} EGP</p>
-              <p className="text-gray-600">Total Funding</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Total Blood Donation Requests */}
-        <div className="card bg-white shadow-xl p-6 rounded-xl border border-gray-200">
-          <div className="flex items-center gap-4">
-            <FaTint className="text-4xl text-red-500" />
-            <div>
-              <p className="text-xl font-semibold">{stats.totalRequests}</p>
-              <p className="text-gray-600">Blood Requests</p>
-            </div>
-          </div>
+        <div className="rounded-2xl border border-line bg-card px-4">
+          {requests.length === 0 ? (
+            <p className="py-8 text-center text-sm text-muted">No requests yet.</p>
+          ) : (
+            requests.slice(0, 6).map((r) => (
+              <Link
+                key={r.id}
+                to={`/dashboard/donation-details/${r.id}`}
+                className="flex items-center gap-3 border-b border-line py-3 last:border-0"
+              >
+                <BloodRoundel group={r.blood_group} variant="tint" size={38} />
+                <div className="min-w-0 flex-1">
+                  <div className="truncate text-[14px] font-semibold text-ink">
+                    {r.recipient_name}
+                  </div>
+                  <div className="truncate text-[12px] text-muted">
+                    {[r.hospital_name, r.recipient_city].filter(Boolean).join(' · ')} ·{' '}
+                    {formatNeededBy(r.donation_date, r.donation_time)}
+                  </div>
+                </div>
+                <StatusPill status={r.donation_status} />
+              </Link>
+            ))
+          )}
         </div>
       </div>
     </div>

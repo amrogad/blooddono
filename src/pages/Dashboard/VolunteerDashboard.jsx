@@ -1,43 +1,55 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
-import { FaTint, FaRegEdit } from 'react-icons/fa';
+import { LuDroplet, LuFileText, LuArrowRight } from 'react-icons/lu';
+
+const cards = [
+  {
+    to: '/dashboard/all-blood-donation-request',
+    icon: LuDroplet,
+    title: 'Blood donation requests',
+    body: 'Review and track every request across the network.',
+  },
+  {
+    to: '/dashboard/content-management-page',
+    icon: LuFileText,
+    title: 'Stories',
+    body: 'Write and publish stories for the community.',
+  },
+];
 
 const VolunteerDashboard = () => {
   const { user } = useSelector((state) => state.auth);
 
   return (
-    <div className="max-w-6xl mx-auto p-4">
-      <h2 className="text-3xl font-bold mb-2">Welcome, {user?.displayName}!</h2>
-      <p className="text-gray-600 mb-6">
-        As a volunteer you can review blood donation requests and help manage published content.
+    <div className="mx-auto max-w-4xl px-6 py-8">
+      <div className="text-[13.5px] text-muted">Welcome back</div>
+      <h1 className="mt-0.5 mb-1 font-display text-[28px] font-semibold tracking-tight text-ink">
+        {user?.displayName}
+      </h1>
+      <p className="mb-6 text-sm text-muted">
+        As a volunteer you can review requests and manage published stories.
       </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Link
-          to="/dashboard/all-blood-donation-request"
-          className="card bg-white shadow-xl p-6 rounded-xl border border-gray-200 hover:shadow-md hover:-translate-y-1 transition-all"
-        >
-          <div className="flex items-center gap-4">
-            <FaTint className="text-4xl text-red-500" />
-            <div>
-              <p className="text-xl font-semibold">Blood Donation Requests</p>
-              <p className="text-gray-600">Review and track all requests</p>
+      <div className="grid gap-3 sm:grid-cols-2">
+        {cards.map(({ to, icon: Icon, title, body }) => (
+          <Link
+            key={to}
+            to={to}
+            className="group rounded-2xl border border-line bg-card p-5 transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_-16px_rgba(33,20,22,0.2)]"
+          >
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-crimson-tint">
+              <Icon className="h-5 w-5 text-crimson" strokeWidth={2} />
             </div>
-          </div>
-        </Link>
-
-        <Link
-          to="/dashboard/content-management-page"
-          className="card bg-white shadow-xl p-6 rounded-xl border border-gray-200 hover:shadow-md hover:-translate-y-1 transition-all"
-        >
-          <div className="flex items-center gap-4">
-            <FaRegEdit className="text-4xl text-blue-500" />
-            <div>
-              <p className="text-xl font-semibold">Content Management</p>
-              <p className="text-gray-600">Create and edit blog posts</p>
-            </div>
-          </div>
-        </Link>
+            <h2 className="mt-4 flex items-center gap-1.5 text-[16.5px] font-semibold text-ink">
+              {title}
+              <LuArrowRight
+                className="h-4 w-4 text-crimson transition group-hover:translate-x-0.5"
+                strokeWidth={2}
+              />
+            </h2>
+            <p className="mt-1 text-sm leading-relaxed text-body">{body}</p>
+          </Link>
+        ))}
       </div>
     </div>
   );
