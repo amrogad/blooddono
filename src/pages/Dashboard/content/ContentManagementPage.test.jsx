@@ -17,7 +17,7 @@ vi.mock('sweetalert2', () => ({
 const draftBlog = {
   id: 'blog-1',
   title: 'Common myths about donating',
-  thumbnail: '/images/blog-2.jpg',
+  thumbnail: '/images/blog-2.png',
   content: '<p>x</p>',
   status: 'draft',
 };
