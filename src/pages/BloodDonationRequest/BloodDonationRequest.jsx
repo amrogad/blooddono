@@ -165,7 +165,7 @@ const BloodDonationRequest = () => {
           <p className="mt-1 text-sm text-muted">
             {requests.length > 0
               ? 'Try clearing your filters.'
-              : 'Check back soon — new requests appear here as they are posted.'}
+              : 'Check back soon. New requests appear here as they are posted.'}
           </p>
         </div>
       ) : (
@@ -184,7 +184,7 @@ const BloodDonationRequest = () => {
                   {SECTION_LABELS[key]}
                   {key === 'today' && criticalToday > 0 && (
                     <span className="font-semibold normal-case tracking-normal text-muted">
-                      — {criticalToday} critical
+                      · {criticalToday} critical
                     </span>
                   )}
                 </div>

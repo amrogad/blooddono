@@ -11,7 +11,7 @@ const STEPS = [
     icon: LuSearch,
     n: '02',
     title: 'Compatible donors are matched',
-    body: 'We match by blood-type compatibility and location — not exact type — so every request reaches the widest safe pool.',
+    body: 'We match by blood-type compatibility and location, not exact type, so every request reaches the widest safe pool.',
   },
   {
     icon: LuDroplet,

@@ -117,8 +117,8 @@ const Hero = () => {
             needs blood today.
           </h1>
           <p className="mt-5 max-w-md text-lg leading-relaxed text-body">
-            BloodDono matches donors with patients in the same city — by blood type, in hours not
-            days. Free and human.
+            BloodDono matches donors with patients in the same city, by blood type, in hours not
+            days. Free to use.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link

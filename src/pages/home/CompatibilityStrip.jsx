@@ -44,7 +44,7 @@ const CompatibilityStrip = () => {
             <span className="text-[15px] text-ink">
               {universal ? (
                 <>
-                  <strong className="font-bold">{donor} is the universal donor</strong> — your blood
+                  <strong className="font-bold">{donor} is the universal donor</strong>. Your blood
                   can go to every patient.
                 </>
               ) : (

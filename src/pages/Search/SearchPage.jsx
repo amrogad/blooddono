@@ -48,7 +48,7 @@ const SearchPage = () => {
     <div className="mx-auto min-h-screen max-w-5xl px-4 py-10">
       <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Find donors</h1>
       <p className="mt-1.5 mb-6 text-sm text-muted">
-        Search the patient&apos;s blood type — we include every type that&apos;s safe to give.
+        Search the patient&apos;s blood type. We include every type that&apos;s safe to give.
       </p>
 
       <form

@@ -98,8 +98,8 @@ const Login = () => {
             New here?{' '}
             <Link to="/register" className="font-semibold text-crimson hover:text-crimson-deep">
               Create a donor profile
-            </Link>{' '}
-            — it takes 90 seconds.
+            </Link>
+            . It only takes 90 seconds.
           </p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">

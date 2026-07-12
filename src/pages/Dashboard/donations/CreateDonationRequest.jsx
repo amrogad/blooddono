@@ -284,7 +284,7 @@ const CreateDonationRequest = () => {
                     >
                       {label}
                       {label === 'Today' && (
-                        <span className="ml-1.5 font-normal text-muted">— critical</span>
+                        <span className="ml-1.5 font-normal text-muted">· critical</span>
                       )}
                     </button>
                   );
