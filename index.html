@@ -1,11 +1,18 @@
 <!doctype html>
-<!-- data-theme="light" -->
 <html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BloodDono</title>
+    <title>BloodDono — give blood, save a life</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <script>
+      // Resolve the saved/system color scheme before first paint to avoid a flash.
+      try {
+        var t = localStorage.getItem('color-scheme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

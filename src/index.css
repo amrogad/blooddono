@@ -1,20 +1,146 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=Playwrite+AU+SA:wght@100..400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 
 @import 'tailwindcss';
 @plugin "daisyui";
 
-.playwrite-au-sa-font {
-  font-family: 'Playwrite AU SA', cursive;
+/* Crimson design system — one accent, warm neutrals, semantic status colors.
+   DaisyUI themes so every btn/card/table/select/modal in the app picks up the
+   palette and flips in dark mode without touching each file. */
+@plugin "daisyui/theme" {
+  name: 'light';
+  default: true;
+  color-scheme: light;
+  --color-base-100: #ffffff;
+  --color-base-200: #f5f1ec;
+  --color-base-300: #ede7e0;
+  --color-base-content: #211d1e;
+  --color-primary: #c21e3f;
+  --color-primary-content: #ffffff;
+  --color-secondary: #8f1230;
+  --color-secondary-content: #fff8f4;
+  --color-accent: #c21e3f;
+  --color-accent-content: #ffffff;
+  --color-neutral: #211d1e;
+  --color-neutral-content: #fff8f4;
+  --color-info: #2456d6;
+  --color-info-content: #ffffff;
+  --color-success: #1e7f5c;
+  --color-success-content: #ffffff;
+  --color-warning: #8f5a08;
+  --color-warning-content: #ffffff;
+  --color-error: #c21e3f;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.75rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: 'dark';
+  prefersdark: true;
+  color-scheme: dark;
+  --color-base-100: #211b1d;
+  --color-base-200: #2a2325;
+  --color-base-300: #34292c;
+  --color-base-content: #f4eee9;
+  --color-primary: #e0344f;
+  --color-primary-content: #ffffff;
+  --color-secondary: #b81f3b;
+  --color-secondary-content: #171214;
+  --color-accent: #e0344f;
+  --color-accent-content: #ffffff;
+  --color-neutral: #37302e;
+  --color-neutral-content: #f4eee9;
+  --color-info: #7aa0f5;
+  --color-info-content: #0a1a3a;
+  --color-success: #57c79b;
+  --color-success-content: #06231a;
+  --color-warning: #e0a94a;
+  --color-warning-content: #2a2008;
+  --color-error: #e0344f;
+  --color-error-content: #ffffff;
+  --radius-selector: 0.75rem;
+  --radius-field: 0.75rem;
+  --radius-box: 1rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* Escape hatch for one-off dark overrides: `dark:` variant keyed to data-theme. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Custom token vocabulary for new components + hand-styled markup. Light
+   defaults live here; the dark block below overrides the same variables. */
+@theme {
+  --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+
+  --color-crimson: #c21e3f;
+  --color-crimson-deep: #8f1230;
+  --color-crimson-light: #e7476a;
+  --color-crimson-tint: #fbedf0;
+
+  --color-ink: #211d1e;
+  --color-paper: #faf7f3;
+  --color-card: #ffffff;
+  --color-surface: #f5f1ec;
+  --color-body: #57504e;
+  --color-muted: #8a8184;
+  --color-line: rgba(33, 20, 22, 0.09);
+  --color-line-strong: rgba(33, 20, 22, 0.14);
+  --color-on-ink: #fff8f4;
+
+  --color-success: #1e7f5c;
+  --color-success-tint: #e8f4ee;
+  --color-warning: #8f5a08;
+  --color-warning-tint: #fbf1dd;
+  --color-info: #2456d6;
+  --color-info-tint: #e9effc;
+}
+
+/* Dark palette — mirrors mobile's darkColors. Higher specificity than :root so
+   it wins regardless of source order. */
+:root[data-theme='dark'] {
+  --color-crimson: #e0344f;
+  --color-crimson-deep: #b81f3b;
+  --color-crimson-light: #f26b83;
+  --color-crimson-tint: #3a2028;
+
+  --color-ink: #f4eee9;
+  --color-paper: #161113;
+  --color-card: #211b1d;
+  --color-surface: #2a2325;
+  --color-body: #c4bab6;
+  --color-muted: #9a8e8a;
+  --color-line: rgba(255, 248, 244, 0.1);
+  --color-line-strong: rgba(255, 248, 244, 0.2);
+  --color-on-ink: #171214;
+
+  --color-success: #57c79b;
+  --color-success-tint: #16362b;
+  --color-warning: #e0a94a;
+  --color-warning-tint: #372c14;
+  --color-info: #7aa0f5;
+  --color-info-tint: #1e2c4c;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  color: black;
-  background-color: white;
+  font-family: var(--font-sans);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
 }
 
 a.active {
   text-decoration: underline;
   text-decoration-thickness: 2px;
-  text-decoration-color: #ff4136;
+  text-decoration-color: var(--color-crimson);
 }
