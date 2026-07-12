@@ -15,7 +15,7 @@ const NavLinks = () => {
         Find donors
       </NavLink>
       <NavLink className={linkClass} to="/blogs">
-        Stories
+        Blogs
       </NavLink>
       {user && (
         <NavLink className={linkClass} to="/funds">

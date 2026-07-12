@@ -97,7 +97,7 @@ const DashboardLayout = () => {
                 </NavLink>
                 <NavLink to="/dashboard/content-management-page" className={linkClass}>
                   <LuFileText className="h-4 w-4" strokeWidth={2} />
-                  Stories
+                  Blogs
                 </NavLink>
               </>
             )}

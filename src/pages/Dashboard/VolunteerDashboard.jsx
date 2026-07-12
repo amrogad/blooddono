@@ -12,8 +12,8 @@ const cards = [
   {
     to: '/dashboard/content-management-page',
     icon: LuFileText,
-    title: 'Stories',
-    body: 'Write and publish stories for the community.',
+    title: 'Blogs',
+    body: 'Write and publish blog posts for the community.',
   },
 ];
 

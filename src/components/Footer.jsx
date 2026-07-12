@@ -14,7 +14,6 @@ const Footer = () => {
           <span className="font-display text-xl font-semibold tracking-tight text-ink">
             BloodDono
           </span>
-          <span className="ml-2 text-[13px] text-muted">Made with care in Cairo</span>
         </Link>
 
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
@@ -25,7 +24,7 @@ const Footer = () => {
             Find donors
           </NavLink>
           <NavLink className={linkClass} to="/blogs">
-            Stories
+            Blogs
           </NavLink>
           {user && (
             <NavLink className={linkClass} to="/funds">

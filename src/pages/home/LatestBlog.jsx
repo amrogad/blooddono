@@ -19,13 +19,13 @@ const LatestBlog = () => {
       <div className="mx-auto max-w-[1180px] px-6 py-16">
         <div className="mb-8 flex items-end justify-between">
           <h2 className="font-display text-[27px] font-semibold tracking-tight text-ink">
-            Stories from the community
+            From the blog
           </h2>
           <Link
             to="/blogs"
             className="hidden items-center gap-1.5 text-sm font-semibold text-crimson hover:text-crimson-deep sm:inline-flex"
           >
-            All stories
+            All posts
             <LuArrowRight className="h-4 w-4" strokeWidth={2} />
           </Link>
         </div>

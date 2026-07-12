@@ -60,7 +60,7 @@ const NavBar = () => {
                 Find donors
               </NavLink>
               <NavLink className={mobileLinkClass} to="/blogs">
-                Stories
+                Blogs
               </NavLink>
               {user && (
                 <NavLink className={mobileLinkClass} to="/funds">
