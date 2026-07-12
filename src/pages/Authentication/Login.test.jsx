@@ -22,7 +22,7 @@ describe('Login', () => {
 
     await user.type(screen.getByPlaceholderText('Email…'), 'not-an-email');
     await user.type(container.querySelector('input[type="password"]'), 'Demo123!');
-    await user.click(screen.getByRole('button', { name: 'Login' }));
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
     // invalid input must never reach the auth service
     expect(signIn).not.toHaveBeenCalled();
@@ -34,7 +34,7 @@ describe('Login', () => {
 
     await user.type(screen.getByPlaceholderText('Email…'), 'donor@blooddono.demo');
     await user.type(container.querySelector('input[type="password"]'), 'Demo123!');
-    await user.click(screen.getByRole('button', { name: 'Login' }));
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
     await waitFor(() => expect(signIn).toHaveBeenCalledWith('donor@blooddono.demo', 'Demo123!'));
   });
@@ -46,7 +46,7 @@ describe('Login', () => {
 
     await user.type(screen.getByPlaceholderText('Email…'), 'donor@blooddono.demo');
     await user.type(container.querySelector('input[type="password"]'), 'Demo123!');
-    await user.click(screen.getByRole('button', { name: 'Login' }));
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
     await waitFor(() =>
       expect(Swal.fire).toHaveBeenCalledWith(expect.objectContaining({ icon: 'error' })),
