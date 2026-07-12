@@ -15,19 +15,18 @@ vi.mock('sweetalert2', () => ({
 describe('CreateDonationRequest', () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it('blocks submit and shows validation errors when required fields are empty', async () => {
+  it('blocks advancing and shows validation errors when step-one fields are empty', async () => {
     const user = userEvent.setup();
     renderWithProviders(<CreateDonationRequest />, { user: donorUser });
 
-    await user.click(screen.getByRole('button', { name: 'Submit Request' }));
+    await user.click(screen.getByRole('button', { name: /Continue/ }));
 
     expect(await screen.findByText('Recipient name is required')).toBeInTheDocument();
     expect(createDonationRequest).not.toHaveBeenCalled();
   });
 
-  it('prefills the requester from the logged-in user', () => {
+  it('shows the logged-in user as the requester', () => {
     renderWithProviders(<CreateDonationRequest />, { user: donorUser });
-    expect(screen.getByDisplayValue('Demo Donor')).toBeInTheDocument();
-    expect(screen.getByDisplayValue('donor@blooddono.demo')).toBeInTheDocument();
+    expect(screen.getByText(/Posting as Demo Donor/)).toBeInTheDocument();
   });
 });
