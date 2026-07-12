@@ -1,136 +1,104 @@
+import { Link } from 'react-router';
+import { LuCheck, LuArrowRight } from 'react-icons/lu';
+
+const REASONS = [
+  'Search donors by blood type, governorate, and city',
+  'Matching that understands compatibility, not just exact type',
+  'Donor profiles you can see before you reach out',
+  'Requests that reach the widest safe pool of donors nearby',
+  'Role-based access for donors, volunteers, and admins',
+  'A clean interface that works on any phone',
+];
+
 const AboutUs = () => {
   return (
-    <div className="min-h-screen max-w-[1600px] mx-auto px-4 py-2 lg:py-8">
-      <div className="py-16">
-        <h1 className="text-5xl font-bold">
-          <span className="border-b-2 border-[#ff4136]">Who We Are & What We Do</span>
-        </h1>
-        <br />
-        <p className="text-2xl text-justify">
-          BloodDono is a life-saving platform designed to bring blood donors, recipients, and
-          healthcare volunteers together in one connected, digital space. Whether you're someone in
-          urgent need of blood or a donor ready to help, BloodDono makes the process faster,
-          smarter, and more accessible — right from your device.
-          <br />
-          <br />
-          We believe that no one should have to struggle to find a blood donor during a medical
-          emergency. Our goal is to bridge that gap by using technology to connect the right people
-          at the right time.
-        </p>
-        <br />
-        <br />
-
-        <h1 className="text-5xl font-bold">
-          <span className="border-b-2 border-[#ff4136]">Our Mission</span>
-        </h1>
-        <br />
-        <p className="text-2xl text-justify">
-          Our mission is simple but vital:
-          <br />
-          To save lives by making blood donation faster, safer, and easier through smart,
-          location-based search and verified donor profiles. We aim to create a trusted and
-          transparent network that supports patients, donors, and medical communities every step of
-          the way.
-        </p>
-        <br />
-        <br />
-
-        <h1 className="text-5xl font-bold">
-          <span className="border-b-2 border-[#ff4136]">Why Choose BloodDono?</span>
-        </h1>
-        <br />
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">Find blood donors by group, governorate, and city</div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">Submit blood requests with full recipient details</div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">View complete donor profiles before reaching out</div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">
-            Instant, real-time search results powered by efficient data handling
-          </div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">Clean, mobile-friendly interface for easy use on the go</div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">
-            Secure role-based access for donors, volunteers, and admins
-          </div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">Read blogs and health tips to stay informed and inspired</div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">In-app notifications and pop-ups for instant feedback</div>
-        </div>
-
-        <div className="flex gap-2 mb-2">
-          <div>
-            <span className="text-[#ff4136] text-3xl font-medium">✓</span>
-          </div>
-          <div className="text-2xl">Admin-controlled dashboard to manage requests and users</div>
-        </div>
-
-        <br />
-        <br />
-
-        <h1 className="text-5xl font-bold">
-          <span className="border-b-2 border-[#ff4136]">About This Project</span>
-        </h1>
-        <br />
-        <p className="text-2xl text-justify">
-          BloodDono is a React frontend portfolio project — built with React and Tailwind CSS,
-          and powered by Supabase for authentication and data.
-          <br />
-          <br />
-          Every account is real. Sign up for your own, or use one of the demo logins on the login
-          page to jump straight into the admin, donor, or volunteer dashboard.
-          <br />
-          <br />
-          Built by Amro Gad as a demonstration of modern React skills:
-          <br />
-          <br />
-          <span className="text-[#ff4136] font-bold text-3xl text-center">
-            A network that saves lives.
+    <div className="bg-paper">
+      {/* header */}
+      <section className="border-b border-line bg-gradient-to-b from-card to-paper">
+        <div className="mx-auto max-w-3xl px-6 py-16 text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-crimson/20 bg-crimson-tint px-3.5 py-1.5 text-[12.5px] font-semibold text-crimson">
+            About BloodDono
           </span>
-        </p>
-      </div>
+          <h1 className="mt-5 font-display text-[44px] font-semibold leading-[1.08] tracking-tight text-ink">
+            A faster way to find blood.
+          </h1>
+          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-body">
+            BloodDono connects patients who need blood with donors who can give it, matched by blood
+            type and city, in hours instead of days.
+          </p>
+        </div>
+      </section>
+
+      {/* what we do */}
+      <section className="mx-auto max-w-3xl px-6 py-16">
+        <h2 className="font-display text-[27px] font-semibold tracking-tight text-ink">
+          Why we built it
+        </h2>
+        <div className="mt-4 space-y-4 text-[16px] leading-relaxed text-body">
+          <p>
+            When someone needs blood, every hour counts. Too often families end up posting in group
+            chats and hoping the right person happens to see it in time.
+          </p>
+          <p>
+            BloodDono turns that scramble into one place. Post a request with the patient&apos;s
+            blood type, hospital, and when it&apos;s needed, and compatible donors nearby see it
+            right away. Donors can search the other way too, and step in the moment they&apos;re a
+            match.
+          </p>
+        </div>
+      </section>
+
+      {/* why choose */}
+      <section className="border-y border-line bg-card">
+        <div className="mx-auto max-w-3xl px-6 py-16">
+          <h2 className="font-display text-[27px] font-semibold tracking-tight text-ink">
+            What you can do here
+          </h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {REASONS.map((reason) => (
+              <div key={reason} className="flex items-start gap-3">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-crimson-tint">
+                  <LuCheck className="h-3.5 w-3.5 text-crimson" strokeWidth={3} />
+                </span>
+                <span className="text-[15px] leading-relaxed text-body">{reason}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* how it's built */}
+      <section className="mx-auto max-w-3xl px-6 py-16">
+        <h2 className="font-display text-[27px] font-semibold tracking-tight text-ink">
+          How it works under the hood
+        </h2>
+        <div className="mt-4 space-y-4 text-[16px] leading-relaxed text-body">
+          <p>
+            BloodDono is built with React and Tailwind, with Supabase handling accounts and data.
+            Matching is blood-type aware, so an O&minus; donor is offered to every patient they can
+            safely help, not just an exact match.
+          </p>
+          <p>
+            Every account is real. Create your own, or sign in with a demo account to explore the
+            donor, volunteer, and admin views.
+          </p>
+        </div>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Link
+            to="/register"
+            className="inline-flex h-12 items-center gap-2 rounded-xl bg-crimson px-6 text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_-8px_rgba(156,14,46,0.5)] transition hover:bg-crimson-deep"
+          >
+            Become a donor
+            <LuArrowRight className="h-4 w-4" strokeWidth={2} />
+          </Link>
+          <Link
+            to="/blood-donation-request"
+            className="inline-flex h-12 items-center rounded-xl border border-line-strong bg-card px-6 text-[15px] font-semibold text-ink transition hover:border-ink/40"
+          >
+            See open requests
+          </Link>
+        </div>
+      </section>
     </div>
   );
 };
