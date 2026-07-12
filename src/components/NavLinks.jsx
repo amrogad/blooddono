@@ -1,32 +1,29 @@
 import { NavLink } from 'react-router';
 import { useSelector } from 'react-redux';
 
+const linkClass = ({ isActive }) =>
+  `text-sm font-medium transition-colors ${isActive ? 'text-crimson' : 'text-body hover:text-ink'}`;
+
 const NavLinks = () => {
   const { user } = useSelector((state) => state.auth);
   return (
-    <div className="flex flex-col lg:flex-row justify-center items-center">
-      <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/">
-        Home
+    <div className="flex items-center gap-7">
+      <NavLink className={linkClass} to="/blood-donation-request">
+        Requests
       </NavLink>
-      <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/search">
-        Search
+      <NavLink className={linkClass} to="/search">
+        Find donors
       </NavLink>
-      <NavLink
-        className={`mr-8 text-2xl hover:underline decoration-2`}
-        to="/blood-donation-request"
-      >
-        Donation Requests
-      </NavLink>
-      <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/blogs">
-        Blogs
+      <NavLink className={linkClass} to="/blogs">
+        Stories
       </NavLink>
       {user && (
-        <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/funds">
+        <NavLink className={linkClass} to="/funds">
           Funds
         </NavLink>
       )}
-      <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/about-us">
-        About Us
+      <NavLink className={linkClass} to="/about-us">
+        About
       </NavLink>
     </div>
   );

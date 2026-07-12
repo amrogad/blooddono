@@ -15,49 +15,56 @@ const ProfilePicture = () => {
       navigate('/');
     } catch (error) {
       Swal.fire({ icon: 'error', title: 'Sign out failed', text: error.message });
-      return;
     }
   };
 
   return (
     <div className="dropdown dropdown-end">
-      <div tabIndex={0} role="button" className="m-1">
+      <div tabIndex={0} role="button" className="flex items-center">
         <div className="tooltip tooltip-left" data-tip={user.displayName}>
           <img
-            className="w-[40px] h-[40px] rounded-full border-2 border-zinc-400"
-            src={`${user.photoURL ? user.photoURL : '/images/developer-avatar.jpg'}`}
+            className="h-10 w-10 rounded-full border border-line-strong object-cover"
+            src={user.photoURL ? user.photoURL : '/images/person-avatar.png'}
             alt=""
           />
         </div>
       </div>
       <ul
         tabIndex={0}
-        className="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm"
+        className="dropdown-content menu z-1 mt-2 w-56 rounded-2xl border border-line bg-card p-2 shadow-[0_24px_56px_-16px_rgba(33,20,22,0.3)]"
       >
-        {user && (
-          <Link to="/dashboard">
-            <li>
-              <p className="btn btn-neutral btn-outline hover:text-white mb-2 w-full">Dashboard</p>
-            </li>
+        <li>
+          <Link
+            to="/dashboard"
+            className="rounded-xl px-3 py-2 text-sm font-medium text-ink hover:bg-surface"
+          >
+            Dashboard
           </Link>
-        )}
+        </li>
 
-        <li className="menu-title pt-2 text-xs text-gray-400">Demo role</li>
+        <li className="menu-title px-3 pb-1 pt-2 text-[10.5px] font-semibold uppercase tracking-wider text-muted">
+          Demo role
+        </li>
         {['admin', 'donor', 'volunteer'].map((r) => (
           <li key={r}>
             <button
               onClick={() => dispatch(setRole(r))}
-              className={`capitalize ${user.role === r ? 'font-bold text-[#ff4136]' : ''}`}
+              className={`rounded-xl px-3 py-2 text-sm capitalize hover:bg-surface ${
+                user.role === r ? 'font-semibold text-crimson' : 'text-body'
+              }`}
             >
               {r}
             </button>
           </li>
         ))}
 
-        <li className="mt-2">
-          <p className="btn btn-error btn-outline hover:text-white w-full" onClick={handleLogOut}>
-            Logout
-          </p>
+        <li className="mt-1 border-t border-line pt-1">
+          <button
+            onClick={handleLogOut}
+            className="rounded-xl px-3 py-2 text-sm font-medium text-crimson hover:bg-crimson-tint"
+          >
+            Log out
+          </button>
         </li>
       </ul>
     </div>

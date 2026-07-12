@@ -1,32 +1,37 @@
 import { useState } from 'react';
-import NavLinks from './NavLinks';
-import RegistrationButtons from './RegistrationButtons';
 import { Link, NavLink } from 'react-router';
 import { useSelector } from 'react-redux';
-import ProfilePicture from './ProfilePicture';
-
 import { HiMenu } from 'react-icons/hi';
 import { RiCloseLargeFill } from 'react-icons/ri';
+import NavLinks from './NavLinks';
+import RegistrationButtons from './RegistrationButtons';
+import ProfilePicture from './ProfilePicture';
+import ThemeToggle from './ThemeToggle';
+import BrandMark from './BrandMark';
+
+const mobileLinkClass = 'py-2 text-lg font-medium text-body hover:text-ink';
 
 const NavBar = () => {
   const { user } = useSelector((state) => state.auth);
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
-    <div className="max-w-[1600px] mx-auto px-6 py-3">
-      <div className="flex gap-2 flex-row justify-between items-center">
-        <Link to="/" className="flex items-center">
-          <span className="text-3xl font-extrabold">
-            Blood<span className="text-[#ff4136]">Dono</span>
+    <div className="mx-auto max-w-[1600px] px-6 py-3">
+      <div className="flex flex-row items-center justify-between gap-2">
+        <Link to="/" className="flex items-center gap-2">
+          <BrandMark size={28} />
+          <span className="font-display text-2xl font-semibold tracking-tight text-ink">
+            BloodDono
           </span>
         </Link>
 
         <div className="hidden lg:flex">
-          <NavLinks></NavLinks>
+          <NavLinks />
         </div>
 
-        <div className="flex justify-center items-center gap-4">
-          {user ? <ProfilePicture></ProfilePicture> : <RegistrationButtons></RegistrationButtons>}
+        <div className="flex items-center justify-center gap-2">
+          <ThemeToggle />
+          {user ? <ProfilePicture /> : <RegistrationButtons />}
 
           <div className="flex flex-col lg:hidden">
             <button
@@ -34,55 +39,54 @@ const NavBar = () => {
               onClick={() => setOpenMenu(!openMenu)}
               aria-expanded={openMenu}
               aria-label="Toggle menu"
-              className="lg:hidden"
+              className="flex h-10 w-10 items-center justify-center rounded-xl text-ink"
             >
               {openMenu ? (
-                <RiCloseLargeFill aria-hidden="true" className="text-3xl" />
+                <RiCloseLargeFill aria-hidden="true" className="text-2xl" />
               ) : (
-                <HiMenu aria-hidden="true" className="text-3xl" />
+                <HiMenu aria-hidden="true" className="text-2xl" />
               )}
             </button>
 
             <div
-              className={`z-100 lg:hidden absolute flex flex-col justify-end duration-800 gap-2 rounded-md p-4 border border-gray-300 bg-white ${openMenu ? 'top-20 right-4' : '-top-130 right-4'}`}
+              className={`absolute right-4 z-100 flex flex-col gap-1 rounded-2xl border border-line bg-card p-4 shadow-[0_24px_56px_-16px_rgba(33,20,22,0.3)] duration-500 ${
+                openMenu ? 'top-20' : '-top-[130vh]'
+              }`}
             >
-              <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/">
-                Home
+              <NavLink className={mobileLinkClass} to="/blood-donation-request">
+                Requests
               </NavLink>
-              <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/search">
-                Search
+              <NavLink className={mobileLinkClass} to="/search">
+                Find donors
               </NavLink>
-              <NavLink
-                className={`mr-8 text-2xl hover:underline decoration-2`}
-                to="/blood-donation-request"
-              >
-                Donation Requests
-              </NavLink>
-              <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/blogs">
-                Blogs
+              <NavLink className={mobileLinkClass} to="/blogs">
+                Stories
               </NavLink>
               {user && (
-                <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/funds">
+                <NavLink className={mobileLinkClass} to="/funds">
                   Funds
                 </NavLink>
               )}
-              <NavLink className={`mr-8 text-2xl hover:underline decoration-2`} to="/about-us">
-                About Us
+              <NavLink className={mobileLinkClass} to="/about-us">
+                About
               </NavLink>
 
-              <Link
-                to="/register"
-                className="w-full text-center text-white bg-black font-bold text-xl px-6 py-3 rounded-md border-2 border-black hover:bg-gray-800 transition-colors duration-200"
-              >
-                Register
-              </Link>
-
-              <Link
-                to="/login"
-                className="w-full text-center border-2 border-[#ff4136] hover:bg-[#d63027] hover:border-[#d63027] font-bold text-xl px-6 py-3 rounded-md bg-[#ff4136] text-white transition-colors duration-200"
-              >
-                Login
-              </Link>
+              {!user && (
+                <div className="mt-2 flex flex-col gap-2 border-t border-line pt-3">
+                  <Link
+                    to="/register"
+                    className="w-full rounded-xl bg-crimson px-6 py-2.5 text-center text-base font-semibold text-white"
+                  >
+                    Become a donor
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="w-full rounded-xl border border-line-strong px-6 py-2.5 text-center text-base font-semibold text-ink"
+                  >
+                    Sign in
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         </div>

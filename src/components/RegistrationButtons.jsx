@@ -2,19 +2,18 @@ import { Link } from 'react-router';
 
 const RegistrationButtons = () => {
   return (
-    <div className="hidden lg:flex justify-center items-center gap-4">
-      <Link
-        to="/register"
-        className="border-2 border-[#ff4136] hover:bg-[#d63027] hover:border-[#d63027] font-bold text-xl px-6 py-3 rounded-md bg-[#ff4136] text-white transition-colors duration-200"
-      >
-        Register
-      </Link>
-
+    <div className="hidden items-center gap-2 lg:flex">
       <Link
         to="/login"
-        className="text-white bg-black font-bold text-xl px-6 py-3 rounded-md border-2 border-black hover:bg-gray-800 hover:border-gray-800 transition-colors duration-200"
+        className="inline-flex h-10 items-center rounded-xl px-4 text-sm font-semibold text-ink transition hover:bg-surface"
       >
-        Login
+        Sign in
+      </Link>
+      <Link
+        to="/register"
+        className="inline-flex h-10 items-center rounded-xl bg-crimson px-4 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_2px_rgba(120,10,30,0.25)] transition hover:bg-crimson-deep"
+      >
+        Become a donor
       </Link>
     </div>
   );

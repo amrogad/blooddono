@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 const Root = () => {
   return (
     <div>
-      <header className="sticky top-0 z-1000 bg-white shadow-sm">
+      <header className="sticky top-0 z-1000 border-b border-line bg-card/90 backdrop-blur-md">
         <NavBar></NavBar>
       </header>
 
