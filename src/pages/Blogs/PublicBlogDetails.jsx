@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { LuArrowLeft } from 'react-icons/lu';
 import Loading from '../../components/Loading';
-import { getBlog } from '../../services/blogService';
+import { getPublishedBlogs } from '../../services/blogService';
+import { slugify } from '../../utils/slug';
 
 const proseClass = [
   '[&_p]:mb-4 [&_p]:text-[16px] [&_p]:leading-relaxed [&_p]:text-body',
@@ -14,16 +15,16 @@ const proseClass = [
 ].join(' ');
 
 const PublicBlogDetails = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getBlog(id)
-      .then(setBlog)
+    getPublishedBlogs()
+      .then((blogs) => setBlog(blogs.find((b) => slugify(b.title) === slug) ?? null))
       .catch(() => setBlog(null))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [slug]);
 
   if (loading) return <Loading />;
 

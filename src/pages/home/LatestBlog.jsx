@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { LuArrowRight } from 'react-icons/lu';
 import { getPublishedBlogs } from '../../services/blogService';
+import { slugify } from '../../utils/slug';
 
 const LatestBlog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -33,7 +34,7 @@ const LatestBlog = () => {
           {blogs.map((blog) => (
             <Link
               key={blog.id}
-              to={`/blogs/${blog.id}`}
+              to={`/blogs/${slugify(blog.title)}`}
               className="group overflow-hidden rounded-3xl border border-line bg-card transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-16px_rgba(33,20,22,0.15)]"
             >
               <img src={blog.thumbnail} alt={blog.title} className="h-44 w-full object-cover" />
