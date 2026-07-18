@@ -6,6 +6,11 @@ import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
 import { setUser } from '../../redux/authSlice';
 import { updateProfile, uploadAvatar } from '../../services/profileService';
+import { BLOOD_GROUPS } from '../../utils/bloodCompat';
+
+const fieldClass =
+  'h-12 w-full rounded-xl border border-line-strong bg-card px-4 text-[15px] text-ink transition focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15 disabled:cursor-not-allowed disabled:bg-surface disabled:text-body';
+const labelClass = 'mb-1.5 block text-[13px] font-semibold text-ink';
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -42,9 +47,7 @@ const Profile = () => {
     setSaving(true);
     try {
       let photoUrl = currentUser?.photoURL ?? null;
-      if (avatarFile) {
-        photoUrl = await uploadAvatar(currentUser.uid, avatarFile);
-      }
+      if (avatarFile) photoUrl = await uploadAvatar(currentUser.uid, avatarFile);
 
       const updates = {
         display_name: data.display_name,
@@ -68,12 +71,7 @@ const Profile = () => {
         }),
       );
 
-      Swal.fire({
-        icon: 'success',
-        title: 'Profile Updated!',
-        showConfirmButton: false,
-        timer: 1500,
-      });
+      Swal.fire({ icon: 'success', title: 'Profile Updated!', showConfirmButton: false, timer: 1500 });
       setAvatarFile(null);
       setEditMode(false);
     } catch (error) {
@@ -84,127 +82,157 @@ const Profile = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto py-10 px-4">
-      <div className="flex justify-between items-start mb-4">
-        <div></div>
-        <img
-          src={profilePic || '/images/person-avatar.png'}
-          alt="Profile avatar"
-          className="w-48 h-48 mt-2 rounded-full border-2 border-zinc-400 mb-8 object-cover"
-        />
-        <button onClick={() => setEditMode(!editMode)} className="btn bg-[#ff4136]">
-          {editMode ? 'Cancel' : 'Edit'}
-        </button>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="w-full">
-          <label htmlFor="profile-name" className="label">Full Name</label>
-          <input
-            id="profile-name"
-            type="text"
-            className="input input-bordered w-full"
-            {...register('display_name', { required: true })}
-            disabled={!editMode}
+    <div className="mx-auto max-w-2xl px-6 py-8">
+      <div className="rounded-3xl border border-line bg-card p-8">
+        <div className="mb-8 flex items-center gap-4">
+          <img
+            src={profilePic || '/images/person-avatar.png'}
+            alt=""
+            className="h-20 w-20 rounded-2xl border border-line-strong object-cover"
           />
-        </div>
-
-        <div>
-          <label htmlFor="profile-email" className="label">Email (not editable)</label>
-          <input
-            id="profile-email"
-            type="email"
-            className="input input-bordered w-full"
-            {...register('email')}
-            disabled
-          />
-        </div>
-
-        <div>
-          <label htmlFor="profile-governorate" className="label">Governorate</label>
-          <select
-            id="profile-governorate"
-            {...register('governorate', { required: true })}
-            className="select select-bordered w-full"
-            disabled={!editMode}
+          <div className="min-w-0 flex-1">
+            <div className="truncate font-display text-[22px] font-semibold tracking-tight text-ink">
+              {currentUser?.displayName}
+            </div>
+            <div className="text-[13px] capitalize text-muted">
+              {currentUser?.role}
+              {currentUser?.bloodGroup ? ` · ${currentUser.bloodGroup}` : ''}
+            </div>
+          </div>
+          <button
+            onClick={() => setEditMode(!editMode)}
+            className="inline-flex h-10 items-center rounded-xl border border-line-strong px-4 text-sm font-semibold text-ink transition hover:border-ink/40"
           >
-            <option value="">Select Governorate</option>
-            {governorates.map((d) => (
-              <option key={d.id} value={d.name}>
-                {d.name}
-              </option>
-            ))}
-          </select>
+            {editMode ? 'Cancel' : 'Edit'}
+          </button>
         </div>
 
-        <div>
-          <label htmlFor="profile-city" className="label">City</label>
-          <select
-            id="profile-city"
-            {...register('city', { required: true })}
-            className="select select-bordered w-full"
-            disabled={!editMode}
-          >
-            <option value="">Select City</option>
-            {filteredCities.map((c) => (
-              <option key={c.id} value={c.name}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="col-span-2">
-          <label htmlFor="profile-blood-group" className="label">Blood Group</label>
-          <select
-            id="profile-blood-group"
-            {...register('blood_group', { required: true })}
-            className="select select-bordered w-full"
-            disabled={!editMode}
-          >
-            <option value="">Select</option>
-            {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((group) => (
-              <option key={group} value={group}>
-                {group}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="col-span-2">
-          <label className="label cursor-pointer justify-start gap-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label htmlFor="profile-name" className={labelClass}>
+              Full name
+            </label>
             <input
-              type="checkbox"
-              className="checkbox"
-              {...register('is_searchable')}
+              id="profile-name"
+              type="text"
+              className={fieldClass}
+              {...register('display_name', { required: true })}
               disabled={!editMode}
             />
-            <span>List me as a searchable donor (your email is never shown in search results)</span>
-          </label>
-        </div>
-
-        <div className="col-span-2">
-          <label htmlFor="profile-photo" className="label">
-            {editMode && <>Profile Photo (Max size 32&nbsp;MB)</>}
-          </label>
-          <input
-            id="profile-photo"
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className={`input-bordered w-full file-input ${editMode ? '' : 'hidden'}`}
-            disabled={!editMode}
-          />
-        </div>
-
-        {editMode && (
-          <div className="col-span-2">
-            <button type="submit" className="btn btn-neutral" disabled={saving}>
-              {saving ? 'Saving…' : 'Save Changes'}
-            </button>
           </div>
-        )}
-      </form>
+
+          <div>
+            <label htmlFor="profile-email" className={labelClass}>
+              Email
+            </label>
+            <input
+              id="profile-email"
+              type="email"
+              className={fieldClass}
+              {...register('email')}
+              disabled
+            />
+          </div>
+
+          <div>
+            <label htmlFor="profile-governorate" className={labelClass}>
+              Governorate
+            </label>
+            <select
+              id="profile-governorate"
+              className={fieldClass}
+              {...register('governorate', { required: true })}
+              disabled={!editMode}
+            >
+              <option value="">Select</option>
+              {governorates.map((d) => (
+                <option key={d.id} value={d.name}>
+                  {d.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="profile-city" className={labelClass}>
+              City
+            </label>
+            <select
+              id="profile-city"
+              className={fieldClass}
+              {...register('city', { required: true })}
+              disabled={!editMode}
+            >
+              <option value="">Select</option>
+              {filteredCities.map((c) => (
+                <option key={c.id} value={c.name}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label htmlFor="profile-blood-group" className={labelClass}>
+              Blood group
+            </label>
+            <select
+              id="profile-blood-group"
+              className={fieldClass}
+              {...register('blood_group', { required: true })}
+              disabled={!editMode}
+            >
+              <option value="">Select</option>
+              {BLOOD_GROUPS.map((group) => (
+                <option key={group} value={group}>
+                  {group}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="sm:col-span-2">
+            <label className="flex cursor-pointer items-start gap-3 rounded-xl bg-paper p-4">
+              <input
+                type="checkbox"
+                className="checkbox checkbox-sm mt-0.5"
+                {...register('is_searchable')}
+                disabled={!editMode}
+              />
+              <span className="text-[13.5px] leading-relaxed text-body">
+                List me as a searchable donor. Your email is never shown in search results.
+              </span>
+            </label>
+          </div>
+
+          {editMode && (
+            <div className="sm:col-span-2">
+              <label htmlFor="profile-photo" className={labelClass}>
+                Profile photo
+              </label>
+              <input
+                id="profile-photo"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="file-input file-input-bordered w-full"
+              />
+            </div>
+          )}
+
+          {editMode && (
+            <div className="sm:col-span-2">
+              <button
+                type="submit"
+                disabled={saving}
+                className="inline-flex h-12 items-center justify-center rounded-xl bg-crimson px-6 text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_-8px_rgba(156,14,46,0.5)] transition hover:bg-crimson-deep disabled:opacity-60"
+              >
+                {saving ? 'Saving…' : 'Save Changes'}
+              </button>
+            </div>
+          )}
+        </form>
+      </div>
     </div>
   );
 };

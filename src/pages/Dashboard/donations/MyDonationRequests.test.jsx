@@ -41,7 +41,7 @@ describe('MyDonationRequests', () => {
     const user = userEvent.setup();
     renderWithProviders(<MyDonationRequests />, { user: donorUser });
 
-    await user.click(await screen.findByRole('button', { name: 'Delete' }));
+    await user.click(await screen.findByRole('button', { name: 'Delete forever' }));
 
     expect(deleteDonationRequest).toHaveBeenCalledWith('req-1');
   });

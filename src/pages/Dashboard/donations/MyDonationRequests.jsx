@@ -2,12 +2,23 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
+import { LuPlus } from 'react-icons/lu';
 import Loading from '../../../components/Loading';
+import DonorRequestCard from '../../../components/DonorRequestCard';
 import {
   getMyDonationRequests,
   updateDonationRequest,
   deleteDonationRequest,
 } from '../../../services/donationService';
+
+const FILTERS = [
+  { key: 'all', label: 'All' },
+  { key: 'pending', label: 'Searching' },
+  { key: 'inprogress', label: 'Matched' },
+  { key: 'done', label: 'Completed' },
+  { key: 'canceled', label: 'Cancelled' },
+];
+const PER_PAGE = 6;
 
 const MyDonationRequests = () => {
   const navigate = useNavigate();
@@ -16,8 +27,7 @@ const MyDonationRequests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const requestsPerPage = 5;
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -29,27 +39,7 @@ const MyDonationRequests = () => {
       .finally(() => setLoading(false));
   }, [user?.uid]);
 
-  const handleDelete = (id) => {
-    Swal.fire({
-      title: 'Are you sure?',
-      text: 'This request will be permanently deleted!',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        try {
-          await deleteDonationRequest(id);
-          setRequests((prev) => prev.filter((req) => req.id !== id));
-          Swal.fire({ icon: 'success', title: 'Deleted', showConfirmButton: false, timer: 1200 });
-        } catch (error) {
-          Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
-        }
-      }
-    });
-  };
-
-  const handleStatusUpdate = async (id, donation_status) => {
+  const handleStatus = async (id, donation_status) => {
     try {
       await updateDonationRequest(id, { donation_status });
       setRequests((prev) => prev.map((req) => (req.id === id ? { ...req, donation_status } : req)));
@@ -58,139 +48,101 @@ const MyDonationRequests = () => {
     }
   };
 
-  const filteredRequests =
-    filter === 'all' ? requests : requests.filter((req) => req.donation_status === filter);
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: 'Delete this request?',
+      text: 'This cannot be undone.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Delete',
+    }).then(async (result) => {
+      if (!result.isConfirmed) return;
+      try {
+        await deleteDonationRequest(id);
+        setRequests((prev) => prev.filter((req) => req.id !== id));
+      } catch (error) {
+        Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
+      }
+    });
+  };
 
-  const indexOfLast = currentPage * requestsPerPage;
-  const indexOfFirst = indexOfLast - requestsPerPage;
-  const currentRequests = filteredRequests.slice(indexOfFirst, indexOfLast);
-  const totalPages = Math.ceil(filteredRequests.length / requestsPerPage);
+  const filtered =
+    filter === 'all' ? requests : requests.filter((req) => req.donation_status === filter);
+  const totalPages = Math.ceil(filtered.length / PER_PAGE);
+  const pageItems = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   if (loading) return <Loading />;
 
   return (
-    <div className="p-4">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold">My Donation Requests</h2>
+    <div className="mx-auto max-w-4xl px-6 py-8">
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <h1 className="font-display text-[28px] font-semibold tracking-tight text-ink">
+          My requests
+        </h1>
         <button
           onClick={() => navigate('/dashboard/create-donation-request')}
-          className="btn btn-neutral btn-sm"
+          className="inline-flex h-11 items-center gap-2 rounded-xl bg-crimson px-5 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_2px_rgba(120,10,30,0.25)] transition hover:bg-crimson-deep"
         >
-          + New Request
+          <LuPlus className="h-4 w-4" strokeWidth={2.4} />
+          New request
         </button>
       </div>
 
-      {/* Filter Dropdown */}
-      <div className="mb-4">
-        <select
-          value={filter}
-          onChange={(e) => {
-            setFilter(e.target.value);
-            setCurrentPage(1);
-          }}
-          className="select select-bordered"
-        >
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
-          <option value="inprogress">In Progress</option>
-          <option value="done">Done</option>
-          <option value="canceled">Canceled</option>
-        </select>
-      </div>
-
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="table w-full">
-          <thead>
-            <tr>
-              <th>Recipient</th>
-              <th>Location</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Blood Group</th>
-              <th>Status</th>
-              <th>Donor Info</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentRequests.length > 0 ? (
-              currentRequests.map((req) => (
-                <tr key={req.id}>
-                  <td>{req.recipient_name}</td>
-                  <td>
-                    {req.recipient_governorate}, {req.recipient_city}
-                  </td>
-                  <td>{req.donation_date}</td>
-                  <td>{req.donation_time}</td>
-                  <td>{req.blood_group}</td>
-                  <td className="capitalize">{req.donation_status}</td>
-                  <td>
-                    {req.donation_status === 'inprogress' && (
-                      <div>
-                        <p>{req.donor_name}</p>
-                        <p className="text-sm">{req.donor_email}</p>
-                      </div>
-                    )}
-                  </td>
-                  <td className="flex gap-1 flex-wrap">
-                    {req.donation_status === 'inprogress' && (
-                      <>
-                        <button
-                          onClick={() => handleStatusUpdate(req.id, 'done')}
-                          className="btn btn-xs btn-success"
-                        >
-                          Done
-                        </button>
-                        <button
-                          onClick={() => handleStatusUpdate(req.id, 'canceled')}
-                          className="btn btn-xs btn-error"
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    )}
-                    <button
-                      onClick={() => navigate(`/dashboard/edit-donation-request/${req.id}`)}
-                      className="btn btn-xs btn-info"
-                    >
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(req.id)} className="btn btn-xs btn-outline">
-                      Delete
-                    </button>
-                    <button
-                      onClick={() => navigate(`/dashboard/donation-details/${req.id}`)}
-                      className="btn btn-xs"
-                    >
-                      View
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan={8} className="text-center py-4 text-gray-500">
-                  No requests found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Pagination */}
-      <div className="mt-4 flex gap-2">
-        {Array.from({ length: totalPages }, (_, i) => (
+      <div className="mb-6 flex flex-wrap gap-2">
+        {FILTERS.map((f) => (
           <button
-            key={i}
-            className={`btn ${currentPage === i + 1 ? 'btn-neutral' : 'btn-outline'}`}
-            onClick={() => setCurrentPage(i + 1)}
+            key={f.key}
+            onClick={() => {
+              setFilter(f.key);
+              setPage(1);
+            }}
+            className={`h-9 rounded-full px-4 text-[13px] font-semibold transition ${
+              filter === f.key
+                ? 'bg-ink text-on-ink'
+                : 'border border-line bg-card text-body hover:text-ink'
+            }`}
           >
-            {i + 1}
+            {f.label}
           </button>
         ))}
       </div>
+
+      {pageItems.length > 0 ? (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {pageItems.map((req) => (
+            <DonorRequestCard
+              key={req.id}
+              req={req}
+              onStatus={handleStatus}
+              onDelete={handleDelete}
+              onEdit={(id) => navigate(`/dashboard/edit-donation-request/${id}`)}
+              onView={(id) => navigate(`/dashboard/donation-details/${id}`)}
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-2xl border border-line bg-card p-10 text-center text-sm text-muted">
+          No requests here yet.
+        </div>
+      )}
+
+      {totalPages > 1 && (
+        <div className="mt-6 flex justify-center gap-2">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              key={i}
+              onClick={() => setPage(i + 1)}
+              className={`h-9 w-9 rounded-lg text-sm font-semibold transition ${
+                page === i + 1
+                  ? 'bg-crimson text-white'
+                  : 'border border-line bg-card text-body hover:text-ink'
+              }`}
+            >
+              {i + 1}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
