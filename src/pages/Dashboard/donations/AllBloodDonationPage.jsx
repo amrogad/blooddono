@@ -1,23 +1,27 @@
 import { useEffect, useState } from 'react';
-import { FaEye, FaTrash, FaEdit } from 'react-icons/fa';
 import { Link } from 'react-router';
+import { LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
 import Swal from 'sweetalert2';
 import useUserRole from '../../../hooks/useUserRole';
 import Loading from '../../../components/Loading';
+import BloodRoundel from '../../../components/BloodRoundel';
+import { StatusPill } from '../../../components/Pills';
+import { formatNeededBy } from '../../../utils/urgency';
 import {
   getDonationRequests,
   updateDonationRequest,
   deleteDonationRequest,
 } from '../../../services/donationService';
 
+const PER_PAGE = 8;
+const selectClass = 'h-9 rounded-lg border border-line-strong bg-card px-2 text-[13px] text-ink';
+
 const AllBloodDonationPage = () => {
   const { role } = useUserRole();
-
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5);
-  const [selectedRequest, setSelectedRequest] = useState(null);
+  const [page, setPage] = useState(1);
+  const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState('all');
 
   useEffect(() => {
@@ -33,11 +37,8 @@ const AllBloodDonationPage = () => {
     try {
       await updateDonationRequest(id, { donation_status: newStatus });
       setDonations((prev) =>
-        prev.map((donation) =>
-          donation.id === id ? { ...donation, donation_status: newStatus } : donation,
-        ),
+        prev.map((d) => (d.id === id ? { ...d, donation_status: newStatus } : d)),
       );
-      Swal.fire('Success', 'Status updated!', 'success');
     } catch (error) {
       Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
     }
@@ -45,179 +46,167 @@ const AllBloodDonationPage = () => {
 
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'You want to delete this request?',
+      title: 'Delete this request?',
+      text: 'This cannot be undone.',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
+      confirmButtonText: 'Delete',
     });
-
-    if (confirm.isConfirmed) {
-      try {
-        await deleteDonationRequest(id);
-        setDonations((prev) => prev.filter((donation) => donation.id !== id));
-        Swal.fire('Deleted!', 'Request deleted.', 'success');
-      } catch (error) {
-        Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
-      }
+    if (!confirm.isConfirmed) return;
+    try {
+      await deleteDonationRequest(id);
+      setDonations((prev) => prev.filter((d) => d.id !== id));
+    } catch (error) {
+      Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
     }
   };
 
-  const filteredDonations =
-    filter === 'all'
-      ? donations
-      : donations.filter((donation) => donation.donation_status === filter);
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentDonations = filteredDonations.slice(indexOfFirstItem, indexOfLastItem);
-
-  const totalPages = Math.ceil(filteredDonations.length / itemsPerPage);
+  const filtered = filter === 'all' ? donations : donations.filter((d) => d.donation_status === filter);
+  const totalPages = Math.ceil(filtered.length / PER_PAGE);
+  const pageItems = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE);
 
   if (loading) return <Loading />;
 
   return (
-    <div className="p-4">
-      <h2 className="text-3xl font-bold mb-6">All Blood Donation Requests</h2>
-
-      <div className="mb-4">
+    <div className="mx-auto max-w-4xl px-6 py-8">
+      <div className="mb-5 flex items-end justify-between gap-4">
+        <h1 className="font-display text-[28px] font-semibold tracking-tight text-ink">
+          All requests
+        </h1>
         <select
+          aria-label="Filter by status"
+          className="h-10 rounded-xl border border-line-strong bg-card px-3 text-sm text-ink"
           value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-          className="select select-bordered"
+          onChange={(e) => {
+            setFilter(e.target.value);
+            setPage(1);
+          }}
         >
-          <option value="all">All</option>
-          <option value="pending">Pending</option>
-          <option value="inprogress">In Progress</option>
-          <option value="done">Done</option>
-          <option value="canceled">Canceled</option>
+          <option value="all">All statuses</option>
+          <option value="pending">Searching</option>
+          <option value="inprogress">Matched</option>
+          <option value="done">Completed</option>
+          <option value="canceled">Cancelled</option>
         </select>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="table table-zebra w-full">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Recipient Name</th>
-              <th>Location</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th className="text-center">Blood Group</th>
-              <th className="text-center">Status</th>
-              <th>Donor Info</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentDonations.map((donation, index) => (
-              <tr key={donation.id}>
-                <td>{indexOfFirstItem + index + 1}</td>
-                <td>{donation.recipient_name}</td>
-                <td>
-                  {donation.recipient_governorate}, {donation.recipient_city}
-                </td>
-                <td>{donation.donation_date}</td>
-                <td>{donation.donation_time}</td>
-                <td className="text-center">{donation.blood_group}</td>
-                <td>
-                  <select
-                    className="select select-bordered select-sm"
-                    value={donation.donation_status}
-                    onChange={(e) => handleStatusChange(donation.id, e.target.value)}
-                    disabled={role !== 'admin'}
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="inprogress">In Progress</option>
-                    <option value="done">Done</option>
-                    <option value="canceled">Canceled</option>
-                  </select>
-                </td>
-                <td>
-                  {donation.donation_status === 'inprogress' && (
-                    <div>
-                      <p>{donation.donor_name}</p>
-                      <p className="text-sm">{donation.donor_email}</p>
-                    </div>
-                  )}
-                </td>
-                <td className="flex gap-2">
-                  <button className="btn btn-sm" onClick={() => setSelectedRequest(donation)}>
-                    <FaEye />
-                  </button>
-                  {role === 'admin' && (
-                    <>
-                      <Link
-                        to={`/dashboard/admin-edit-donation/${donation.id}`}
-                        className="btn btn-sm"
-                      >
-                        <FaEdit />
-                      </Link>
-                      <button
-                        className="btn btn-sm btn-error"
-                        onClick={() => handleDelete(donation.id)}
-                      >
-                        <FaTrash />
-                      </button>
-                    </>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="overflow-hidden rounded-2xl border border-line bg-card">
+        {pageItems.map((d, index) => (
+          <div
+            key={d.id}
+            className={`flex flex-wrap items-center gap-3 px-4 py-3 ${index > 0 ? 'border-t border-line' : ''}`}
+          >
+            <BloodRoundel group={d.blood_group} variant="tint" size={40} />
+            <div className="min-w-0 flex-1">
+              <div className="truncate text-[14.5px] font-semibold text-ink">{d.recipient_name}</div>
+              <div className="truncate text-xs text-muted">
+                {[d.recipient_city, d.recipient_governorate].filter(Boolean).join(', ')} ·{' '}
+                {formatNeededBy(d.donation_date, d.donation_time)}
+              </div>
+            </div>
+
+            {role === 'admin' ? (
+              <select
+                aria-label={`Status for ${d.recipient_name}`}
+                className={selectClass}
+                value={d.donation_status}
+                onChange={(e) => handleStatusChange(d.id, e.target.value)}
+              >
+                <option value="pending">Searching</option>
+                <option value="inprogress">Matched</option>
+                <option value="done">Completed</option>
+                <option value="canceled">Cancelled</option>
+              </select>
+            ) : (
+              <StatusPill status={d.donation_status} />
+            )}
+
+            <button
+              aria-label={`View ${d.recipient_name}`}
+              className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-body hover:text-ink"
+              onClick={() => setSelected(d)}
+            >
+              <LuEye className="h-4 w-4" />
+            </button>
+            {role === 'admin' && (
+              <>
+                <Link
+                  to={`/dashboard/admin-edit-donation/${d.id}`}
+                  aria-label={`Edit ${d.recipient_name}`}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-body hover:text-ink"
+                >
+                  <LuPencil className="h-4 w-4" />
+                </Link>
+                <button
+                  aria-label={`Delete ${d.recipient_name}`}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-crimson hover:bg-crimson-tint"
+                  onClick={() => handleDelete(d.id)}
+                >
+                  <LuTrash2 className="h-4 w-4" />
+                </button>
+              </>
+            )}
+          </div>
+        ))}
+        {pageItems.length === 0 && (
+          <div className="p-10 text-center text-sm text-muted">No requests found.</div>
+        )}
       </div>
 
-      {/* Pagination */}
-      <div className="flex justify-center mt-4">
-        <div className="join">
-          {[...Array(totalPages).keys()].map((page) => (
+      {totalPages > 1 && (
+        <div className="mt-6 flex justify-center gap-2">
+          {Array.from({ length: totalPages }, (_, idx) => (
             <button
-              key={page + 1}
-              onClick={() => setCurrentPage(page + 1)}
-              className={`join-item btn ${
-                currentPage === page + 1 ? 'btn-neutral' : 'btn-outline'
+              key={idx}
+              onClick={() => setPage(idx + 1)}
+              className={`h-9 w-9 rounded-lg text-sm font-semibold transition ${
+                page === idx + 1
+                  ? 'bg-crimson text-white'
+                  : 'border border-line bg-card text-body hover:text-ink'
               }`}
             >
-              {page + 1}
+              {idx + 1}
             </button>
           ))}
         </div>
-      </div>
+      )}
 
-      {/* Modal */}
-      {selectedRequest && (
-        <div className="modal modal-open">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg mb-2">Donation Details</h3>
-            <p>
-              <strong>Recipient Name:</strong> {selectedRequest.recipient_name}
-            </p>
-            <p>
-              <strong>Location:</strong> {selectedRequest.recipient_governorate},{' '}
-              {selectedRequest.recipient_city}
-            </p>
-            <p>
-              <strong>Blood Group:</strong> {selectedRequest.blood_group}
-            </p>
-            <p>
-              <strong>Hospital:</strong> {selectedRequest.hospital_name}
-            </p>
-            <p>
-              <strong>Full Address:</strong> {selectedRequest.full_address}
-            </p>
-            <p>
-              <strong>Donation Date & Time:</strong> {selectedRequest.donation_date} at{' '}
-              {selectedRequest.donation_time}
-            </p>
-            <p>
-              <strong>Status:</strong> {selectedRequest.donation_status}
-            </p>
-            <div className="modal-action">
-              <button className="btn btn-neutral" onClick={() => setSelectedRequest(null)}>
-                Close
-              </button>
+      {selected && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 p-4"
+          onClick={() => setSelected(null)}
+        >
+          <div
+            className="w-full max-w-sm rounded-3xl border border-line bg-card p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-3">
+              <BloodRoundel group={selected.blood_group} variant="tint" size={44} />
+              <div>
+                <h2 className="font-display text-lg font-semibold text-ink">
+                  {selected.recipient_name}
+                </h2>
+                <StatusPill status={selected.donation_status} />
+              </div>
             </div>
+            <div className="mt-4 space-y-1.5 text-sm text-body">
+              <p>
+                <span className="text-muted">Hospital:</span> {selected.hospital_name}
+              </p>
+              <p>
+                <span className="text-muted">Address:</span> {selected.full_address}
+              </p>
+              <p>
+                <span className="text-muted">Needed by:</span>{' '}
+                {formatNeededBy(selected.donation_date, selected.donation_time)}
+              </p>
+            </div>
+            <button
+              className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-xl bg-crimson text-sm font-semibold text-white transition hover:bg-crimson-deep"
+              onClick={() => setSelected(null)}
+            >
+              Close
+            </button>
           </div>
         </div>
       )}

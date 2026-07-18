@@ -1,12 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { LuArrowLeft } from 'react-icons/lu';
 import Loading from '../../../components/Loading';
 import { getBlog } from '../../../services/blogService';
+
+const proseClass = [
+  '[&_p]:mb-4 [&_p]:text-[16px] [&_p]:leading-relaxed [&_p]:text-body',
+  '[&_h2]:mb-3 [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-[22px] [&_h2]:font-semibold [&_h2]:tracking-tight [&_h2]:text-ink',
+  '[&_h3]:mb-2 [&_h3]:mt-6 [&_h3]:text-[18px] [&_h3]:font-semibold [&_h3]:text-ink',
+  '[&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-6 [&_li]:mb-1.5 [&_li]:leading-relaxed [&_li]:text-body',
+  '[&_strong]:font-semibold [&_strong]:text-ink',
+  '[&_a]:font-medium [&_a]:text-crimson [&_a]:underline',
+].join(' ');
 
 const BlogDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -21,24 +30,36 @@ const BlogDetails = () => {
 
   if (!blog) {
     return (
-      <div className="max-w-4xl mx-auto p-6 text-center">
-        <h2 className="text-2xl font-bold mb-4">Blog Not Found</h2>
+      <div className="mx-auto max-w-2xl px-6 py-20 text-center">
+        <h1 className="font-display text-2xl font-semibold text-ink">Blog not found</h1>
         <button
-          className="btn btn-neutral"
           onClick={() => navigate('/dashboard/content-management-page')}
+          className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-crimson hover:text-crimson-deep"
         >
-          Back to Content Management
+          <LuArrowLeft className="h-4 w-4" strokeWidth={2} />
+          Back to blogs
         </button>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-4xl font-bold mb-4">{blog.title}</h1>
-      <img src={blog.thumbnail} alt="blog thumbnail" className="mb-6 w-full rounded" />
-      <div className="prose max-w-full" dangerouslySetInnerHTML={{ __html: blog.content }} />
-    </div>
+    <article className="mx-auto max-w-2xl px-6 py-8">
+      <button
+        onClick={() => navigate('/dashboard/content-management-page')}
+        className="inline-flex items-center gap-1.5 text-sm font-semibold text-body transition hover:text-ink"
+      >
+        <LuArrowLeft className="h-4 w-4" strokeWidth={2} />
+        Back to blogs
+      </button>
+      <h1 className="mt-5 font-display text-[32px] font-semibold leading-tight tracking-tight text-ink">
+        {blog.title}
+      </h1>
+      {blog.thumbnail && (
+        <img src={blog.thumbnail} alt="" className="mt-6 h-64 w-full rounded-2xl object-cover" />
+      )}
+      <div className={`mt-8 ${proseClass}`} dangerouslySetInnerHTML={{ __html: blog.content }} />
+    </article>
   );
 };
 

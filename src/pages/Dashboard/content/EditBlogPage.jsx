@@ -4,6 +4,10 @@ import Swal from 'sweetalert2';
 import Loading from '../../../components/Loading';
 import { getBlog, updateBlog } from '../../../services/blogService';
 
+const fieldClass =
+  'h-12 w-full rounded-xl border border-line-strong bg-card px-4 text-[15px] text-ink placeholder:text-muted focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15';
+const labelClass = 'mb-1.5 block text-[13px] font-semibold text-ink';
+
 const EditBlogPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -49,43 +53,67 @@ const EditBlogPage = () => {
 
   if (notFound) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <p className="text-center text-gray-500">Blog not found.</p>
+      <div className="mx-auto max-w-2xl px-6 py-20 text-center text-sm text-muted">
+        Blog not found.
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h2 className="text-3xl font-bold mb-6">Edit Blog</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="text"
-          name="title"
-          className="input input-bordered w-full"
-          placeholder="Blog Title"
-          value={formData.title}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="thumbnail"
-          className="input input-bordered w-full"
-          placeholder="Thumbnail URL"
-          value={formData.thumbnail}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          className="textarea w-full h-48"
-          name="content"
-          placeholder="Write your blog content here..."
-          value={formData.content}
-          onChange={handleChange}
-        />
-        <button type="submit" className="btn btn-neutral" disabled={saving}>
-          {saving ? 'Updating...' : 'Update Blog'}
+    <div className="mx-auto max-w-2xl px-6 py-8">
+      <h1 className="mb-6 font-display text-[28px] font-semibold tracking-tight text-ink">
+        Edit blog
+      </h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div>
+          <label htmlFor="edit-title" className={labelClass}>
+            Title
+          </label>
+          <input
+            id="edit-title"
+            type="text"
+            name="title"
+            className={fieldClass}
+            placeholder="Blog Title"
+            value={formData.title}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="edit-thumb" className={labelClass}>
+            Thumbnail URL
+          </label>
+          <input
+            id="edit-thumb"
+            type="text"
+            name="thumbnail"
+            className={fieldClass}
+            placeholder="Thumbnail URL"
+            value={formData.thumbnail}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="edit-content" className={labelClass}>
+            Content
+          </label>
+          <textarea
+            id="edit-content"
+            name="content"
+            className="min-h-48 w-full rounded-xl border border-line-strong bg-card px-4 py-3 text-[15px] leading-relaxed text-ink placeholder:text-muted focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15"
+            placeholder="Write your blog content here..."
+            value={formData.content}
+            onChange={handleChange}
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={saving}
+          className="inline-flex h-12 items-center justify-center self-start rounded-xl bg-crimson px-6 text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_-8px_rgba(156,14,46,0.5)] transition hover:bg-crimson-deep disabled:opacity-60"
+        >
+          {saving ? 'Updating…' : 'Update Blog'}
         </button>
       </form>
     </div>

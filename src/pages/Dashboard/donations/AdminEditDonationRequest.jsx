@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import governorates from '../../../assets/governorates.json';
 import cities from '../../../assets/cities.json';
 import Loading from '../../../components/Loading';
+import { BLOOD_GROUPS } from '../../../utils/bloodCompat';
 import { getDonationRequest, updateDonationRequest } from '../../../services/donationService';
 
 const EDITABLE_FIELDS = [
@@ -19,6 +20,11 @@ const EDITABLE_FIELDS = [
   'donation_status',
   'request_message',
 ];
+
+const fieldClass =
+  'h-12 w-full rounded-xl border border-line-strong bg-card px-4 text-[15px] text-ink focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15';
+const labelClass = 'mb-1.5 block text-[13px] font-semibold text-ink';
+const errorClass = 'mt-1 text-sm text-crimson';
 
 const AdminEditDonationRequest = () => {
   const { id } = useParams();
@@ -63,41 +69,34 @@ const AdminEditDonationRequest = () => {
 
   if (notFound) {
     return (
-      <div className="max-w-4xl mx-auto py-10 px-4 text-center">
-        <h2 className="text-2xl font-bold mb-4">Request Not Found</h2>
+      <div className="mx-auto max-w-2xl px-6 py-20 text-center">
+        <h1 className="font-display text-2xl font-semibold text-ink">Request not found</h1>
         <button
-          className="btn btn-neutral"
+          className="mt-4 text-sm font-semibold text-crimson hover:text-crimson-deep"
           onClick={() => navigate('/dashboard/all-blood-donation-request')}
         >
-          Back to All Requests
+          Back to all requests
         </button>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-10 px-4">
-      <h2 className="text-3xl font-bold mb-6">Edit Donation Request</h2>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="md:col-span-2">
-          <label className="label">Recipient Name</label>
-          <input
-            type="text"
-            className="input input-bordered w-full"
-            {...register('recipient_name', { required: true })}
-          />
-          {errors.recipient_name && (
-            <p className="text-red-500 text-sm">Recipient name is required</p>
-          )}
+    <div className="mx-auto max-w-2xl px-6 py-8">
+      <h1 className="mb-6 font-display text-[28px] font-semibold tracking-tight text-ink">
+        Edit request
+      </h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="sm:col-span-2">
+          <label className={labelClass}>Patient name</label>
+          <input className={fieldClass} {...register('recipient_name', { required: true })} />
+          {errors.recipient_name && <p className={errorClass}>Recipient name is required</p>}
         </div>
 
         <div>
-          <label className="label">Recipient Governorate</label>
-          <select
-            {...register('recipient_governorate', { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select Governorate</option>
+          <label className={labelClass}>Governorate</label>
+          <select className={fieldClass} {...register('recipient_governorate', { required: true })}>
+            <option value="">Select</option>
             {governorates.map((d) => (
               <option key={d.id} value={d.name}>
                 {d.name}
@@ -107,12 +106,9 @@ const AdminEditDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Recipient City</label>
-          <select
-            {...register('recipient_city', { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="">Select City</option>
+          <label className={labelClass}>City</label>
+          <select className={fieldClass} {...register('recipient_city', { required: true })}>
+            <option value="">Select</option>
             {filteredCities.map((c) => (
               <option key={c.id} value={c.name}>
                 {c.name}
@@ -121,32 +117,21 @@ const AdminEditDonationRequest = () => {
           </select>
         </div>
 
-        <div className="md:col-span-2">
-          <label className="label">Hospital Name</label>
-          <input
-            type="text"
-            className="input input-bordered w-full"
-            {...register('hospital_name', { required: true })}
-          />
+        <div className="sm:col-span-2">
+          <label className={labelClass}>Hospital</label>
+          <input className={fieldClass} {...register('hospital_name', { required: true })} />
         </div>
 
-        <div className="md:col-span-2">
-          <label className="label">Full Address</label>
-          <input
-            type="text"
-            className="input input-bordered w-full"
-            {...register('full_address', { required: true })}
-          />
+        <div className="sm:col-span-2">
+          <label className={labelClass}>Full address</label>
+          <input className={fieldClass} {...register('full_address', { required: true })} />
         </div>
 
-        <div className="md:col-span-2">
-          <label className="label">Blood Group</label>
-          <select
-            {...register('blood_group', { required: true })}
-            className="select select-bordered w-full"
-          >
+        <div>
+          <label className={labelClass}>Blood group</label>
+          <select className={fieldClass} {...register('blood_group', { required: true })}>
             <option value="">Select</option>
-            {['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'].map((group) => (
+            {BLOOD_GROUPS.map((group) => (
               <option key={group} value={group}>
                 {group}
               </option>
@@ -155,48 +140,42 @@ const AdminEditDonationRequest = () => {
         </div>
 
         <div>
-          <label className="label">Donation Date</label>
-          <input
-            type="date"
-            className="input input-bordered w-full"
-            {...register('donation_date', { required: true })}
-          />
-        </div>
-
-        <div>
-          <label className="label">Donation Time</label>
-          <input
-            type="time"
-            className="input input-bordered w-full"
-            {...register('donation_time', { required: true })}
-          />
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="label">Status</label>
-          <select
-            {...register('donation_status', { required: true })}
-            className="select select-bordered w-full"
-          >
-            <option value="pending">Pending</option>
-            <option value="inprogress">In Progress</option>
-            <option value="done">Done</option>
-            <option value="canceled">Canceled</option>
+          <label className={labelClass}>Status</label>
+          <select className={fieldClass} {...register('donation_status', { required: true })}>
+            <option value="pending">Searching</option>
+            <option value="inprogress">Matched</option>
+            <option value="done">Completed</option>
+            <option value="canceled">Cancelled</option>
           </select>
         </div>
 
-        <div className="md:col-span-2">
-          <label className="label">Request Message</label>
-          <textarea
-            className="textarea textarea-bordered w-full"
-            rows="4"
-            {...register('request_message', { required: true })}
-          ></textarea>
+        <div className="flex gap-3 sm:col-span-2">
+          <div className="flex-1">
+            <label className={labelClass}>Date</label>
+            <input type="date" className={fieldClass} {...register('donation_date', { required: true })} />
+          </div>
+          <div className="flex-1">
+            <label className={labelClass}>Time</label>
+            <input type="time" className={fieldClass} {...register('donation_time', { required: true })} />
+          </div>
         </div>
 
-        <div className="md:col-span-2">
-          <button type="submit" className="btn btn-neutral w-full" disabled={saving}>
-            {saving ? 'Updating...' : 'Update Request'}
+        <div className="sm:col-span-2">
+          <label className={labelClass}>Message to donors</label>
+          <textarea
+            rows="3"
+            className="w-full rounded-xl border border-line-strong bg-card px-4 py-3 text-[15px] text-ink focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15"
+            {...register('request_message', { required: true })}
+          />
+        </div>
+
+        <div className="sm:col-span-2">
+          <button
+            type="submit"
+            disabled={saving}
+            className="inline-flex h-12 items-center justify-center rounded-xl bg-crimson px-6 text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_-8px_rgba(156,14,46,0.5)] transition hover:bg-crimson-deep disabled:opacity-60"
+          >
+            {saving ? 'Updating…' : 'Update Request'}
           </button>
         </div>
       </form>
