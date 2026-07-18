@@ -12,7 +12,7 @@ test.describe('Supabase auth flow', () => {
 
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/dashboard/);
-    await expect(page.getByText('BloodDono Dashboard')).toBeVisible();
+    await expect(page.getByText('Welcome back')).toBeVisible();
   });
 
   test('logging out clears the user and updates the navbar', async ({ page }) => {
@@ -23,11 +23,11 @@ test.describe('Supabase auth flow', () => {
     await expect(profileTrigger).toBeVisible();
 
     await profileTrigger.click();
-    await page.getByText('Logout', { exact: true }).click({ force: true });
+    await page.getByText('Log out', { exact: true }).click({ force: true });
 
     await expect(page).toHaveURL('/');
-    await expect(page.getByRole('link', { name: 'Register' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
+    await expect(page.getByRole('banner').getByRole('link', { name: 'Become a donor' })).toBeVisible();
+    await expect(page.getByRole('banner').getByRole('link', { name: 'Sign in' })).toBeVisible();
     await expect(profileTrigger).not.toBeVisible();
   });
 });

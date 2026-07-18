@@ -18,9 +18,9 @@ test.describe('Supabase-backed data', () => {
   test('donor search returns a searchable donor from the database', async ({ page }) => {
     await page.goto('/search');
 
-    await page.locator('select[name="bloodGroup"]').selectOption('O+');
-    await page.locator('select[name="governorate"]').selectOption('Cairo');
-    await page.locator('select[name="city"]').selectOption('Nasr City');
+    await page.getByRole('button', { name: 'Blood type O+', exact: true }).click();
+    await page.locator('#gov').selectOption('Cairo');
+    await page.locator('#city').selectOption('Nasr City');
     await page.getByRole('button', { name: 'Search' }).click();
 
     await expect(page.getByText('Demo Donor')).toBeVisible();
@@ -31,9 +31,9 @@ test.describe('Supabase-backed data', () => {
     // search surfaces them even though the groups are not equal.
     await page.goto('/search');
 
-    await page.locator('select[name="bloodGroup"]').selectOption('A+');
-    await page.locator('select[name="governorate"]').selectOption('Cairo');
-    await page.locator('select[name="city"]').selectOption('Nasr City');
+    await page.getByRole('button', { name: 'Blood type A+', exact: true }).click();
+    await page.locator('#gov').selectOption('Cairo');
+    await page.locator('#city').selectOption('Nasr City');
     await page.getByRole('button', { name: 'Search' }).click();
 
     await expect(page.getByText('Demo Donor')).toBeVisible();

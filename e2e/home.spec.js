@@ -5,10 +5,10 @@ test.describe('Home page', () => {
     await page.goto('/');
 
     await expect(
-      page.getByRole('heading', { name: /Where Every Connection is a Lifesaver/i }),
+      page.getByRole('heading', { name: /Someone near you\s*needs blood today/i }),
     ).toBeVisible();
 
-    await expect(page.locator('img[src="/images/blood-hero.png"]').first()).toBeVisible();
+    await expect(page.getByRole('link', { name: /I can give blood/i })).toBeVisible();
   });
 
   test('has no broken images on the landing page', async ({ page }) => {
