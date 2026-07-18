@@ -27,6 +27,7 @@ Each role gets a different dashboard: admin covers user/content management and p
 - Route guards that redirect unauthorized roles to a `/forbidden` page
 - Blog section with a content management UI
 - Donation/funding page
+- Light and dark mode, with a system-aware default
 - Responsive layout with Tailwind CSS + DaisyUI
 
 ## Screenshots
