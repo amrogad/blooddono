@@ -1,11 +1,13 @@
 import { Link, useNavigate } from 'react-router';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
 import { signUp } from '../../services/authService';
 import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
 import BrandMark from '../../components/BrandMark';
 import { BLOOD_GROUPS } from '../../utils/bloodCompat';
+import { localizeGov, localizeCity } from '../../utils/places';
 
 const fieldClass =
   'h-12 w-full rounded-xl border border-line-strong bg-card px-4 text-[15px] text-ink placeholder:text-muted focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15';
@@ -13,6 +15,7 @@ const labelClass = 'mb-1.5 block text-[13px] font-semibold text-ink';
 const errorClass = 'mt-1 text-sm text-crimson';
 
 const Register = () => {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -28,13 +31,13 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       await signUp(data);
-      Swal.fire({ icon: 'success', title: 'Registered Successfully!', showConfirmButton: true }).then(
+      Swal.fire({ icon: 'success', title: t('register.success'), showConfirmButton: true }).then(
         (result) => {
           if (result.isConfirmed) navigate('/');
         },
       );
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Registration failed', text: error.message });
+      Swal.fire({ icon: 'error', title: t('register.failed'), text: error.message });
     }
   };
 
@@ -48,28 +51,28 @@ const Register = () => {
           </span>
         </div>
         <h1 className="font-display text-[26px] font-semibold tracking-tight text-ink">
-          Create your donor profile
+          {t('register.title')}
         </h1>
         <p className="mt-1 mb-7 text-sm text-muted">
-          Already have an account?{' '}
+          {t('register.haveAccount')}{' '}
           <Link to="/login" className="font-semibold text-crimson hover:text-crimson-deep">
-            Sign in
+            {t('nav.signIn')}
           </Link>
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
           <div>
             <label htmlFor="reg-name" className={labelClass}>
-              Full name
+              {t('register.fullName')}
             </label>
             <input
               id="reg-name"
               type="text"
               autoComplete="name"
-              placeholder="Full Name…"
+              placeholder={t('register.fullNamePlaceholder')}
               {...register('name', {
-                required: 'Name is required!',
-                minLength: { value: 5, message: 'Name should be more than 5 characters!' },
+                required: t('validation.nameRequired'),
+                minLength: { value: 5, message: t('validation.nameMin') },
               })}
               className={fieldClass}
             />
@@ -78,19 +81,19 @@ const Register = () => {
 
           <div>
             <label htmlFor="reg-email" className={labelClass}>
-              Email
+              {t('auth.email')}
             </label>
             <input
               id="reg-email"
               type="email"
               autoComplete="email"
               spellCheck={false}
-              placeholder="Email…"
+              placeholder={t('auth.emailPlaceholder')}
               {...register('email', {
-                required: 'Email is required!',
+                required: t('validation.emailRequired'),
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Please provide a correct email address.',
+                  message: t('validation.emailPattern'),
                 },
               })}
               className={fieldClass}
@@ -100,14 +103,14 @@ const Register = () => {
 
           <div>
             <label htmlFor="reg-blood-group" className={labelClass}>
-              Blood group
+              {t('register.bloodGroup')}
             </label>
             <select
               id="reg-blood-group"
-              {...register('bloodGroup', { required: 'Please select your blood group.' })}
+              {...register('bloodGroup', { required: t('validation.bloodGroupRequired') })}
               className={fieldClass}
             >
-              <option value="">Select a blood group</option>
+              <option value="">{t('register.selectBloodGroup')}</option>
               {BLOOD_GROUPS.map((g) => (
                 <option key={g} value={g}>
                   {g}
@@ -120,17 +123,17 @@ const Register = () => {
           <div className="flex gap-3">
             <div className="flex-1">
               <label htmlFor="reg-governorate" className={labelClass}>
-                Governorate
+                {t('register.governorate')}
               </label>
               <select
                 id="reg-governorate"
-                {...register('governorate', { required: 'Please select a governorate!' })}
+                {...register('governorate', { required: t('validation.governorateRequired') })}
                 className={fieldClass}
               >
-                <option value="">Select</option>
+                <option value="">{t('register.select')}</option>
                 {governorates.map((g) => (
                   <option key={g.id} value={g.name}>
-                    {g.name}
+                    {localizeGov(g.name)}
                   </option>
                 ))}
               </select>
@@ -138,17 +141,17 @@ const Register = () => {
             </div>
             <div className="flex-1">
               <label htmlFor="reg-city" className={labelClass}>
-                City
+                {t('register.city')}
               </label>
               <select
                 id="reg-city"
-                {...register('city', { required: 'Please select a city' })}
+                {...register('city', { required: t('validation.cityRequired') })}
                 className={fieldClass}
               >
-                <option value="">Select</option>
+                <option value="">{t('register.select')}</option>
                 {filteredCities.map((c) => (
                   <option key={c.id} value={c.name}>
-                    {c.name}
+                    {localizeCity(c.name)}
                   </option>
                 ))}
               </select>
@@ -158,19 +161,19 @@ const Register = () => {
 
           <div>
             <label htmlFor="reg-password" className={labelClass}>
-              Password
+              {t('auth.password')}
             </label>
             <input
               id="reg-password"
               type="password"
               autoComplete="new-password"
-              placeholder="Password…"
+              placeholder={t('auth.passwordPlaceholder')}
               {...register('password', {
-                required: 'Password is required',
-                minLength: { value: 6, message: 'Password must be at least 6 characters' },
+                required: t('validation.passwordRequired'),
+                minLength: { value: 6, message: t('validation.passwordMin') },
                 pattern: {
                   value: /^(?=.*[a-z])(?=.*[A-Z]).+$/,
-                  message: 'Must include at least one uppercase and one lowercase letter',
+                  message: t('validation.passwordPattern'),
                 },
               })}
               className={fieldClass}
@@ -180,16 +183,16 @@ const Register = () => {
 
           <div>
             <label htmlFor="reg-confirm-password" className={labelClass}>
-              Confirm password
+              {t('register.confirmPassword')}
             </label>
             <input
               id="reg-confirm-password"
               type="password"
               autoComplete="new-password"
-              placeholder="Confirm password…"
+              placeholder={t('register.confirmPasswordPlaceholder')}
               {...register('confirm_password', {
-                required: 'Please confirm your password',
-                validate: (value) => value === password || 'Passwords do not match',
+                required: t('validation.confirmPasswordRequired'),
+                validate: (value) => value === password || t('validation.passwordMismatch'),
               })}
               className={fieldClass}
             />
@@ -200,7 +203,7 @@ const Register = () => {
             type="submit"
             className="mt-1 inline-flex h-12 items-center justify-center rounded-xl bg-crimson text-[15px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_8px_20px_-8px_rgba(156,14,46,0.5)] transition hover:bg-crimson-deep"
           >
-            Create profile
+            {t('register.submit')}
           </button>
         </form>
       </div>

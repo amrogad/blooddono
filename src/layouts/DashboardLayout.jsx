@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { Link, NavLink, Outlet } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { HiMenu } from 'react-icons/hi';
 import {
   LuLayoutGrid,
@@ -23,6 +24,7 @@ const linkClass = ({ isActive }) =>
   }`;
 
 const DashboardLayout = () => {
+  const { t } = useTranslation();
   const { role, loading } = useUserRole();
 
   if (loading) return <Loading />;
@@ -35,13 +37,13 @@ const DashboardLayout = () => {
           <div className="flex items-center gap-2">
             <label
               htmlFor="my-drawer-2"
-              aria-label="open sidebar"
+              aria-label={t('dash.openSidebar')}
               className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-xl text-ink lg:hidden"
             >
               <HiMenu className="text-2xl" />
             </label>
             <span className="font-display text-lg font-semibold tracking-tight text-ink">
-              Dashboard
+              {t('nav.dashboard')}
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -56,16 +58,20 @@ const DashboardLayout = () => {
       </div>
 
       <div className="drawer-side z-40">
-        <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label>
-        <div className="flex min-h-full w-72 flex-col border-r border-line bg-card p-4">
+        <label
+          htmlFor="my-drawer-2"
+          aria-label={t('dash.closeSidebar')}
+          className="drawer-overlay"
+        ></label>
+        <div className="flex min-h-full w-72 flex-col border-e border-line bg-card p-4">
           <Link to="/" className="mb-6 flex items-center gap-2 px-2 pt-1">
             <BrandMark size={26} />
             <span className="font-display text-lg font-semibold tracking-tight text-ink">
               BloodDono
             </span>
             {role && (
-              <span className="ml-auto rounded-full bg-ink px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wider text-on-ink">
-                {role}
+              <span className="ms-auto rounded-full bg-ink px-2 py-0.5 text-[9.5px] font-bold uppercase tracking-wider text-on-ink">
+                {t(`auth.role.${role}`)}
               </span>
             )}
           </Link>
@@ -73,18 +79,18 @@ const DashboardLayout = () => {
           <nav className="flex flex-col gap-1">
             <NavLink to="/dashboard" end className={linkClass}>
               <LuLayoutGrid className="h-4 w-4" strokeWidth={2} />
-              Overview
+              {t('dash.overview')}
             </NavLink>
 
             {role === 'donor' && (
               <>
                 <NavLink to="/dashboard/my-donation-requests" className={linkClass}>
                   <LuDroplet className="h-4 w-4" strokeWidth={2} />
-                  My requests
+                  {t('dash.myRequests')}
                 </NavLink>
                 <NavLink to="/dashboard/create-donation-request" className={linkClass}>
                   <LuPlus className="h-4 w-4" strokeWidth={2} />
-                  New request
+                  {t('browse.newRequest')}
                 </NavLink>
               </>
             )}
@@ -93,11 +99,11 @@ const DashboardLayout = () => {
               <>
                 <NavLink to="/dashboard/all-blood-donation-request" className={linkClass}>
                   <LuDroplet className="h-4 w-4" strokeWidth={2} />
-                  Requests
+                  {t('nav.requests')}
                 </NavLink>
                 <NavLink to="/dashboard/content-management-page" className={linkClass}>
                   <LuFileText className="h-4 w-4" strokeWidth={2} />
-                  Blogs
+                  {t('nav.blogs')}
                 </NavLink>
               </>
             )}
@@ -105,21 +111,21 @@ const DashboardLayout = () => {
             {role === 'admin' && (
               <NavLink to="/dashboard/all-users" className={linkClass}>
                 <LuUsers className="h-4 w-4" strokeWidth={2} />
-                Users
+                {t('dash.users')}
               </NavLink>
             )}
 
             <NavLink to="/search" className={linkClass}>
               <LuSearch className="h-4 w-4" strokeWidth={2} />
-              Find donors
+              {t('nav.findDonors')}
             </NavLink>
             <NavLink to="/funds" className={linkClass}>
               <LuHeart className="h-4 w-4" strokeWidth={2} />
-              Funding
+              {t('dash.funding')}
             </NavLink>
             <NavLink to="/dashboard/profile" className={linkClass}>
               <LuUser className="h-4 w-4" strokeWidth={2} />
-              Profile
+              {t('dash.profile')}
             </NavLink>
           </nav>
         </div>

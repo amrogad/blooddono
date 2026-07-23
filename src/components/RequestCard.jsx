@@ -1,19 +1,24 @@
+import { useTranslation } from 'react-i18next';
 import { LuDroplet } from 'react-icons/lu';
 import BloodRoundel from './BloodRoundel';
 import { UrgencyPill } from './Pills';
 import { getUrgency, formatNeededBy } from '../utils/urgency';
+import { localizeCity, localizeGov } from '../utils/places';
 
 // The request card, web list-row variant — the anatomy shared across every
 // surface. Roundel + who/where/when + one primary action on the row. No
 // distance/hospital invented: shows hospital_name only when the payload has it
 // (owner/detail views), otherwise the city/governorate the public list returns.
-export default function RequestCard({ request, onDetails, onDonate, actionLabel = 'I can donate' }) {
+export default function RequestCard({ request, onDetails, onDonate, actionLabel }) {
+  const { t } = useTranslation();
   const { level } = getUrgency(request.donation_date, request.donation_time);
   const loud = level === 'critical';
   const overdue = level === 'pastdue';
   const location =
     request.hospital_name ||
-    [request.recipient_city, request.recipient_governorate].filter(Boolean).join(', ');
+    [localizeCity(request.recipient_city), localizeGov(request.recipient_governorate)]
+      .filter(Boolean)
+      .join(', ');
   const neededBy = formatNeededBy(request.donation_date, request.donation_time);
 
   return (
@@ -28,13 +33,15 @@ export default function RequestCard({ request, onDetails, onDonate, actionLabel 
 
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <span className="truncate text-[15.5px] font-semibold text-ink">
+          <span dir="auto" className="truncate text-[15.5px] font-semibold text-ink">
             {request.recipient_name}
           </span>
           <UrgencyPill level={level} />
         </div>
         <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[13px] text-muted">
-          <span className="truncate">{location}</span>
+          <span dir="auto" className="truncate">
+            {location}
+          </span>
           <span className="text-line-strong">·</span>
           <span className={`font-semibold ${loud || overdue ? 'text-crimson' : 'text-ink'}`}>
             {neededBy}
@@ -48,7 +55,7 @@ export default function RequestCard({ request, onDetails, onDonate, actionLabel 
           onClick={onDetails}
           className="hidden h-[42px] shrink-0 items-center rounded-xl px-4 text-[13.5px] font-semibold text-body hover:text-ink sm:inline-flex"
         >
-          Details
+          {t('card.details')}
         </button>
       )}
 
@@ -63,7 +70,7 @@ export default function RequestCard({ request, onDetails, onDonate, actionLabel 
           }`}
         >
           <LuDroplet className="h-3.5 w-3.5" strokeWidth={2.2} />
-          {actionLabel}
+          {actionLabel ?? t('card.canDonate')}
         </button>
       )}
     </div>

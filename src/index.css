@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Cairo:wght@400..800&family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
 
 @import 'tailwindcss';
 @plugin "daisyui";
@@ -130,6 +130,13 @@
   --color-warning-tint: #372c14;
   --color-info: #7aa0f5;
   --color-info-tint: #1e2c4c;
+}
+
+/* Arabic swaps the Latin display/body faces for Cairo. Blood-group letters are
+   pinned back to Bricolage on the roundel so A+/O- keep their brand character. */
+:root[lang='ar'] {
+  --font-display: 'Cairo', 'Bricolage Grotesque', ui-sans-serif, sans-serif;
+  --font-sans: 'Cairo', 'Instrument Sans', ui-sans-serif, sans-serif;
 }
 
 body {

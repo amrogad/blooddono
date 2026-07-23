@@ -1,15 +1,18 @@
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
 import { LuSearch } from 'react-icons/lu';
 import governorates from '../../assets/governorates.json';
 import cities from '../../assets/cities.json';
 import { searchDonors } from '../../services/profileService';
 import { BLOOD_GROUPS, compatibleDonorsFor } from '../../utils/bloodCompat';
+import { localizeGov, localizeCity } from '../../utils/places';
 
 const selectClass =
   'h-11 min-w-[150px] rounded-xl border border-line-strong bg-card px-3.5 text-sm text-ink focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15';
 
 const SearchPage = () => {
+  const { t } = useTranslation();
   const [bloodGroup, setBloodGroup] = useState('');
   const [governorate, setGovernorate] = useState('');
   const [city, setCity] = useState('');
@@ -38,7 +41,7 @@ const SearchPage = () => {
       setDonors(rows);
       setSubmitted(true);
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Search failed', text: error.message });
+      Swal.fire({ icon: 'error', title: t('search.searchFailed'), text: error.message });
     } finally {
       setSearching(false);
     }
@@ -46,25 +49,28 @@ const SearchPage = () => {
 
   return (
     <div className="mx-auto min-h-screen max-w-5xl px-4 py-10">
-      <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">Find donors</h1>
-      <p className="mt-1.5 mb-6 text-sm text-muted">
-        Search the patient&apos;s blood type. We include every type that&apos;s safe to give.
-      </p>
+      <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">
+        {t('search.title')}
+      </h1>
+      <p className="mt-1.5 mb-6 text-sm text-muted">{t('search.subtitle')}</p>
 
       <form
         onSubmit={handleSearch}
         className="flex flex-wrap items-end gap-4 rounded-2xl border border-line bg-card p-5 shadow-[0_1px_2px_rgba(33,20,22,0.04)]"
       >
         <div>
-          <div className="mb-2 text-[12.5px] font-semibold text-ink">Patient&apos;s blood type</div>
+          <div className="mb-2 text-[12.5px] font-semibold text-ink">
+            {t('search.patientBloodType')}
+          </div>
           <div className="flex flex-wrap gap-1.5">
             {BLOOD_GROUPS.map((g) => (
               <button
                 key={g}
                 type="button"
+                dir="ltr"
                 onClick={() => setBloodGroup(g)}
                 aria-pressed={bloodGroup === g}
-                aria-label={`Blood type ${g}`}
+                aria-label={t('card.bloodTypeA11y', { group: g })}
                 className={`flex h-11 w-11 items-center justify-center rounded-xl font-display text-[15px] font-bold transition ${
                   bloodGroup === g
                     ? 'bg-crimson text-white shadow-[0_0_0_3px_rgba(194,30,63,0.18)]'
@@ -81,7 +87,7 @@ const SearchPage = () => {
 
         <div>
           <label htmlFor="gov" className="mb-2 block text-[12.5px] font-semibold text-ink">
-            Governorate
+            {t('search.governorate')}
           </label>
           <select
             id="gov"
@@ -92,10 +98,10 @@ const SearchPage = () => {
             }}
             className={selectClass}
           >
-            <option value="">Select</option>
+            <option value="">{t('search.select')}</option>
             {governorates.map((g) => (
               <option key={g.id} value={g.name}>
-                {g.name}
+                {localizeGov(g.name)}
               </option>
             ))}
           </select>
@@ -103,7 +109,7 @@ const SearchPage = () => {
 
         <div>
           <label htmlFor="city" className="mb-2 block text-[12.5px] font-semibold text-ink">
-            City
+            {t('search.city')}
           </label>
           <select
             id="city"
@@ -112,10 +118,10 @@ const SearchPage = () => {
             disabled={!governorate}
             className={`${selectClass} disabled:opacity-50`}
           >
-            <option value="">Select city</option>
+            <option value="">{t('search.selectCity')}</option>
             {filteredCities.map((c) => (
               <option key={c.id} value={c.name}>
-                {c.name}
+                {localizeCity(c.name)}
               </option>
             ))}
           </select>
@@ -124,10 +130,10 @@ const SearchPage = () => {
         <button
           type="submit"
           disabled={searching || !bloodGroup || !governorate || !city}
-          className="ml-auto inline-flex h-11 items-center gap-2 rounded-xl bg-crimson px-6 text-sm font-semibold text-white transition hover:bg-crimson-deep disabled:opacity-50"
+          className="ms-auto inline-flex h-11 items-center gap-2 rounded-xl bg-crimson px-6 text-sm font-semibold text-white transition hover:bg-crimson-deep disabled:opacity-50"
         >
           <LuSearch className="h-4 w-4" strokeWidth={2.2} />
-          {searching ? 'Searching…' : 'Search'}
+          {searching ? t('search.searching') : t('search.search')}
         </button>
       </form>
 
@@ -145,20 +151,21 @@ const SearchPage = () => {
           >
             <span
               className={`absolute top-[3px] h-4 w-4 rounded-full bg-white shadow transition-all ${
-                includeCompatible ? 'right-[3px]' : 'left-[3px]'
+                includeCompatible ? 'end-[3px]' : 'start-[3px]'
               }`}
             />
           </span>
-          Include compatible types
+          {t('search.includeCompatible')}
         </button>
         {includeCompatible && bloodGroup && (
           <>
             <span className="text-[13px] text-muted">
-              {bloodGroup} patients can safely receive from:
+              {t('search.canReceiveFrom', { group: bloodGroup })}
             </span>
             {included.map((g) => (
               <span
                 key={g}
+                dir="ltr"
                 className="rounded-full bg-crimson-tint px-2.5 py-0.5 font-display text-xs font-bold text-crimson"
               >
                 {g}
@@ -171,9 +178,9 @@ const SearchPage = () => {
       {submitted && results.length > 0 && (
         <div className="mb-3 flex items-baseline justify-between">
           <span className="text-[15px] font-semibold text-ink">
-            {results.length} {results.length === 1 ? 'donor matches' : 'donors match'}
+            {t('search.matchCount', { count: results.length })}
           </span>
-          <span className="text-[13px] text-muted">Only donors who opted into search are shown</span>
+          <span className="text-[13px] text-muted">{t('search.optedInOnly')}</span>
         </div>
       )}
 
@@ -191,14 +198,19 @@ const SearchPage = () => {
                   className="h-11 w-11 rounded-xl object-cover"
                 />
                 <div className="min-w-0 flex-1">
-                  <div className="truncate text-[14.5px] font-semibold text-ink">
+                  <div dir="auto" className="truncate text-[14.5px] font-semibold text-ink">
                     {donor.display_name}
                   </div>
-                  <div className="truncate text-xs text-muted">
-                    {[donor.city, donor.governorate].filter(Boolean).join(', ')}
+                  <div dir="auto" className="truncate text-xs text-muted">
+                    {[localizeCity(donor.city), localizeGov(donor.governorate)]
+                      .filter(Boolean)
+                      .join(', ')}
                   </div>
                 </div>
-                <span className="rounded-lg bg-crimson-tint px-2 py-1 font-display text-[12.5px] font-bold text-crimson">
+                <span
+                  dir="ltr"
+                  className="rounded-lg bg-crimson-tint px-2 py-1 font-display text-[12.5px] font-bold text-crimson"
+                >
                   {donor.blood_group}
                 </span>
               </div>
@@ -209,19 +221,15 @@ const SearchPage = () => {
 
       {submitted && results.length === 0 && !searching && (
         <div className="rounded-2xl border border-line bg-card p-10 text-center">
-          <p className="text-[15px] font-semibold text-ink">No matching donors found</p>
-          <p className="mt-1 text-sm text-muted">
-            Try a different governorate, or turn on “Include compatible types”.
-          </p>
+          <p className="text-[15px] font-semibold text-ink">{t('search.emptyTitle')}</p>
+          <p className="mt-1 text-sm text-muted">{t('search.emptyBody')}</p>
         </div>
       )}
 
       {!submitted && (
         <div className="rounded-2xl border border-dashed border-line-strong bg-card/50 p-10 text-center">
-          <p className="text-[15px] font-semibold text-ink">Search for a compatible donor</p>
-          <p className="mt-1 text-sm text-muted">
-            Pick the patient&apos;s blood type and governorate to see donors who can help.
-          </p>
+          <p className="text-[15px] font-semibold text-ink">{t('search.promptTitle')}</p>
+          <p className="mt-1 text-sm text-muted">{t('search.promptBody')}</p>
         </div>
       )}
     </div>

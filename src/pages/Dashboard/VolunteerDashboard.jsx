@@ -1,37 +1,37 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { LuDroplet, LuFileText, LuArrowRight } from 'react-icons/lu';
 
 const cards = [
   {
     to: '/dashboard/all-blood-donation-request',
     icon: LuDroplet,
-    title: 'Blood donation requests',
-    body: 'Review and track every request across the network.',
+    titleKey: 'dash.cardRequestsTitle',
+    bodyKey: 'dash.cardRequestsBody',
   },
   {
     to: '/dashboard/content-management-page',
     icon: LuFileText,
-    title: 'Blogs',
-    body: 'Write and publish blog posts for the community.',
+    titleKey: 'nav.blogs',
+    bodyKey: 'dash.cardBlogsBody',
   },
 ];
 
 const VolunteerDashboard = () => {
   const { user } = useSelector((state) => state.auth);
+  const { t } = useTranslation();
 
   return (
     <div className="mx-auto max-w-4xl px-6 py-8">
-      <div className="text-[13.5px] text-muted">Welcome back</div>
+      <div className="text-[13.5px] text-muted">{t('dash.welcomeBack')}</div>
       <h1 className="mt-0.5 mb-1 font-display text-[28px] font-semibold tracking-tight text-ink">
         {user?.displayName}
       </h1>
-      <p className="mb-6 text-sm text-muted">
-        As a volunteer you can review requests and manage published stories.
-      </p>
+      <p className="mb-6 text-sm text-muted">{t('dash.volunteerIntro')}</p>
 
       <div className="grid gap-3 sm:grid-cols-2">
-        {cards.map(({ to, icon: Icon, title, body }) => (
+        {cards.map(({ to, icon: Icon, titleKey, bodyKey }) => (
           <Link
             key={to}
             to={to}
@@ -41,13 +41,13 @@ const VolunteerDashboard = () => {
               <Icon className="h-5 w-5 text-crimson" strokeWidth={2} />
             </div>
             <h2 className="mt-4 flex items-center gap-1.5 text-[16.5px] font-semibold text-ink">
-              {title}
+              {t(titleKey)}
               <LuArrowRight
-                className="h-4 w-4 text-crimson transition group-hover:translate-x-0.5"
+                className="h-4 w-4 text-crimson transition group-hover:translate-x-0.5 rtl:-scale-x-100"
                 strokeWidth={2}
               />
             </h2>
-            <p className="mt-1 text-sm leading-relaxed text-body">{body}</p>
+            <p className="mt-1 text-sm leading-relaxed text-body">{t(bodyKey)}</p>
           </Link>
         ))}
       </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { LuEye, LuPencil, LuTrash2 } from 'react-icons/lu';
 import Swal from 'sweetalert2';
 import useUserRole from '../../../hooks/useUserRole';
@@ -7,6 +8,7 @@ import Loading from '../../../components/Loading';
 import BloodRoundel from '../../../components/BloodRoundel';
 import { StatusPill } from '../../../components/Pills';
 import { formatNeededBy } from '../../../utils/urgency';
+import { localizeGov, localizeCity } from '../../../utils/places';
 import {
   getDonationRequests,
   updateDonationRequest,
@@ -17,6 +19,7 @@ const PER_PAGE = 8;
 const selectClass = 'h-9 rounded-lg border border-line-strong bg-card px-2 text-[13px] text-ink';
 
 const AllBloodDonationPage = () => {
+  const { t } = useTranslation();
   const { role } = useUserRole();
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,10 +31,10 @@ const AllBloodDonationPage = () => {
     getDonationRequests()
       .then(setDonations)
       .catch((error) =>
-        Swal.fire({ icon: 'error', title: 'Could not load requests', text: error.message }),
+        Swal.fire({ icon: 'error', title: t('dash.loadRequestsError'), text: error.message }),
       )
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -40,24 +43,24 @@ const AllBloodDonationPage = () => {
         prev.map((d) => (d.id === id ? { ...d, donation_status: newStatus } : d)),
       );
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
+      Swal.fire({ icon: 'error', title: t('dash.updateFailed'), text: error.message });
     }
   };
 
   const handleDelete = async (id) => {
     const confirm = await Swal.fire({
-      title: 'Delete this request?',
-      text: 'This cannot be undone.',
+      title: t('dash.deleteTitle'),
+      text: t('dash.deleteBody'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Delete',
+      confirmButtonText: t('common.delete'),
     });
     if (!confirm.isConfirmed) return;
     try {
       await deleteDonationRequest(id);
       setDonations((prev) => prev.filter((d) => d.id !== id));
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Delete failed', text: error.message });
+      Swal.fire({ icon: 'error', title: t('dash.deleteFailed'), text: error.message });
     }
   };
 
@@ -71,10 +74,10 @@ const AllBloodDonationPage = () => {
     <div className="mx-auto max-w-4xl px-6 py-8">
       <div className="mb-5 flex items-end justify-between gap-4">
         <h1 className="font-display text-[28px] font-semibold tracking-tight text-ink">
-          All requests
+          {t('dash.allRequests')}
         </h1>
         <select
-          aria-label="Filter by status"
+          aria-label={t('users.filterStatus')}
           className="h-10 rounded-xl border border-line-strong bg-card px-3 text-sm text-ink"
           value={filter}
           onChange={(e) => {
@@ -82,11 +85,11 @@ const AllBloodDonationPage = () => {
             setPage(1);
           }}
         >
-          <option value="all">All statuses</option>
-          <option value="pending">Searching</option>
-          <option value="inprogress">Matched</option>
-          <option value="done">Completed</option>
-          <option value="canceled">Cancelled</option>
+          <option value="all">{t('users.allStatuses')}</option>
+          <option value="pending">{t('myReq.filterPending')}</option>
+          <option value="inprogress">{t('myReq.filterInprogress')}</option>
+          <option value="done">{t('myReq.filterDone')}</option>
+          <option value="canceled">{t('myReq.filterCanceled')}</option>
         </select>
       </div>
 
@@ -98,31 +101,35 @@ const AllBloodDonationPage = () => {
           >
             <BloodRoundel group={d.blood_group} variant="tint" size={40} />
             <div className="min-w-0 flex-1">
-              <div className="truncate text-[14.5px] font-semibold text-ink">{d.recipient_name}</div>
-              <div className="truncate text-xs text-muted">
-                {[d.recipient_city, d.recipient_governorate].filter(Boolean).join(', ')} ·{' '}
-                {formatNeededBy(d.donation_date, d.donation_time)}
+              <div dir="auto" className="truncate text-[14.5px] font-semibold text-ink">
+                {d.recipient_name}
+              </div>
+              <div dir="auto" className="truncate text-xs text-muted">
+                {[localizeCity(d.recipient_city), localizeGov(d.recipient_governorate)]
+                  .filter(Boolean)
+                  .join(', ')}{' '}
+                · {formatNeededBy(d.donation_date, d.donation_time)}
               </div>
             </div>
 
             {role === 'admin' ? (
               <select
-                aria-label={`Status for ${d.recipient_name}`}
+                aria-label={t('adminReq.statusFor', { name: d.recipient_name })}
                 className={selectClass}
                 value={d.donation_status}
                 onChange={(e) => handleStatusChange(d.id, e.target.value)}
               >
-                <option value="pending">Searching</option>
-                <option value="inprogress">Matched</option>
-                <option value="done">Completed</option>
-                <option value="canceled">Cancelled</option>
+                <option value="pending">{t('myReq.filterPending')}</option>
+                <option value="inprogress">{t('myReq.filterInprogress')}</option>
+                <option value="done">{t('myReq.filterDone')}</option>
+                <option value="canceled">{t('myReq.filterCanceled')}</option>
               </select>
             ) : (
               <StatusPill status={d.donation_status} />
             )}
 
             <button
-              aria-label={`View ${d.recipient_name}`}
+              aria-label={t('users.viewUser', { name: d.recipient_name })}
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-body hover:text-ink"
               onClick={() => setSelected(d)}
             >
@@ -132,13 +139,13 @@ const AllBloodDonationPage = () => {
               <>
                 <Link
                   to={`/dashboard/admin-edit-donation/${d.id}`}
-                  aria-label={`Edit ${d.recipient_name}`}
+                  aria-label={t('adminReq.editFor', { name: d.recipient_name })}
                   className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-body hover:text-ink"
                 >
                   <LuPencil className="h-4 w-4" />
                 </Link>
                 <button
-                  aria-label={`Delete ${d.recipient_name}`}
+                  aria-label={t('adminReq.deleteFor', { name: d.recipient_name })}
                   className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-crimson hover:bg-crimson-tint"
                   onClick={() => handleDelete(d.id)}
                 >
@@ -149,7 +156,7 @@ const AllBloodDonationPage = () => {
           </div>
         ))}
         {pageItems.length === 0 && (
-          <div className="p-10 text-center text-sm text-muted">No requests found.</div>
+          <div className="p-10 text-center text-sm text-muted">{t('adminReq.empty')}</div>
         )}
       </div>
 
@@ -183,7 +190,7 @@ const AllBloodDonationPage = () => {
             <div className="flex items-center gap-3">
               <BloodRoundel group={selected.blood_group} variant="tint" size={44} />
               <div>
-                <h2 className="font-display text-lg font-semibold text-ink">
+                <h2 dir="auto" className="font-display text-lg font-semibold text-ink">
                   {selected.recipient_name}
                 </h2>
                 <StatusPill status={selected.donation_status} />
@@ -191,13 +198,15 @@ const AllBloodDonationPage = () => {
             </div>
             <div className="mt-4 space-y-1.5 text-sm text-body">
               <p>
-                <span className="text-muted">Hospital:</span> {selected.hospital_name}
+                <span className="text-muted">{t('adminReq.hospitalLabel')}</span>{' '}
+                <span dir="auto">{selected.hospital_name}</span>
               </p>
               <p>
-                <span className="text-muted">Address:</span> {selected.full_address}
+                <span className="text-muted">{t('adminReq.addressLabel')}</span>{' '}
+                <span dir="auto">{selected.full_address}</span>
               </p>
               <p>
-                <span className="text-muted">Needed by:</span>{' '}
+                <span className="text-muted">{t('adminReq.neededByLabel')}</span>{' '}
                 {formatNeededBy(selected.donation_date, selected.donation_time)}
               </p>
             </div>
@@ -205,7 +214,7 @@ const AllBloodDonationPage = () => {
               className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-xl bg-crimson text-sm font-semibold text-white transition hover:bg-crimson-deep"
               onClick={() => setSelected(null)}
             >
-              Close
+              {t('users.close')}
             </button>
           </div>
         </div>

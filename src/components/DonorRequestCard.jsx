@@ -1,20 +1,25 @@
+import { useTranslation } from 'react-i18next';
 import { LuEllipsis } from 'react-icons/lu';
 import BloodRoundel from './BloodRoundel';
 import { StatusPill } from './Pills';
 import { formatNeededBy } from '../utils/urgency';
+import { localizeCity } from '../utils/places';
 
 // A request the current user owns, shown as a card with one primary action per
 // state and the rest tucked behind a menu. Shared by the donor overview and the
 // full "my requests" list.
 export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onView }) {
-  const location = [req.hospital_name, req.recipient_city].filter(Boolean).join(' · ');
+  const { t } = useTranslation();
+  const location = [req.hospital_name, localizeCity(req.recipient_city)].filter(Boolean).join(' · ');
   return (
     <div className="rounded-2xl border border-line bg-card p-5">
       <div className="flex items-center gap-3">
         <BloodRoundel group={req.blood_group} variant="tint" size={46} />
         <div className="min-w-0 flex-1">
-          <div className="truncate text-[15px] font-semibold text-ink">{req.recipient_name}</div>
-          <div className="truncate text-[12.5px] text-muted">
+          <div dir="auto" className="truncate text-[15px] font-semibold text-ink">
+            {req.recipient_name}
+          </div>
+          <div dir="auto" className="truncate text-[12.5px] text-muted">
             {location} · {formatNeededBy(req.donation_date, req.donation_time)}
           </div>
         </div>
@@ -23,8 +28,10 @@ export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onVi
 
       {req.donation_status === 'inprogress' && req.donor_name && (
         <div className="mt-3 flex items-center gap-2 rounded-xl bg-paper px-3 py-2 text-[13px]">
-          <span className="font-semibold text-ink">{req.donor_name}</span>
-          <span className="text-muted">accepted this request</span>
+          <span dir="auto" className="font-semibold text-ink">
+            {req.donor_name}
+          </span>
+          <span className="text-muted">{t('donorCard.acceptedThisRequest')}</span>
         </div>
       )}
 
@@ -34,14 +41,14 @@ export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onVi
             onClick={() => onStatus(req.id, 'done')}
             className="inline-flex h-10 flex-1 items-center justify-center rounded-xl bg-crimson text-[13.5px] font-semibold text-white transition hover:bg-crimson-deep"
           >
-            Mark donated
+            {t('donorCard.markDonated')}
           </button>
         ) : (
           <button
             onClick={() => onView(req.id)}
             className="inline-flex h-10 flex-1 items-center justify-center rounded-xl border border-line-strong text-[13.5px] font-semibold text-ink transition hover:border-ink/40"
           >
-            View details
+            {t('donorCard.viewDetails')}
           </button>
         )}
 
@@ -49,7 +56,7 @@ export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onVi
           <button
             tabIndex={0}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-line text-body hover:text-ink"
-            aria-label="More actions"
+            aria-label={t('donorCard.moreActions')}
           >
             <LuEllipsis className="h-4 w-4" />
           </button>
@@ -62,7 +69,7 @@ export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onVi
                 onClick={() => onView(req.id)}
                 className="rounded-xl px-3 py-2 text-[13.5px] text-ink hover:bg-surface"
               >
-                View
+                {t('donorCard.view')}
               </button>
             </li>
             {req.donation_status === 'inprogress' && (
@@ -71,7 +78,7 @@ export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onVi
                   onClick={() => onStatus(req.id, 'canceled')}
                   className="rounded-xl px-3 py-2 text-[13.5px] text-ink hover:bg-surface"
                 >
-                  Cancel request
+                  {t('donorCard.cancelRequest')}
                 </button>
               </li>
             )}
@@ -80,7 +87,7 @@ export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onVi
                 onClick={() => onEdit(req.id)}
                 className="rounded-xl px-3 py-2 text-[13.5px] text-ink hover:bg-surface"
               >
-                Edit details
+                {t('donorCard.editDetails')}
               </button>
             </li>
             <li className="mt-1 border-t border-line pt-1">
@@ -88,7 +95,7 @@ export default function DonorRequestCard({ req, onStatus, onDelete, onEdit, onVi
                 onClick={() => onDelete(req.id)}
                 className="rounded-xl px-3 py-2 text-[13.5px] font-medium text-crimson hover:bg-crimson-tint"
               >
-                Delete forever
+                {t('donorCard.deleteForever')}
               </button>
             </li>
           </ul>

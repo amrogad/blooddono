@@ -1,22 +1,25 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { LuPlus } from 'react-icons/lu';
 import Loading from '../../components/Loading';
 import RequestCard from '../../components/RequestCard';
 import { getPendingRequests } from '../../services/donationService';
 import { getUrgency, requestDateTime } from '../../utils/urgency';
 import { canDonate, BLOOD_GROUPS } from '../../utils/bloodCompat';
+import { localizeGov } from '../../utils/places';
 import governorates from '../../assets/governorates.json';
 
 const SECTION_ORDER = ['today', 'week', 'later'];
-const SECTION_LABELS = { today: 'Today', week: 'This week', later: 'Later' };
+const SECTION_KEYS = { today: 'browse.sectionToday', week: 'browse.sectionWeek', later: 'browse.sectionLater' };
 
 const selectClass =
   'h-10 rounded-xl border border-line bg-card px-3 text-[13.5px] font-medium text-ink';
 
 const BloodDonationRequest = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user } = useSelector((state) => state.auth);
   const canCreate = user?.role === 'donor' || user?.role === 'admin';
 
@@ -78,10 +81,10 @@ const BloodDonationRequest = () => {
       <div className="mb-5 flex items-end justify-between gap-4">
         <div>
           <h1 className="font-display text-3xl font-semibold tracking-tight text-ink">
-            Open requests
+            {t('browse.title')}
           </h1>
           <p className="mt-1.5 text-sm text-muted">
-            {filtered.length} {filtered.length === 1 ? 'person is' : 'people are'} waiting
+            {t('browse.waiting', { count: filtered.length })}
           </p>
         </div>
         {canCreate && (
@@ -90,19 +93,19 @@ const BloodDonationRequest = () => {
             className="inline-flex h-11 items-center gap-2 rounded-xl bg-crimson px-5 text-sm font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_1px_2px_rgba(120,10,30,0.25)] transition hover:bg-crimson-deep"
           >
             <LuPlus className="h-4 w-4" strokeWidth={2.4} />
-            New request
+            {t('browse.newRequest')}
           </button>
         )}
       </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-2.5">
         <select
-          aria-label="Filter by blood type"
+          aria-label={t('browse.filterBlood')}
           value={bloodType}
           onChange={(e) => setBloodType(e.target.value)}
           className={selectClass}
         >
-          <option value="">All blood types</option>
+          <option value="">{t('browse.allBloodTypes')}</option>
           {BLOOD_GROUPS.map((g) => (
             <option key={g} value={g}>
               {g}
@@ -110,26 +113,26 @@ const BloodDonationRequest = () => {
           ))}
         </select>
         <select
-          aria-label="Filter by governorate"
+          aria-label={t('browse.filterGov')}
           value={governorate}
           onChange={(e) => setGovernorate(e.target.value)}
           className={selectClass}
         >
-          <option value="">All governorates</option>
+          <option value="">{t('browse.allGovernorates')}</option>
           {governorates.map((g) => (
             <option key={g.id} value={g.name}>
-              {g.name}
+              {localizeGov(g.name)}
             </option>
           ))}
         </select>
         <select
-          aria-label="Sort order"
+          aria-label={t('browse.sortOrder')}
           value={sort}
           onChange={(e) => setSort(e.target.value)}
           className={selectClass}
         >
-          <option value="soonest">Needed soonest</option>
-          <option value="latest">Latest first</option>
+          <option value="soonest">{t('browse.sortSoonest')}</option>
+          <option value="latest">{t('browse.sortLatest')}</option>
         </select>
 
         {user?.bloodGroup && (
@@ -137,11 +140,11 @@ const BloodDonationRequest = () => {
             type="button"
             onClick={() => setCompatOnly((v) => !v)}
             aria-pressed={compatOnly}
-            className={`ml-auto inline-flex h-10 items-center gap-2.5 rounded-full pl-3.5 pr-1.5 text-[13px] font-semibold transition ${
+            className={`ms-auto inline-flex h-10 items-center gap-2.5 rounded-full ps-3.5 pe-1.5 text-[13px] font-semibold transition ${
               compatOnly ? 'bg-ink text-on-ink' : 'border border-line bg-card text-body'
             }`}
           >
-            Compatible with my {user.bloodGroup}
+            {t('browse.compatWithMine', { group: user.bloodGroup })}
             <span
               className={`relative h-6 w-10 rounded-full transition ${
                 compatOnly ? 'bg-crimson' : 'bg-line-strong'
@@ -149,7 +152,7 @@ const BloodDonationRequest = () => {
             >
               <span
                 className={`absolute top-[3px] h-[18px] w-[18px] rounded-full bg-white shadow transition-all ${
-                  compatOnly ? 'right-[3px]' : 'left-[3px]'
+                  compatOnly ? 'end-[3px]' : 'start-[3px]'
                 }`}
               />
             </span>
@@ -161,11 +164,9 @@ const BloodDonationRequest = () => {
         <Loading />
       ) : filtered.length === 0 ? (
         <div className="rounded-2xl border border-line bg-card p-10 text-center">
-          <p className="text-[15px] font-semibold text-ink">No open requests right now</p>
+          <p className="text-[15px] font-semibold text-ink">{t('browse.emptyTitle')}</p>
           <p className="mt-1 text-sm text-muted">
-            {requests.length > 0
-              ? 'Try clearing your filters.'
-              : 'Check back soon. New requests appear here as they are posted.'}
+            {requests.length > 0 ? t('browse.emptyFiltered') : t('browse.emptyNone')}
           </p>
         </div>
       ) : (
@@ -181,10 +182,10 @@ const BloodDonationRequest = () => {
                   {key === 'today' && (
                     <span className="h-[7px] w-[7px] animate-pulse rounded-full bg-crimson" />
                   )}
-                  {SECTION_LABELS[key]}
+                  {t(SECTION_KEYS[key])}
                   {key === 'today' && criticalToday > 0 && (
                     <span className="font-semibold normal-case tracking-normal text-muted">
-                      · {criticalToday} critical
+                      · {t('browse.criticalCount', { count: criticalToday })}
                     </span>
                   )}
                 </div>

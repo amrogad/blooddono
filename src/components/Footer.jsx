@@ -1,11 +1,13 @@
 import { Link, NavLink } from 'react-router';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import BrandMark from './BrandMark';
 
 const linkClass = 'text-sm font-medium text-body transition-colors hover:text-ink';
 
 const Footer = () => {
   const { user } = useSelector((state) => state.auth);
+  const { t } = useTranslation();
   return (
     <div className="border-t border-line bg-card">
       <div className="mx-auto flex max-w-[1600px] flex-col items-center gap-6 px-8 py-12 md:flex-row md:justify-between md:gap-4">
@@ -18,21 +20,21 @@ const Footer = () => {
 
         <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           <NavLink className={linkClass} to="/blood-donation-request">
-            Requests
+            {t('nav.requests')}
           </NavLink>
           <NavLink className={linkClass} to="/search">
-            Find donors
+            {t('nav.findDonors')}
           </NavLink>
           <NavLink className={linkClass} to="/blogs">
-            Blogs
+            {t('nav.blogs')}
           </NavLink>
           {user && (
             <NavLink className={linkClass} to="/funds">
-              Funds
+              {t('nav.funds')}
             </NavLink>
           )}
           <NavLink className={linkClass} to="/about-us">
-            About
+            {t('nav.about')}
           </NavLink>
         </div>
 

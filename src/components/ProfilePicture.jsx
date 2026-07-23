@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { logOut } from '../services/authService';
 import { setRole } from '../redux/authSlice';
 import Swal from 'sweetalert2';
@@ -8,20 +9,21 @@ const ProfilePicture = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
+  const { t } = useTranslation();
 
   const handleLogOut = async () => {
     try {
       await logOut();
       navigate('/');
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Sign out failed', text: error.message });
+      Swal.fire({ icon: 'error', title: t('nav.signOutFailed'), text: error.message });
     }
   };
 
   return (
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="flex items-center">
-        <div className="tooltip tooltip-left" data-tip={user.displayName}>
+        <div className="tooltip tooltip-bottom" data-tip={user.displayName}>
           <img
             className="h-10 w-10 rounded-full border border-line-strong object-cover"
             src={user.photoURL ? user.photoURL : '/images/person-avatar.png'}
@@ -38,22 +40,22 @@ const ProfilePicture = () => {
             to="/dashboard"
             className="rounded-xl px-3 py-2 text-sm font-medium text-ink hover:bg-surface"
           >
-            Dashboard
+            {t('nav.dashboard')}
           </Link>
         </li>
 
         <li className="menu-title px-3 pb-1 pt-2 text-[10.5px] font-semibold uppercase tracking-wider text-muted">
-          Demo role
+          {t('nav.demoRole')}
         </li>
         {['admin', 'donor', 'volunteer'].map((r) => (
           <li key={r}>
             <button
               onClick={() => dispatch(setRole(r))}
-              className={`rounded-xl px-3 py-2 text-sm capitalize hover:bg-surface ${
+              className={`rounded-xl px-3 py-2 text-sm hover:bg-surface ${
                 user.role === r ? 'font-semibold text-crimson' : 'text-body'
               }`}
             >
-              {r}
+              {t(`auth.role.${r}`)}
             </button>
           </li>
         ))}
@@ -63,7 +65,7 @@ const ProfilePicture = () => {
             onClick={handleLogOut}
             className="rounded-xl px-3 py-2 text-sm font-medium text-crimson hover:bg-crimson-tint"
           >
-            Log out
+            {t('nav.logout')}
           </button>
         </li>
       </ul>

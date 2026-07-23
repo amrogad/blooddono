@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { LuEye } from 'react-icons/lu';
 import Swal from 'sweetalert2';
 import Loading from '../../components/Loading';
 import { getAllProfiles, setUserRole, setUserStatus } from '../../services/profileService';
+import { localizeGov, localizeCity } from '../../utils/places';
 
 const USERS_PER_PAGE = 8;
 
 const AllUsersPage = () => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,18 +20,18 @@ const AllUsersPage = () => {
     getAllProfiles()
       .then(setUsers)
       .catch((error) =>
-        Swal.fire({ icon: 'error', title: 'Could not load users', text: error.message }),
+        Swal.fire({ icon: 'error', title: t('users.loadError'), text: error.message }),
       )
       .finally(() => setLoading(false));
-  }, []);
+  }, [t]);
 
   const handleRoleChange = async (id, newRole) => {
     try {
       await setUserRole(id, newRole);
       setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, role: newRole } : u)));
-      Swal.fire({ icon: 'success', title: 'Role Updated!', showConfirmButton: false, timer: 1000 });
+      Swal.fire({ icon: 'success', title: t('users.roleUpdated'), showConfirmButton: false, timer: 1000 });
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
+      Swal.fire({ icon: 'error', title: t('dash.updateFailed'), text: error.message });
     }
   };
 
@@ -36,9 +39,9 @@ const AllUsersPage = () => {
     try {
       await setUserStatus(id, newStatus);
       setUsers((prev) => prev.map((u) => (u.id === id ? { ...u, status: newStatus } : u)));
-      Swal.fire({ icon: 'success', title: 'Status Updated!', showConfirmButton: false, timer: 1000 });
+      Swal.fire({ icon: 'success', title: t('users.statusUpdated'), showConfirmButton: false, timer: 1000 });
     } catch (error) {
-      Swal.fire({ icon: 'error', title: 'Update failed', text: error.message });
+      Swal.fire({ icon: 'error', title: t('dash.updateFailed'), text: error.message });
     }
   };
 
@@ -55,9 +58,11 @@ const AllUsersPage = () => {
   return (
     <div className="mx-auto max-w-4xl px-6 py-8">
       <div className="mb-5 flex items-end justify-between gap-4">
-        <h1 className="font-display text-[28px] font-semibold tracking-tight text-ink">Users</h1>
+        <h1 className="font-display text-[28px] font-semibold tracking-tight text-ink">
+          {t('dash.users')}
+        </h1>
         <select
-          aria-label="Filter by status"
+          aria-label={t('users.filterStatus')}
           className="h-10 rounded-xl border border-line-strong bg-card px-3 text-sm text-ink"
           value={statusFilter}
           onChange={(e) => {
@@ -65,9 +70,9 @@ const AllUsersPage = () => {
             setCurrentPage(1);
           }}
         >
-          <option value="all">All statuses</option>
-          <option value="active">Active</option>
-          <option value="blocked">Blocked</option>
+          <option value="all">{t('users.allStatuses')}</option>
+          <option value="active">{t('users.active')}</option>
+          <option value="blocked">{t('users.blocked')}</option>
         </select>
       </div>
 
@@ -85,29 +90,34 @@ const AllUsersPage = () => {
               className="h-10 w-10 rounded-xl object-cover"
             />
             <div className="min-w-0 flex-1">
-              <div className="truncate text-[14.5px] font-semibold text-ink">
+              <div dir="auto" className="truncate text-[14.5px] font-semibold text-ink">
                 {user.display_name}
               </div>
-              <div className="truncate text-xs text-muted">
-                {[user.city, user.governorate].filter(Boolean).join(', ') || 'No location'}
+              <div dir="auto" className="truncate text-xs text-muted">
+                {[localizeCity(user.city), localizeGov(user.governorate)]
+                  .filter(Boolean)
+                  .join(', ') || t('users.noLocation')}
               </div>
             </div>
 
             {user.blood_group && (
-              <span className="rounded-lg bg-crimson-tint px-2 py-1 font-display text-[12.5px] font-bold text-crimson">
+              <span
+                dir="ltr"
+                className="rounded-lg bg-crimson-tint px-2 py-1 font-display text-[12.5px] font-bold text-crimson"
+              >
                 {user.blood_group}
               </span>
             )}
 
             <select
-              aria-label={`Role for ${user.display_name}`}
+              aria-label={t('users.roleFor', { name: user.display_name })}
               className="h-9 rounded-lg border border-line-strong bg-card px-2 text-[13px] text-ink"
               value={user.role}
               onChange={(e) => handleRoleChange(user.id, e.target.value)}
             >
-              <option value="donor">Donor</option>
-              <option value="volunteer">Volunteer</option>
-              <option value="admin">Admin</option>
+              <option value="donor">{t('auth.role.donor')}</option>
+              <option value="volunteer">{t('auth.role.volunteer')}</option>
+              <option value="admin">{t('auth.role.admin')}</option>
             </select>
 
             <span
@@ -117,7 +127,7 @@ const AllUsersPage = () => {
                   : 'bg-crimson-tint text-crimson'
               }`}
             >
-              {user.status === 'active' ? 'Active' : 'Blocked'}
+              {user.status === 'active' ? t('users.active') : t('users.blocked')}
             </span>
 
             {user.status === 'active' ? (
@@ -125,19 +135,19 @@ const AllUsersPage = () => {
                 className="h-9 rounded-lg border border-line-strong px-3 text-[13px] font-semibold text-ink transition hover:border-ink/40"
                 onClick={() => handleStatusChange(user.id, 'blocked')}
               >
-                Block
+                {t('users.block')}
               </button>
             ) : (
               <button
                 className="h-9 rounded-lg border border-line-strong px-3 text-[13px] font-semibold text-ink transition hover:border-ink/40"
                 onClick={() => handleStatusChange(user.id, 'active')}
               >
-                Unblock
+                {t('users.unblock')}
               </button>
             )}
 
             <button
-              aria-label={`View ${user.display_name}`}
+              aria-label={t('users.viewUser', { name: user.display_name })}
               className="flex h-9 w-9 items-center justify-center rounded-lg border border-line text-body hover:text-ink"
               onClick={() => setSelectedUser(user)}
             >
@@ -146,7 +156,7 @@ const AllUsersPage = () => {
           </div>
         ))}
         {paginatedUsers.length === 0 && (
-          <div className="p-10 text-center text-sm text-muted">No users found.</div>
+          <div className="p-10 text-center text-sm text-muted">{t('users.empty')}</div>
         )}
       </div>
 
@@ -182,30 +192,34 @@ const AllUsersPage = () => {
               alt=""
               className="mx-auto h-24 w-24 rounded-2xl object-cover"
             />
-            <h2 className="mt-4 font-display text-xl font-semibold text-ink">
+            <h2 dir="auto" className="mt-4 font-display text-xl font-semibold text-ink">
               {selectedUser.display_name}
             </h2>
-            <div className="mt-4 space-y-1.5 text-left text-sm text-body">
+            <div className="mt-4 space-y-1.5 text-start text-sm text-body">
               <p>
-                <span className="text-muted">Blood group:</span> {selectedUser.blood_group || '—'}
+                <span className="text-muted">{t('users.bloodGroupLabel')}</span>{' '}
+                <span dir="ltr">{selectedUser.blood_group || '—'}</span>
               </p>
               <p>
-                <span className="text-muted">Location:</span>{' '}
-                {[selectedUser.city, selectedUser.governorate].filter(Boolean).join(', ') || '—'}
+                <span className="text-muted">{t('users.locationLabel')}</span>{' '}
+                {[localizeCity(selectedUser.city), localizeGov(selectedUser.governorate)]
+                  .filter(Boolean)
+                  .join(', ') || '—'}
               </p>
               <p>
-                <span className="text-muted">Role:</span> <span className="capitalize">{selectedUser.role}</span>
+                <span className="text-muted">{t('users.roleLabel')}</span>{' '}
+                {t(`auth.role.${selectedUser.role}`)}
               </p>
               <p>
-                <span className="text-muted">Status:</span>{' '}
-                <span className="capitalize">{selectedUser.status}</span>
+                <span className="text-muted">{t('users.statusLabel')}</span>{' '}
+                {selectedUser.status === 'active' ? t('users.active') : t('users.blocked')}
               </p>
             </div>
             <button
               className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-xl bg-crimson text-sm font-semibold text-white transition hover:bg-crimson-deep"
               onClick={() => setSelectedUser(null)}
             >
-              Close
+              {t('users.close')}
             </button>
           </div>
         </div>

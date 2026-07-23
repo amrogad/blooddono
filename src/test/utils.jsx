@@ -2,9 +2,12 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { MemoryRouter } from 'react-router';
+import { I18nextProvider } from 'react-i18next';
+import i18n from '../i18n';
+import { LocaleProvider } from '../providers/LocaleProvider';
 import authReducer from '../redux/authSlice';
 
-// Render a component wrapped in the providers it needs (Redux + Router),
+// Render a component wrapped in the providers it needs (Redux + Router + i18n),
 // with an optional logged-in user preloaded into auth state.
 export function renderWithProviders(ui, { user = null, route = '/' } = {}) {
   const store = configureStore({
@@ -12,9 +15,13 @@ export function renderWithProviders(ui, { user = null, route = '/' } = {}) {
     preloadedState: { auth: { user, loading: false } },
   });
   const result = render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
-    </Provider>,
+    <I18nextProvider i18n={i18n}>
+      <Provider store={store}>
+        <LocaleProvider>
+          <MemoryRouter initialEntries={[route]}>{ui}</MemoryRouter>
+        </LocaleProvider>
+      </Provider>
+    </I18nextProvider>,
   );
   return { store, ...result };
 }
