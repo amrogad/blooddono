@@ -90,7 +90,7 @@ Supabase (PostgreSQL · Auth · Storage)
 ## Built with
 
 - 45+ React components and pages
-- 41 automated tests (Vitest + Playwright)
+- 59 automated tests (Vitest + Playwright)
 - Shared Supabase backend with the mobile version
 - Deployed on Vercel, green on CI
 
@@ -129,7 +129,7 @@ End-to-end tests use Playwright and cover navigation, auth flows, role-based acc
 npm run test:e2e
 ```
 
-41 tests in total, including a parity check that every English string has an Arabic translation.
+59 tests in total, including a parity check that every English string has an Arabic translation.
 
 ## Why I built this
 
