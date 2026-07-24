@@ -60,7 +60,20 @@ const PublicBlogDetails = () => {
       >
         {blog.title}
       </h1>
-      <img src={blog.thumbnail} alt="" className="mt-6 h-72 w-full rounded-2xl object-cover" />
+      {blog.thumbnail && (
+        <a
+          href={blog.thumbnail}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-6 block overflow-hidden rounded-2xl border border-line"
+        >
+          <img
+            src={blog.thumbnail}
+            alt={blog.title}
+            className="w-full cursor-zoom-in transition hover:opacity-95"
+          />
+        </a>
+      )}
       <div
         dir="auto"
         className={`mt-8 ${proseClass}`}

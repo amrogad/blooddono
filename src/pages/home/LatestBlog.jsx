@@ -39,7 +39,11 @@ const LatestBlog = () => {
               to={`/blogs/${slugify(blog.title)}`}
               className="group overflow-hidden rounded-3xl border border-line bg-card transition hover:-translate-y-0.5 hover:shadow-[0_16px_32px_-16px_rgba(33,20,22,0.15)]"
             >
-              <img src={blog.thumbnail} alt={blog.title} className="h-44 w-full object-cover" />
+              <img
+                src={blog.thumbnail}
+                alt={blog.title}
+                className="aspect-[3/2] w-full object-cover"
+              />
               <div className="p-5">
                 <h3 className="text-[16.5px] font-semibold leading-snug text-ink">{blog.title}</h3>
                 <div
