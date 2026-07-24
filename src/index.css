@@ -11,8 +11,8 @@
   default: true;
   color-scheme: light;
   --color-base-100: #ffffff;
-  --color-base-200: #f5f1ec;
-  --color-base-300: #ede7e0;
+  --color-base-200: #efe7df;
+  --color-base-300: #e4d8ce;
   --color-base-content: #211d1e;
   --color-primary: #c21e3f;
   --color-primary-content: #ffffff;
@@ -89,9 +89,9 @@
   --color-crimson-tint: #fbedf0;
 
   --color-ink: #211d1e;
-  --color-paper: #faf7f3;
+  --color-paper: #f3e9e2;
   --color-card: #ffffff;
-  --color-surface: #f5f1ec;
+  --color-surface: #efe7df;
   --color-body: #57504e;
   --color-muted: #8a8184;
   --color-line: rgba(33, 20, 22, 0.09);
