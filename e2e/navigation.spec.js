@@ -20,7 +20,12 @@ test.describe('Lazy-loaded route navigation', () => {
     await page.goto('/');
     await page.getByRole('banner').getByRole('link', { name: 'Blogs', exact: true }).click();
     await expect(page).toHaveURL(/\/blogs$/);
-    await page.waitForLoadState('networkidle');
+
+    await expect
+      .poll(() =>
+        page.evaluate(() => Array.from(document.images).every((img) => img.complete)),
+      )
+      .toBe(true);
 
     const brokenImages = await page.evaluate(() =>
       Array.from(document.images)

@@ -13,7 +13,12 @@ test.describe('Home page', () => {
 
   test('has no broken images on the landing page', async ({ page }) => {
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
+
+    await expect
+      .poll(() =>
+        page.evaluate(() => Array.from(document.images).every((img) => img.complete)),
+      )
+      .toBe(true);
 
     const brokenImages = await page.evaluate(() =>
       Array.from(document.images)
