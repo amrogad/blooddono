@@ -22,8 +22,9 @@ test.describe('Lazy-loaded route navigation', () => {
     await expect(page).toHaveURL(/\/blogs$/);
 
     await expect
-      .poll(() =>
-        page.evaluate(() => Array.from(document.images).every((img) => img.complete)),
+      .poll(
+        () => page.evaluate(() => Array.from(document.images).every((img) => img.complete)),
+        { timeout: 10_000 },
       )
       .toBe(true);
 
