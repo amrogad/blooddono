@@ -23,6 +23,7 @@
     "findDonors": "Find donors",
     "blogs": "Blogs",
     "funds": "Funds",
+    "assistant": "Assistant",
     "about": "About",
     "signIn": "Sign in",
     "becomeDonor": "Become a donor",
@@ -203,6 +204,21 @@
     "emptyBody": "Try a different governorate, or turn on “Include compatible types”.",
     "promptTitle": "Search for a compatible donor",
     "promptBody": "Pick the patient's blood type and governorate to see donors who can help."
+  },
+  "assistant": {
+    "title": "Eligibility assistant",
+    "subtitle": "Answers in seconds",
+    "disclaimer": "Informational only — not medical advice",
+    "inputPlaceholder": "Ask a question...",
+    "sendA11y": "Send message",
+    "checkedDatabase": "Checked the donor database",
+    "error": "Something went wrong. Try again.",
+    "chips": [
+      "I got a tattoo 2 weeks ago, can I donate?",
+      "I take blood pressure meds, am I eligible?",
+      "How many donors near me could give me blood?",
+      "What should I eat before donating?"
+    ]
   },
   "about": {
     "badge": "About BloodDono",

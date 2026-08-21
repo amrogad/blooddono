@@ -67,6 +67,11 @@ const NavBar = () => {
                 {t('nav.blogs')}
               </NavLink>
               {user && (
+                <NavLink className={mobileLinkClass} to="/assistant">
+                  {t('nav.assistant')}
+                </NavLink>
+              )}
+              {user && (
                 <NavLink className={mobileLinkClass} to="/funds">
                   {t('nav.funds')}
                 </NavLink>

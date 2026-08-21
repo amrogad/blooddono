@@ -20,6 +20,11 @@ const NavLinks = () => {
         {t('nav.blogs')}
       </NavLink>
       {user && (
+        <NavLink className={linkClass} to="/assistant">
+          {t('nav.assistant')}
+        </NavLink>
+      )}
+      {user && (
         <NavLink className={linkClass} to="/funds">
           {t('nav.funds')}
         </NavLink>

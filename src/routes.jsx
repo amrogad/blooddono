@@ -20,6 +20,7 @@ const AllBloodDonationPage = lazy(() => import('./pages/Dashboard/donations/AllB
 const AdminEditDonationRequest = lazy(() => import('./pages/Dashboard/donations/AdminEditDonationRequest'));
 import MultiRoleRoute from './auth/MultiRoleRoute';
 const SearchPage = lazy(() => import('./pages/Search/SearchPage'));
+const Assistant = lazy(() => import('./pages/Assistant/Assistant'));
 const BloodDonationRequest = lazy(
   () => import('./pages/BloodDonationRequest/BloodDonationRequest'),
 );
@@ -54,6 +55,14 @@ const router = createBrowserRouter([
       {
         path: 'blood-donation-request',
         element: <BloodDonationRequest></BloodDonationRequest>,
+      },
+      {
+        path: 'assistant',
+        element: (
+          <PrivateRoute>
+            <Assistant></Assistant>
+          </PrivateRoute>
+        ),
       },
       {
         path: 'home-donation-request-details/:id',
