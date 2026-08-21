@@ -149,3 +149,61 @@ body {
 a.active {
   color: var(--color-crimson);
 }
+
+/* SweetAlert ships its own palette — a blue-violet confirm button and a bright
+   green tick that exist nowhere else in the app. Pull the dialogs onto the
+   crimson tokens so a confirm looks like the rest of the UI in either theme. */
+.swal2-popup {
+  border: 1px solid var(--color-line);
+  border-radius: 1rem;
+  background: var(--color-card);
+  font-family: var(--font-sans);
+  padding: 1.75rem;
+}
+
+.swal2-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-ink);
+}
+
+.swal2-html-container {
+  font-size: 0.9rem;
+  color: var(--color-body);
+}
+
+.swal2-actions {
+  gap: 0.5rem;
+}
+
+.swal2-styled.swal2-confirm,
+.swal2-styled.swal2-cancel {
+  border-radius: 0.75rem;
+  box-shadow: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.65rem 1.35rem;
+}
+
+.swal2-styled.swal2-confirm {
+  background: var(--color-crimson);
+  color: #fff;
+}
+
+.swal2-styled.swal2-cancel {
+  background: transparent;
+  border: 1px solid var(--color-line-strong);
+  color: var(--color-body);
+}
+
+.swal2-icon.swal2-error,
+.swal2-icon.swal2-warning {
+  border-color: var(--color-crimson);
+  color: var(--color-crimson);
+}
+
+.swal2-icon.swal2-error [class^='swal2-x-mark-line'] {
+  background-color: var(--color-crimson);
+}

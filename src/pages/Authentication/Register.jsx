@@ -31,11 +31,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       await signUp(data);
-      Swal.fire({ icon: 'success', title: t('register.success'), showConfirmButton: true }).then(
-        (result) => {
-          if (result.isConfirmed) navigate('/');
-        },
-      );
+      navigate('/');
     } catch (error) {
       Swal.fire({ icon: 'error', title: t('register.failed'), text: error.message });
     }

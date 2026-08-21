@@ -25,7 +25,7 @@ describe('Payment', () => {
     const user = userEvent.setup();
     renderWithProviders(<Payment />, { user: donorUser });
 
-    await user.type(screen.getByPlaceholderText('Donation Amount!'), '0');
+    await user.type(screen.getByPlaceholderText('e.g. 250'), '0');
     await fillCard(user);
     await user.click(screen.getByRole('button', { name: 'Pay' }));
 
@@ -37,7 +37,7 @@ describe('Payment', () => {
     const user = userEvent.setup();
     renderWithProviders(<Payment />, { user: donorUser });
 
-    await user.type(screen.getByPlaceholderText('Donation Amount!'), '150');
+    await user.type(screen.getByPlaceholderText('e.g. 250'), '150');
     await fillCard(user);
     await user.click(screen.getByRole('button', { name: 'Pay' }));
 

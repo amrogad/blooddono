@@ -54,7 +54,7 @@ describe('EditDonationRequest', () => {
     const name = await screen.findByDisplayValue('Mona Khaled');
     await user.clear(name);
     await user.type(name, 'Mona Ali');
-    await user.click(screen.getByRole('button', { name: 'Update Request' }));
+    await user.click(screen.getByRole('button', { name: 'Update request' }));
 
     expect(updateDonationRequest).toHaveBeenCalledWith(
       'req-1',

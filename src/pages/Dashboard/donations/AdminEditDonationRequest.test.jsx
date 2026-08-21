@@ -54,7 +54,7 @@ describe('AdminEditDonationRequest', () => {
 
     await screen.findByDisplayValue('Mona Khaled');
     await user.selectOptions(screen.getByDisplayValue('Searching'), 'inprogress');
-    await user.click(screen.getByRole('button', { name: 'Update Request' }));
+    await user.click(screen.getByRole('button', { name: 'Update request' }));
 
     expect(updateDonationRequest).toHaveBeenCalledWith(
       'req-1',

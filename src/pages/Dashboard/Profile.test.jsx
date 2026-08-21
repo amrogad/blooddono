@@ -29,7 +29,7 @@ describe('Profile', () => {
     const name = screen.getByDisplayValue('Demo Donor');
     await user.clear(name);
     await user.type(name, 'Amro Gad');
-    await user.click(screen.getByRole('button', { name: 'Save Changes' }));
+    await user.click(screen.getByRole('button', { name: 'Save changes' }));
 
     await waitFor(() =>
       expect(updateProfile).toHaveBeenCalledWith(

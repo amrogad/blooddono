@@ -25,7 +25,7 @@ describe('AddBlogPage', () => {
       screen.getByPlaceholderText('Write your blog content here...'),
       'It saves lives.',
     );
-    await user.click(screen.getByRole('button', { name: 'Create Blog' }));
+    await user.click(screen.getByRole('button', { name: 'Create blog' }));
 
     expect(createBlog).toHaveBeenCalledWith({
       title: 'Why donate blood',

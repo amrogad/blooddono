@@ -46,11 +46,7 @@ const Login = () => {
   const handleSignIn = async (email, password) => {
     try {
       await signIn(email, password);
-      Swal.fire({ icon: 'success', title: t('auth.loginSuccess'), showConfirmButton: true }).then(
-        (result) => {
-          if (result.isConfirmed) goToRedirect();
-        },
-      );
+      goToRedirect();
     } catch (error) {
       Swal.fire({ icon: 'error', title: t('auth.loginFailed'), text: error.message });
     }

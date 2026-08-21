@@ -3,7 +3,6 @@ import { test, expect } from '@playwright/test';
 const loginAsDemo = async (page, roleLabel) => {
   await page.goto('/login');
   await page.getByRole('button', { name: roleLabel, exact: true }).click();
-  await page.getByRole('button', { name: 'OK' }).click();
   await page.waitForURL('/');
 };
 

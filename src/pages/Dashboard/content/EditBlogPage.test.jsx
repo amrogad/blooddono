@@ -48,7 +48,7 @@ describe('EditBlogPage', () => {
     const title = await screen.findByDisplayValue('Who can give blood');
     await user.clear(title);
     await user.type(title, 'Who can donate blood');
-    await user.click(screen.getByRole('button', { name: 'Update Blog' }));
+    await user.click(screen.getByRole('button', { name: 'Update blog' }));
 
     expect(updateBlog).toHaveBeenCalledWith(
       'blog-1',
