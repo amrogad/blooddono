@@ -1,27 +1,24 @@
 # BloodDono
 
-[![CI](https://github.com/amrogad/blooddono/actions/workflows/ci.yml/badge.svg)](https://github.com/amrogad/blooddono/actions/workflows/ci.yml)
+A React web app that connects blood donors with the patients who need them, matched by blood-type compatibility and city. Donors browse open requests, post their own through a 3-step wizard, and search for compatible donors near a hospital. Everything runs on real accounts against a Supabase backend, in English or Arabic with the layout mirroring to full RTL.
 
-A React web app that connects blood donors with the patients who need them. Donors search for matches by blood group and governorate, post and track requests through a role-based dashboard, and everything runs on real Supabase accounts instead of mock data. The whole interface works in English and Arabic, and the layout mirrors to full RTL when you switch.
+[Live demo](https://blooddono-two.vercel.app/) · [Mobile app](https://github.com/amrogad/blooddono-mobile)
 
-There's also a [React Native version](https://github.com/amrogad/blooddono-mobile) on the same Supabase backend, so the data lines up across both.
+## Why I built this
 
-🔗 **Live demo:** [blooddono-two.vercel.app](https://blooddono-two.vercel.app/)
+When someone needs blood, families end up posting in group chats and hoping the right person sees it in time. The matching problem itself is small and well defined: blood type, location, how soon. Nobody had put it in one place. I wanted to build something real end to end rather than a CRUD demo, which meant genuine auth, access control that actually blocks people, and an Arabic interface that wasn't an afterthought.
 
 ## Highlights
 
-- 🔐 Real authentication with role-based access for admins, donors, and volunteers
-- 🛡️ Protected routes that redirect unauthorized roles to a forbidden page
-- 🩸 Donor search by blood group and location, with compatibility matching
-- 🤖 AI eligibility assistant that can query the donor database, not just answer from a prompt
-- 📝 Donation request management through a 3-step create wizard
-- 🌐 Full Arabic and English support, with the layout mirroring to RTL on switch
-- 🌙 Dark and light mode, system-aware and persisted
-- 📱 Responsive across phone, tablet, and desktop
+- Blood compatibility matching, so a search for an A+ patient also surfaces the O+ and O- donors who can safely give
+- An AI eligibility assistant that queries the donor database through tool calling, and marks which answers came from a real lookup
+- Role-based access for admins, donors, and volunteers, enforced by route guards
+- Full Arabic and English with the layout mirroring to RTL, switchable without a reload
+- Shares one Supabase backend and the same edge functions with the React Native app, so the data lines up across both
 
-## Demo accounts
+## Demo
 
-The login page has one-click demo logins for all three roles, no signup needed:
+Sign in with one click from the login page, no signup needed:
 
 | Role | Email | Password |
 |---|---|---|
@@ -29,59 +26,25 @@ The login page has one-click demo logins for all three roles, no signup needed:
 | Donor | `donor@blooddono.demo` | `Demo123!` |
 | Volunteer | `volunteer@blooddono.demo` | `Demo123!` |
 
-Each role opens a different dashboard: admins manage users, content, and platform-wide stats; donors see and manage their own requests; volunteers get a scoped coordinator view. Sign in as the donor and open `/dashboard/all-users` to watch the route guard redirect you to the forbidden page.
-
-## Demo walkthrough
-
 Under 3 minutes to see the core loop:
 
-1. Log in with the Donor demo account.
-2. Browse open requests, grouped by how soon blood is needed.
-3. Open a request to see the patient details and which blood types can safely donate.
-4. Post your own request through the 3-step wizard.
-5. Go to Find Donors, pick a blood group and governorate, and see who can help.
-6. Switch to the Admin or Volunteer demo account to see the other dashboards.
+1. Open the chat bubble in the corner and ask "who can donate to A+?". No account needed.
+2. Log in with the Donor demo account.
+3. Browse open requests, grouped by how soon blood is needed.
+4. Go to Find Donors, pick a blood type and city, and watch compatible types come back alongside exact matches.
+5. Post your own request through the 3-step wizard.
+6. Open `/dashboard/all-users` as the donor and get redirected to the forbidden page.
 7. Tap ع in the top bar and watch the whole app flip to Arabic and RTL.
-
-## Features
-
-- Search for donors by blood group, governorate, and city
-- Blood compatibility matching, so a search for A+ also surfaces the O+ and O- donors who can safely give
-- Browse open requests grouped into Today, This week, and Later, with urgency labels
-- Post, edit, and manage requests through a role-based dashboard
-- Real authentication with Supabase: sign up, log in, and persistent sessions
-- Role-aware routing with guards that redirect unauthorized roles to a forbidden page
-- AI eligibility assistant at `/assistant`. Ask "How many donors near me could give me blood?" and it calls a `find_compatible_donors` tool that runs a real query against the donor table, then answers from the result. The reply carries a "checked the donor database" marker so you can tell a looked-up answer from a generated one
-- Blog section with a content management UI for drafting, publishing, and editing posts
-- Community fund page where anyone can contribute, with a running list of donations
-- Arabic and English with automatic RTL mirroring, switchable without leaving the page
-- Dark and light themes, system-aware and persisted
 
 ## Screenshots
 
-The home page in every combination of language and theme:
-
-| English · light | Arabic · light (RTL) |
+| Home | Find donors |
 |---|---|
-| <img src="screenshots/home.png" alt="Home page, English, light mode" width="420" /> | <img src="screenshots/home-ar.png" alt="Home page, Arabic, light mode, RTL" width="420" /> |
+| <img src="screenshots/home.png" alt="Home page" width="420" /> | <img src="screenshots/search.png" alt="Find donors page showing compatible blood types" width="420" /> |
 
-| English · dark | Arabic · dark (RTL) |
+| AI assistant | Arabic · dark · RTL |
 |---|---|
-| <img src="screenshots/home-dark.png" alt="Home page, English, dark mode" width="420" /> | <img src="screenshots/home-ar-dark.png" alt="Home page, Arabic, dark mode, RTL" width="420" /> |
-
-A couple more screens, plus the mobile layout:
-
-| Find donors | Admin dashboard |
-|---|---|
-| <img src="screenshots/search.png" alt="Find donors page" width="420" /> | <img src="screenshots/dashboard.png" alt="Admin dashboard" width="420" /> |
-
-The assistant after a question that needed a database lookup:
-
-<img src="screenshots/assistant.png" alt="AI assistant answering a donor availability question" width="560" />
-
-| Mobile · English | Mobile · Arabic (dark, RTL) |
-|---|---|
-| <img src="screenshots/mobile.png" alt="Requests on mobile, English" width="230" /> | <img src="screenshots/mobile-ar.png" alt="Requests on mobile, Arabic, dark, RTL" width="230" /> |
+| <img src="screenshots/assistant.png" alt="AI assistant answering a donor availability question" width="420" /> | <img src="screenshots/home-ar-dark.png" alt="Home page in Arabic, dark mode, right to left" width="420" /> |
 
 ## Architecture
 
@@ -97,112 +60,55 @@ Supabase (PostgreSQL · Auth · Storage · Edge Functions)
 Groq (tool calling back into the donor table)
 ```
 
-## Built with
+## Engineering
 
-- 45+ React components and pages
-- 68 automated tests (45 Vitest, 23 Playwright)
-- Shared Supabase backend and edge functions with the mobile version
-- Deployed on Vercel, green on CI
+[![CI](https://github.com/amrogad/blooddono/actions/workflows/ci.yml/badge.svg)](https://github.com/amrogad/blooddono/actions/workflows/ci.yml)
 
-## Tech stack
+- Role-based access control for three roles, enforced by route guards that redirect rather than hide links, so editing the URL by hand doesn't get you in
+- A database-backed AI tool call: the assistant's donor lookup runs a real query against the donor table, and the reply is marked so you can tell a looked-up answer from a generated one
+- 71 automated tests. 48 Vitest and Testing Library component tests, 23 Playwright end-to-end covering navigation, auth, role-based access, and the Arabic switch, including a parity check that every English string has an Arabic translation
+- Lint, build, component tests and end-to-end on every push through GitHub Actions, deployed on Vercel
+- Arabic and RTL from one component tree, using logical properties (`start`/`end`) instead of left and right, so mirroring is a direction change rather than a second stylesheet
+- One Supabase project and one set of edge functions shared with the React Native app, so a request posted on either shows up on the other
 
-### Frontend
-- React 19 + Vite
-- Tailwind CSS 4 + DaisyUI 5
-- React Router 7
-- Redux Toolkit + React Redux
-- React Hook Form
-- react-i18next for Arabic and English with RTL
-- SweetAlert2
-- React Icons
+### How the assistant answers
 
-### Backend (managed service)
-- [Supabase](https://supabase.com/) for hosted authentication, PostgreSQL, and storage
-- Supabase Edge Functions (Deno) for the eligibility assistant, shared with the mobile app
-- [Groq](https://groq.com/) (`openai/gpt-oss-20b`) for the assistant, called server-side so the key never reaches the browser
+A Supabase Edge Function runs a two-pass function-calling loop against Groq. When a question needs donor numbers, the model calls a `find_compatible_donors` tool that runs a real query instead of guessing. The tool aggregates to counts before returning, so no donor names or photos reach the model provider. That's also why it can tell you how many people could help but not who. It reads and never writes.
 
-### Testing
-- Vitest + Testing Library (component)
-- Playwright (end-to-end)
+### How the assistant is graded
 
-## Testing
+A green test suite says nothing about whether health information is correct, so the assistant is scored separately against 15 fixed questions with known-correct answers. Each case checks whether the model called the lookup when it should have, whether the blood groups it listed match the compatibility rules the rest of the app enforces, and whether the not-medical-advice line survived.
 
-The full pipeline runs on every push through GitHub Actions: lint, build, component tests, then end-to-end.
+The first run scored 40%, and one failure was real: it answered that only A+ and O+ can donate to A+, silently dropping A- and O-. Under-reporting compatible donors is the worst way for this app to be wrong. The fix was to stop relying on the model's recall and pass it the compatibility table the app already holds. It passes 15 of 15 now.
 
-Component tests use Vitest and Testing Library:
+## Known limitations
 
-```bash
-npm test
-```
-
-End-to-end tests use Playwright and cover navigation, auth flows, role-based access, and the Arabic RTL switch:
-
-```bash
-npm run test:e2e
-```
-
-68 tests in total, including a parity check that every English string has an Arabic translation.
-
-The assistant's answers are checked separately, because a passing test suite says nothing about whether health information is correct. There are 15 fixed eligibility questions with known-correct answers in the mobile repo, run with `npm run eval`. It scores whether the model called the donor lookup when it should have, whether the blood groups it lists match the compatibility rules the rest of the app enforces, and whether every answer carries the not-medical-advice line. It currently passes 15 of 15.
-
-The first run scored 40%. One of those failures was real: the assistant answered that only A+ and O+ can donate to A+, dropping A- and O-. Under-reporting compatible donors is the worst way for this particular app to be wrong. The fix was to stop relying on the model's own knowledge of compatibility and pass it the table, since the app already holds it.
-
-The other failures were the grader's fault, not the model's. It was matching blood groups with an ASCII hyphen while the model wrote "O‑negative" with a non-breaking one, so four correct answers scored as wrong.
-
-## Known limitations and what's next
-
-Things I know are missing or rough, rather than things I'm hoping nobody notices:
-
-- The assistant is question-and-answer only. It can look up donor counts, but it can't post a request, accept one, or change anything on your behalf. Letting it take actions means a confirmation step and a much harder safety story, so it reads rather than writes.
-- It never sees donor identities. The lookup returns counts grouped by blood group, so no names or photos leave the backend for the model provider. That also means it can't tell you *who* to contact, only how many people could help. The Find Donors page does that part.
-- Answers are capped at 50 a day per account, tracked in Postgres. Groq's free tier also has a tokens-per-minute ceiling, so a burst of questions can briefly fail.
-- The public request board shows patient names shortened to a first name and initial for signed-out visitors. Full names appear once you sign in. There's no consent flow around posting someone else's details, which a real deployment would need.
-- New requests need a refresh to appear. Supabase Realtime is the obvious fix and isn't wired up yet.
+- The assistant answers questions but can't act. It reads donor counts; it can't post or accept a request on your behalf. Letting it write means a confirmation step and a much harder safety story.
+- It never sees donor identities, so it can tell you how many people could help but not who. Find Donors does that part.
+- New requests need a refresh to appear. Supabase Realtime is the obvious fix and isn't wired up.
 - Payments on the funding page are recorded, not processed. There's no payment provider behind it.
-- The eval set covers compatibility rules, tool routing, and safety-critical deferrals. It deliberately avoids questions where the correct answer varies by country, like exact tattoo or travel deferral periods, so the assistant's answers on those are unverified.
-
-## Why I built this
-
-Blood shortages are a logistics problem: patients need specific types, donors are willing, but there's no fast way to connect the two. I wanted something real end to end rather than a toy demo, so it has genuine auth and access control, blood-type compatibility matching, and a fully bilingual Arabic and English interface with RTL.
+- The eval set covers compatibility rules, tool routing, and safety-critical deferrals. It avoids questions whose correct answer varies by country, like exact tattoo or travel deferral periods, so answers there are unverified.
+- Answers are capped per day: 50 for a signed-in account, 10 for a signed-out visitor metered on a hash of their address. Groq's free tier also has a tokens-per-minute ceiling, so a burst of questions can briefly fail.
 
 ## Getting started
 
 ```bash
 npm install
-cp .env.example .env
+cp .env.example .env   # add your Supabase URL and anon key
+npm run dev            # http://localhost:5173
 ```
-
-Fill in `.env` with your Supabase project's URL and anon key:
-
-```
-VITE_SUPABASE_URL=your-project-url
-VITE_SUPABASE_ANON_KEY=your-anon-key
-```
-
-Then start the dev server:
 
 ```bash
-npm run dev
+npm test           # component tests
+npm run test:e2e   # end-to-end
 ```
 
-Runs at `http://localhost:5173`.
+## Tech stack
 
-## Deployment
+Frontend: React 19, Vite, Tailwind CSS 4, DaisyUI 5, React Router 7, Redux Toolkit, React Hook Form, react-i18next.
 
-Deployed on [Vercel](https://vercel.com/). `vercel.json` handles the SPA rewrite so client-side routes survive a refresh or a direct link. Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` in the Vercel project's environment variables.
+Backend, as a managed service: Supabase for hosted auth, PostgreSQL and storage, Supabase Edge Functions (Deno) for the assistant, and Groq (`openai/gpt-oss-20b`) called server-side so the key never reaches the browser.
 
-## Project structure
+Testing: Vitest, Testing Library, Playwright.
 
-```
-src/
-├── auth/            AuthProvider + route guards (PrivateRoute, AdminRoute, MultiRoleRoute)
-├── components/      NavBar, RequestCard, BloodRoundel, Pills, LanguageToggle, ThemeToggle, ...
-├── layouts/         Root shell + DashboardLayout
-├── pages/           home, auth, blogs, search, requests, funding, dashboard (donations + content)
-├── providers/       ThemeProvider, LocaleProvider
-├── services/        Supabase queries and RPCs (auth, profiles, donations, blogs, funds)
-├── redux/           auth slice + store
-├── locales/         en.json + ar.json
-├── utils/           urgency, blood compatibility, place names, slugs
-└── assets/          governorates + cities
-```
+Deployment: Vercel, with `vercel.json` handling the SPA rewrite so client-side routes survive a refresh.
