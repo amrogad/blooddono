@@ -3,6 +3,7 @@ import { Outlet } from 'react-router';
 import NavBar from '../components/NavBar';
 import Footer from '../components/Footer';
 import Loading from '../components/Loading';
+import AssistantBubble from '../components/AssistantBubble';
 
 const Root = () => {
   return (
@@ -20,6 +21,8 @@ const Root = () => {
       <footer>
         <Footer></Footer>
       </footer>
+
+      <AssistantBubble></AssistantBubble>
     </div>
   );
 };

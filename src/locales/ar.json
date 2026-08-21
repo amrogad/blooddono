@@ -23,7 +23,6 @@
     "findDonors": "ابحث عن متبرعين",
     "blogs": "المقالات",
     "funds": "التبرعات",
-    "assistant": "المساعد",
     "about": "من نحن",
     "signIn": "تسجيل الدخول",
     "becomeDonor": "كن متبرعًا",
@@ -53,20 +52,19 @@
     "passwordPlaceholder": "كلمة المرور…",
     "signIn": "تسجيل الدخول",
     "demoDivider": "ابدأ بحسابٍ تجريبي",
-    "loginSuccess": "تم تسجيل الدخول بنجاح!",
     "loginFailed": "فشل تسجيل الدخول",
     "role": { "admin": "مشرف", "donor": "متبرع", "volunteer": "منسّق" }
   },
   "validation": {
-    "emailRequired": "البريد الإلكتروني مطلوب!",
+    "emailRequired": "البريد الإلكتروني مطلوب",
     "emailPattern": "من فضلك أدخل بريدًا إلكترونيًا صحيحًا.",
     "passwordRequired": "كلمة المرور مطلوبة",
     "passwordMin": "كلمة المرور 6 أحرف على الأقل",
     "passwordPattern": "يجب أن تحتوي على حرف كبير وحرف صغير على الأقل",
-    "nameRequired": "الاسم مطلوب!",
-    "nameMin": "يجب أن يزيد الاسم عن 5 أحرف!",
+    "nameRequired": "الاسم مطلوب",
+    "nameMin": "يجب ألا يقل الاسم عن 5 أحرف",
     "bloodGroupRequired": "من فضلك اختر فصيلة دمك.",
-    "governorateRequired": "من فضلك اختر المحافظة!",
+    "governorateRequired": "من فضلك اختر المحافظة",
     "cityRequired": "من فضلك اختر المدينة",
     "confirmPasswordRequired": "من فضلك أكّد كلمة المرور",
     "passwordMismatch": "كلمتا المرور غير متطابقتين"
@@ -153,7 +151,7 @@
     "sortOrder": "الترتيب",
     "allBloodTypes": "كل الفصائل",
     "allGovernorates": "كل المحافظات",
-    "sortSoonest": "الأقرب موعدًا",
+    "sortSoonest": "الأكثر إلحاحًا",
     "sortLatest": "الأحدث أولًا",
     "compatWithMine": "متوافق مع فصيلتي {{group, iso}}",
     "sectionToday": "اليوم",
@@ -177,7 +175,6 @@
     "confirmPassword": "تأكيد كلمة المرور",
     "confirmPasswordPlaceholder": "تأكيد كلمة المرور…",
     "submit": "إنشاء الحساب",
-    "success": "تم إنشاء الحساب بنجاح!",
     "failed": "فشل إنشاء الحساب"
   },
   "search": {
@@ -208,6 +205,9 @@
   "assistant": {
     "title": "مساعد الأهلية",
     "subtitle": "إجابات في ثوانٍ",
+    "open": "اسأل المساعد",
+    "close": "إغلاق المساعد",
+    "greeting": "اسألني عن التبرع بالدم، أو عمّن يمكنه التبرع لفصيلة معينة. لا حاجة لحساب.",
     "disclaimer": "للعلم فقط — ليست نصيحة طبية",
     "inputPlaceholder": "اطرح سؤالًا...",
     "sendA11y": "إرسال الرسالة",
@@ -253,14 +253,14 @@
     "title": "قدّم تبرعًا",
     "subtitle": "ادعم صندوق الدم المجتمعي.",
     "amountLabel": "المبلغ (جنيه)",
-    "amountPlaceholder": "مبلغ التبرع!",
+    "amountPlaceholder": "مثال: 250",
     "invalidAmount": "من فضلك أدخل مبلغًا صحيحًا",
     "cardNumber": "رقم البطاقة",
     "expiry": "تاريخ الانتهاء",
     "cvc": "CVC",
     "processing": "جارٍ المعالجة…",
     "pay": "ادفع",
-    "success": "تم الدفع بنجاح!",
+    "success": "تمت عملية الدفع",
     "txnId": "رقم العملية:",
     "goToFunds": "الذهاب إلى التبرعات",
     "failed": "فشل الدفع"
@@ -280,7 +280,7 @@
   },
   "errorPage": {
     "title": "الصفحة غير موجودة",
-    "body": "هذه الصفحة لم تعد متاحة، أو حدث خطأ ما في الطريق."
+    "body": "هذه الصفحة غير متاحة، أو حدث خطأ أثناء تحميلها."
   },
   "dash": {
     "openSidebar": "فتح القائمة الجانبية",
@@ -316,8 +316,8 @@
   },
   "users": {
     "loadError": "تعذّر تحميل المستخدمين",
-    "roleUpdated": "تم تحديث الدور!",
-    "statusUpdated": "تم تحديث الحالة!",
+    "roleUpdated": "تم تحديث الدور",
+    "statusUpdated": "تم تحديث الحالة",
     "filterStatus": "تصفية حسب الحالة",
     "allStatuses": "كل الحالات",
     "active": "نشط",
@@ -339,7 +339,7 @@
     "photoLabel": "صورة الملف الشخصي",
     "saving": "جارٍ الحفظ…",
     "saveChanges": "حفظ التغييرات",
-    "updated": "تم تحديث الملف الشخصي!"
+    "updated": "تم تحديث الملف الشخصي"
   },
   "myReq": {
     "filterAll": "الكل",
@@ -390,8 +390,8 @@
     "reviewRequest": "مراجعة الطلب",
     "posting": "جارٍ النشر…",
     "post": "نشر الطلب",
-    "successTitle": "تم إنشاء طلب التبرع!",
-    "successBody": "تم إرسال طلب التبرع الخاص بك.",
+    "successTitle": "تم نشر الطلب",
+    "successBody": "يراه المتبرعون المتوافقون القريبون الآن.",
     "errorTitle": "تعذّر إنشاء الطلب"
   },
   "detail": {
@@ -409,7 +409,7 @@
     "confirmBody": "سيتمكن صاحب الطلب من التواصل معك بصفتك المتبرع.",
     "nameLabel": "الاسم:",
     "emailLabel": "البريد الإلكتروني:",
-    "acceptedTitle": "تم بنجاح",
+    "acceptedTitle": "تم تأكيد التبرع",
     "acceptedBody": "أنت الآن متبرع لهذا الطلب.",
     "acceptError": "تعذّر قبول الطلب"
   },
@@ -432,7 +432,7 @@
     "updating": "جارٍ التحديث…",
     "update": "تحديث الطلب",
     "updatedTitle": "تم التحديث",
-    "updatedBody": "تم تحديث طلب التبرع بنجاح!"
+    "updatedBody": "تم حفظ تغييراتك."
   },
   "content": {
     "addBlog": "إضافة مقال",
@@ -453,12 +453,12 @@
     "contentPlaceholder": "اكتب محتوى مقالك هنا...",
     "creating": "جارٍ الإنشاء…",
     "createBlog": "إنشاء المقال",
-    "created": "تم إنشاء المقال كمسودة!",
+    "created": "تم الحفظ كمسودة",
     "createError": "تعذّر إنشاء المقال",
     "updating": "جارٍ التحديث…",
     "updateBlog": "تحديث المقال",
     "updatedTitle": "تم بنجاح",
-    "updatedBody": "تم تحديث المقال بنجاح!",
+    "updatedBody": "تم حفظ تغييراتك.",
     "notFound": "المقال غير موجود"
   }
 }

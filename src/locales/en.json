@@ -23,7 +23,6 @@
     "findDonors": "Find donors",
     "blogs": "Blogs",
     "funds": "Funds",
-    "assistant": "Assistant",
     "about": "About",
     "signIn": "Sign in",
     "becomeDonor": "Become a donor",
@@ -53,20 +52,19 @@
     "passwordPlaceholder": "Password…",
     "signIn": "Sign in",
     "demoDivider": "exploring? try a demo",
-    "loginSuccess": "Logged In Successfully!",
     "loginFailed": "Login failed",
     "role": { "admin": "Admin", "donor": "Donor", "volunteer": "Volunteer" }
   },
   "validation": {
-    "emailRequired": "Email is required!",
+    "emailRequired": "Email is required",
     "emailPattern": "Please provide a correct email address.",
     "passwordRequired": "Password is required",
     "passwordMin": "Password must be at least 6 characters",
     "passwordPattern": "Must include at least one uppercase and one lowercase letter",
-    "nameRequired": "Name is required!",
-    "nameMin": "Name should be more than 5 characters!",
+    "nameRequired": "Name is required",
+    "nameMin": "Name must be at least 5 characters",
     "bloodGroupRequired": "Please select your blood group.",
-    "governorateRequired": "Please select a governorate!",
+    "governorateRequired": "Please select a governorate",
     "cityRequired": "Please select a city",
     "confirmPasswordRequired": "Please confirm your password",
     "passwordMismatch": "Passwords do not match"
@@ -153,7 +151,7 @@
     "sortOrder": "Sort order",
     "allBloodTypes": "All blood types",
     "allGovernorates": "All governorates",
-    "sortSoonest": "Needed soonest",
+    "sortSoonest": "Most urgent",
     "sortLatest": "Latest first",
     "compatWithMine": "Compatible with my {{group, iso}}",
     "sectionToday": "Today",
@@ -177,7 +175,6 @@
     "confirmPassword": "Confirm password",
     "confirmPasswordPlaceholder": "Confirm password…",
     "submit": "Create profile",
-    "success": "Registered Successfully!",
     "failed": "Registration failed"
   },
   "search": {
@@ -208,6 +205,9 @@
   "assistant": {
     "title": "Eligibility assistant",
     "subtitle": "Answers in seconds",
+    "open": "Ask the assistant",
+    "close": "Close assistant",
+    "greeting": "Ask me about donating blood, or who can donate to a blood type. No account needed.",
     "disclaimer": "Informational only — not medical advice",
     "inputPlaceholder": "Ask a question...",
     "sendA11y": "Send message",
@@ -253,16 +253,16 @@
     "title": "Make a donation",
     "subtitle": "Support the community blood fund.",
     "amountLabel": "Amount (EGP)",
-    "amountPlaceholder": "Donation Amount!",
+    "amountPlaceholder": "e.g. 250",
     "invalidAmount": "Please enter a valid amount",
     "cardNumber": "Card number",
     "expiry": "Expiry",
     "cvc": "CVC",
     "processing": "Processing…",
     "pay": "Pay",
-    "success": "Payment Successful!",
+    "success": "Payment complete",
     "txnId": "Transaction ID:",
-    "goToFunds": "Go to Funds",
+    "goToFunds": "Go to funds",
     "failed": "Payment failed"
   },
   "blog": {
@@ -280,7 +280,7 @@
   },
   "errorPage": {
     "title": "Page not found",
-    "body": "This page is not available anymore, or something went wrong along the way."
+    "body": "This page is not available, or something went wrong loading it."
   },
   "dash": {
     "openSidebar": "Open sidebar",
@@ -316,8 +316,8 @@
   },
   "users": {
     "loadError": "Could not load users",
-    "roleUpdated": "Role Updated!",
-    "statusUpdated": "Status Updated!",
+    "roleUpdated": "Role updated",
+    "statusUpdated": "Status updated",
     "filterStatus": "Filter by status",
     "allStatuses": "All statuses",
     "active": "Active",
@@ -338,8 +338,8 @@
     "searchableLabel": "List me as a searchable donor. Your email is never shown in search results.",
     "photoLabel": "Profile photo",
     "saving": "Saving…",
-    "saveChanges": "Save Changes",
-    "updated": "Profile Updated!"
+    "saveChanges": "Save changes",
+    "updated": "Profile updated"
   },
   "myReq": {
     "filterAll": "All",
@@ -390,8 +390,8 @@
     "reviewRequest": "Review request",
     "posting": "Posting…",
     "post": "Post request",
-    "successTitle": "Donation Request Created!",
-    "successBody": "Your donation request has been submitted.",
+    "successTitle": "Request posted",
+    "successBody": "Compatible donors nearby can see it now.",
     "errorTitle": "Could not create request"
   },
   "detail": {
@@ -409,7 +409,7 @@
     "confirmBody": "The requester will be able to contact you as their donor.",
     "nameLabel": "Name:",
     "emailLabel": "Email:",
-    "acceptedTitle": "Success",
+    "acceptedTitle": "Donation confirmed",
     "acceptedBody": "You are now a donor for this request.",
     "acceptError": "Could not accept request"
   },
@@ -430,9 +430,9 @@
     "time": "Time",
     "status": "Status",
     "updating": "Updating…",
-    "update": "Update Request",
+    "update": "Update request",
     "updatedTitle": "Updated",
-    "updatedBody": "Donation request updated successfully!"
+    "updatedBody": "Your changes are saved."
   },
   "content": {
     "addBlog": "Add blog",
@@ -452,11 +452,11 @@
     "content": "Content",
     "contentPlaceholder": "Write your blog content here...",
     "creating": "Creating…",
-    "createBlog": "Create Blog",
-    "created": "Blog created as draft!",
+    "createBlog": "Create blog",
+    "created": "Saved as a draft",
     "createError": "Could not create blog",
     "updating": "Updating…",
-    "updateBlog": "Update Blog",
+    "updateBlog": "Update blog",
     "updatedTitle": "Success",
     "updatedBody": "Blog updated successfully!",
     "notFound": "Blog not found"

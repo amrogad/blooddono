@@ -17,6 +17,7 @@ import Loading from '../components/Loading';
 import ProfilePicture from '../components/ProfilePicture';
 import BrandMark from '../components/BrandMark';
 import ThemeToggle from '../components/ThemeToggle';
+import AssistantBubble from '../components/AssistantBubble';
 
 const linkClass = ({ isActive }) =>
   `flex items-center gap-3 h-10 px-3 rounded-xl text-[13.5px] transition ${
@@ -130,6 +131,8 @@ const DashboardLayout = () => {
           </nav>
         </div>
       </div>
+
+      <AssistantBubble></AssistantBubble>
     </div>
   );
 };
