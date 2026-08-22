@@ -24,11 +24,16 @@ const RequestDraftCard = ({ draft, onPosted }) => {
   const [posted, setPosted] = useState(null);
 
   const urgency = getUrgency(draft.donation_date, draft.donation_time);
+  // Signing in navigates before the profile fetch that fills in auth.user has
+  // returned, so for a moment after login there is a session but no user object
+  // to stamp on the row. Confirming in that window used to read uid off null and
+  // report a failed post that never left the browser.
+  const ready = Boolean(user?.uid);
 
   const confirm = async () => {
     // The draft is spent the moment it is accepted. Without this a second click
     // during the insert posts the same request twice.
-    if (state !== 'idle') return;
+    if (state !== 'idle' || !ready) return;
     setState('saving');
     try {
       const row = await createDonationRequest({
@@ -121,7 +126,7 @@ const RequestDraftCard = ({ draft, onPosted }) => {
             <button
               type="button"
               onClick={confirm}
-              disabled={state === 'saving'}
+              disabled={state === 'saving' || !ready}
               className="inline-flex h-9 flex-1 items-center justify-center gap-1.5 rounded-lg bg-crimson text-[13px] font-semibold text-white transition hover:bg-crimson-deep disabled:opacity-60"
             >
               <LuCheck className="h-3.5 w-3.5" strokeWidth={2.5} />

@@ -109,6 +109,26 @@ describe('RequestDraftCard', () => {
     expect(screen.getByRole('button', { name: 'Confirm and post' })).toBeEnabled();
   });
 
+  // Regression: signing in navigates before the profile fetch that fills in
+  // redux auth.user has come back. Confirming in that window read user.uid off
+  // null, threw inside the try, and surfaced as "could not post that" without a
+  // request ever being made. Found as a one-off Playwright failure that took
+  // 40 passing runs to explain.
+  it('waits for the session rather than failing when the profile has not loaded', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<RequestDraftCard draft={draft} />, { user: null });
+
+    const confirm = screen.getByRole('button', { name: 'Confirm and post' });
+    expect(confirm).toBeDisabled();
+
+    await user.click(confirm);
+
+    expect(createDonationRequest).not.toHaveBeenCalled();
+    expect(
+      screen.queryByText('Could not post that. Try again, or open it in the full form.'),
+    ).not.toBeInTheDocument();
+  });
+
   it('discards the draft without posting it', async () => {
     const user = userEvent.setup();
     renderCard();

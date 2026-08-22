@@ -66,7 +66,7 @@ Groq (tool calling back into the donor table)
 
 - Role-based access control for three roles, enforced by route guards that redirect rather than hide links, so editing the URL by hand doesn't get you in
 - Two database-backed AI tool calls: the assistant's donor lookup runs a real query against the donor table, and its request drafting returns a validated draft that only a human confirmation turns into a row
-- 82 automated tests. 58 Vitest and Testing Library component tests, 24 Playwright end-to-end covering navigation, auth, role-based access, and the Arabic switch, including a parity check that every English string has an Arabic translation
+- 84 automated tests. 59 Vitest and Testing Library component tests, 25 Playwright end-to-end covering navigation, auth, role-based access, and the Arabic switch, including a parity check that every English string has an Arabic translation
 - Lint, build, component tests and end-to-end on every push through GitHub Actions, deployed on Vercel
 - Arabic and RTL from one component tree, using logical properties (`start`/`end`) instead of left and right, so mirroring is a direction change rather than a second stylesheet
 - One Supabase project and one set of edge functions shared with the React Native app, so a request posted on either shows up on the other
