@@ -71,21 +71,15 @@ Groq (tool calling back into the donor table)
 - Arabic and RTL from one component tree, using logical properties (`start`/`end`) instead of left and right, so mirroring is a direction change rather than a second stylesheet
 - One Supabase project and one set of edge functions shared with the React Native app, so a request posted on either shows up on the other
 
-### How the assistant answers
+### How the assistant works
 
-A Supabase Edge Function runs a two-pass function-calling loop against Groq. When a question needs donor numbers, the model calls a `find_compatible_donors` tool that runs a real query instead of guessing. The tool aggregates to counts before returning, so no donor names or photos reach the model provider. That's also why it can tell you how many people could help but not who.
+The assistant uses Groq function calling through a Supabase Edge Function. It can query real donor availability using blood-type compatibility and city, while only sending aggregated counts to the model — never donor names or photos.
 
-### How the assistant posts a request
+It can also turn a conversation into a **validated donation request draft**. The assistant never submits it: you review the details and confirm it in the website, where the final insert runs under your normal permissions.
 
-It can also fill in a request for you, but it can't submit one. A second tool, `draft_donation_request`, gathers the patient details and returns a draft the app shows as a card. Nothing is written until you press Confirm, and the insert then runs from the browser with your own session, under the same row-level policy as the form. The edge function is never given write access.
+### How it's tested
 
-The tool is called `draft_` rather than `create_` on purpose: the name is part of the prompt, and a model that thinks it created something tends to say so. The function validates every field before the card sees it, so the blood group is one of the eight and the date is a real day that hasn't passed. The card is built from that validated object rather than from the model's arguments, so whatever the reply says afterwards, the fields you're confirming are clean. A patient's blood group is never filled in from your profile, since you are not the patient; if the model wasn't told it, the draft comes back as a question instead. The tool is only offered to a signed-in donor or admin, the same check the New Request button uses.
-
-### How the assistant is graded
-
-A green test suite says nothing about whether health information is correct, so the assistant is scored separately against 19 fixed questions with known-correct answers. Each case checks whether the model called the lookup when it should have, whether the blood groups it listed match the compatibility rules the rest of the app enforces, and whether the not-medical-advice line survived. The drafting cases add two of their own: that the reply never claims a request exists before you confirm it, and that a message missing the patient's blood group produces a question rather than a draft.
-
-The first run scored 40%, and one failure was real: it answered that only A+ and O+ can donate to A+, silently dropping A- and O-. Under-reporting compatible donors is the worst way for this app to be wrong. The fix was to stop relying on the model's recall and pass it the compatibility table the app already holds.
+The assistant has a separate 19-case eval covering tool usage, blood-type compatibility, safety responses, and request drafting. An initial 40% score exposed a real compatibility mistake, so I moved the compatibility rules out of the model's memory and into the same source of truth used by the product.
 
 ## Known limitations
 
