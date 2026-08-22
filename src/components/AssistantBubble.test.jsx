@@ -1,11 +1,15 @@
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { renderWithProviders } from '../test/utils';
+import { renderWithProviders, donorUser } from '../test/utils';
 import AssistantBubble from './AssistantBubble';
 import { askAssistant } from '../services/assistantService';
 
 vi.mock('../services/assistantService', () => ({
   askAssistant: vi.fn(),
+}));
+
+vi.mock('../services/donationService', () => ({
+  createDonationRequest: vi.fn(),
 }));
 
 const openPanel = async (user) => {
@@ -107,6 +111,45 @@ describe('AssistantBubble', () => {
     expect(screen.getByText('3 donors').tagName).toBe('STRONG');
     expect(screen.getByText('Not medical advice.').tagName).toBe('EM');
     expect(screen.queryByText(/\*\*/)).not.toBeInTheDocument();
+  });
+
+  it('renders a draft as a card to confirm, not as text in the bubble', async () => {
+    askAssistant.mockResolvedValue({
+      reply: 'Have a look and press Confirm.',
+      toolsUsed: ['draft_donation_request'],
+      draft: {
+        recipient_name: 'Mona Fahmy',
+        blood_group: 'O-',
+        hospital_name: 'Wadi El Nil Hospital',
+        recipient_governorate: 'Cairo',
+        recipient_city: 'Nasr City',
+        full_address: '12 Abbas El Akkad St',
+        donation_date: '2027-08-24',
+        donation_time: '14:30',
+        request_message: 'Two units needed before surgery.',
+      },
+    });
+    const user = userEvent.setup();
+    renderWithProviders(<AssistantBubble />, { user: donorUser });
+    await openPanel(user);
+
+    await user.type(screen.getByPlaceholderText('Ask a question...'), 'Post a request');
+    await user.click(screen.getByRole('button', { name: 'Send message' }));
+
+    expect(await screen.findByText('Mona Fahmy')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Confirm and post' })).toBeInTheDocument();
+  });
+
+  it('leaves the reply alone when the model drafted nothing', async () => {
+    askAssistant.mockResolvedValue({ reply: 'Eat a full meal.', toolsUsed: [], draft: null });
+    const user = userEvent.setup();
+    renderWithProviders(<AssistantBubble />, { user: donorUser });
+    await openPanel(user);
+
+    await user.click(screen.getByText('What should I eat before donating?'));
+
+    expect(await screen.findByText('Eat a full meal.')).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Confirm and post' })).not.toBeInTheDocument();
   });
 
   it('closes on the close button and keeps the conversation for next time', async () => {

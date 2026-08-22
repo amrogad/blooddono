@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import Swal from 'sweetalert2';
 import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import { LuArrowLeft, LuArrowRight, LuCheck, LuCalendar } from 'react-icons/lu';
 import governorates from '../../../assets/governorates.json';
 import cities from '../../../assets/cities.json';
@@ -41,6 +41,10 @@ const isoOffset = (days) => {
 const CreateDonationRequest = () => {
   const { t } = useTranslation();
   const { user } = useSelector((state) => state.auth);
+  // Handed over by the assistant when someone wants to fix a field the chat card
+  // does not let them edit. The draft columns are already this form's field
+  // names, so it drops straight in.
+  const draft = useLocation().state?.draft;
   const {
     register,
     handleSubmit,
@@ -48,9 +52,9 @@ const CreateDonationRequest = () => {
     setValue,
     trigger,
     formState: { errors },
-  } = useForm({ shouldUnregister: false });
+  } = useForm({ shouldUnregister: false, defaultValues: draft });
   const navigate = useNavigate();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(draft ? 1 : 0);
   const [saving, setSaving] = useState(false);
   const [pickDate, setPickDate] = useState(false);
 

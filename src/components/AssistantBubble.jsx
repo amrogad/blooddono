@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { LuArrowUp, LuDatabase, LuMessageCircle, LuX } from 'react-icons/lu';
+import RequestDraftCard from './RequestDraftCard';
 import { askAssistant } from '../services/assistantService';
 
 // The model answers in markdown whatever the prompt asks, so replies were
@@ -68,6 +69,7 @@ const AssistantBubble = () => {
           role: 'assistant',
           text: data.reply,
           usedTool: (data.toolsUsed ?? []).includes('find_compatible_donors'),
+          draft: data.draft ?? null,
         },
       ]);
     } catch {
@@ -137,22 +139,24 @@ const AssistantBubble = () => {
         )}
 
         {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed ${
-              message.role === 'user'
-                ? 'self-end bg-crimson text-white'
-                : 'self-start border border-line bg-surface text-body'
-            }`}
-          >
-            {message.role === 'assistant' ? formatReply(message.text) : message.text}
-            {message.usedTool && (
-              <span className="mt-2 flex items-center gap-1.5 text-[11.5px] font-medium text-muted">
-                <LuDatabase size={12} />
-                {t('assistant.checkedDatabase')}
-              </span>
-            )}
-          </div>
+          <Fragment key={index}>
+            <div
+              className={`max-w-[85%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed ${
+                message.role === 'user'
+                  ? 'self-end bg-crimson text-white'
+                  : 'self-start border border-line bg-surface text-body'
+              }`}
+            >
+              {message.role === 'assistant' ? formatReply(message.text) : message.text}
+              {message.usedTool && (
+                <span className="mt-2 flex items-center gap-1.5 text-[11.5px] font-medium text-muted">
+                  <LuDatabase size={12} />
+                  {t('assistant.checkedDatabase')}
+                </span>
+              )}
+            </div>
+            {message.draft && <RequestDraftCard draft={message.draft} />}
+          </Fragment>
         ))}
 
         {loading && (

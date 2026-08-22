@@ -11,7 +11,7 @@ When someone needs blood, families end up posting in group chats and hoping the 
 ## Highlights
 
 - Blood compatibility matching, so a search for an A+ patient also surfaces the O+ and O- donors who can safely give
-- An AI eligibility assistant that queries the donor database through tool calling, and marks which answers came from a real lookup
+- An AI eligibility assistant that queries the donor database through tool calling, marks which answers came from a real lookup, and can draft a request for you to confirm
 - Role-based access for admins, donors, and volunteers, enforced by route guards
 - Full Arabic and English with the layout mirroring to RTL, switchable without a reload
 - Shares one Supabase backend and the same edge functions with the React Native app, so the data lines up across both
@@ -65,25 +65,32 @@ Groq (tool calling back into the donor table)
 [![CI](https://github.com/amrogad/blooddono/actions/workflows/ci.yml/badge.svg)](https://github.com/amrogad/blooddono/actions/workflows/ci.yml)
 
 - Role-based access control for three roles, enforced by route guards that redirect rather than hide links, so editing the URL by hand doesn't get you in
-- A database-backed AI tool call: the assistant's donor lookup runs a real query against the donor table, and the reply is marked so you can tell a looked-up answer from a generated one
-- 71 automated tests. 48 Vitest and Testing Library component tests, 23 Playwright end-to-end covering navigation, auth, role-based access, and the Arabic switch, including a parity check that every English string has an Arabic translation
+- Two database-backed AI tool calls: the assistant's donor lookup runs a real query against the donor table, and its request drafting returns a validated draft that only a human confirmation turns into a row
+- 82 automated tests. 58 Vitest and Testing Library component tests, 24 Playwright end-to-end covering navigation, auth, role-based access, and the Arabic switch, including a parity check that every English string has an Arabic translation
 - Lint, build, component tests and end-to-end on every push through GitHub Actions, deployed on Vercel
 - Arabic and RTL from one component tree, using logical properties (`start`/`end`) instead of left and right, so mirroring is a direction change rather than a second stylesheet
 - One Supabase project and one set of edge functions shared with the React Native app, so a request posted on either shows up on the other
 
 ### How the assistant answers
 
-A Supabase Edge Function runs a two-pass function-calling loop against Groq. When a question needs donor numbers, the model calls a `find_compatible_donors` tool that runs a real query instead of guessing. The tool aggregates to counts before returning, so no donor names or photos reach the model provider. That's also why it can tell you how many people could help but not who. It reads and never writes.
+A Supabase Edge Function runs a two-pass function-calling loop against Groq. When a question needs donor numbers, the model calls a `find_compatible_donors` tool that runs a real query instead of guessing. The tool aggregates to counts before returning, so no donor names or photos reach the model provider. That's also why it can tell you how many people could help but not who.
+
+### How the assistant posts a request
+
+It can also fill in a request for you, but it can't submit one. A second tool, `draft_donation_request`, gathers the patient details and returns a draft the app shows as a card. Nothing is written until you press Confirm, and the insert then runs from the browser with your own session, under the same row-level policy as the form. The edge function is never given write access.
+
+The tool is called `draft_` rather than `create_` on purpose: the name is part of the prompt, and a model that thinks it created something tends to say so. The function validates every field before the card sees it, so the blood group is one of the eight and the date is a real day that hasn't passed. The card is built from that validated object rather than from the model's arguments, so whatever the reply says afterwards, the fields you're confirming are clean. A patient's blood group is never filled in from your profile, since you are not the patient; if the model wasn't told it, the draft comes back as a question instead. The tool is only offered to a signed-in donor or admin, the same check the New Request button uses.
 
 ### How the assistant is graded
 
-A green test suite says nothing about whether health information is correct, so the assistant is scored separately against 15 fixed questions with known-correct answers. Each case checks whether the model called the lookup when it should have, whether the blood groups it listed match the compatibility rules the rest of the app enforces, and whether the not-medical-advice line survived.
+A green test suite says nothing about whether health information is correct, so the assistant is scored separately against 19 fixed questions with known-correct answers. Each case checks whether the model called the lookup when it should have, whether the blood groups it listed match the compatibility rules the rest of the app enforces, and whether the not-medical-advice line survived. The drafting cases add two of their own: that the reply never claims a request exists before you confirm it, and that a message missing the patient's blood group produces a question rather than a draft.
 
-The first run scored 40%, and one failure was real: it answered that only A+ and O+ can donate to A+, silently dropping A- and O-. Under-reporting compatible donors is the worst way for this app to be wrong. The fix was to stop relying on the model's recall and pass it the compatibility table the app already holds. It passes 15 of 15 now.
+The first run scored 40%, and one failure was real: it answered that only A+ and O+ can donate to A+, silently dropping A- and O-. Under-reporting compatible donors is the worst way for this app to be wrong. The fix was to stop relying on the model's recall and pass it the compatibility table the app already holds.
 
 ## Known limitations
 
-- The assistant answers questions but can't act. It reads donor counts; it can't post or accept a request on your behalf. Letting it write means a confirmation step and a much harder safety story.
+- The assistant drafts a request but can't submit one, and it can't accept a request on your behalf at all. Accepting commits you to showing up somewhere, which needs more than a confirmation card.
+- The draft card is read-only. Fixing a typo means telling the assistant, or opening the draft in the full form.
 - It never sees donor identities, so it can tell you how many people could help but not who. Find Donors does that part.
 - New requests need a refresh to appear. Supabase Realtime is the obvious fix and isn't wired up.
 - Payments on the funding page are recorded, not processed. There's no payment provider behind it.
