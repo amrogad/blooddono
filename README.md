@@ -46,6 +46,10 @@ Under 3 minutes to see the core loop:
 |---|---|
 | <img src="screenshots/assistant.png" alt="AI assistant answering a donor availability question" width="420" /> | <img src="screenshots/home-ar-dark.png" alt="Home page in Arabic, dark mode, right to left" width="420" /> |
 
+| Assistant drafting a request to confirm |
+|---|
+| <img src="screenshots/assistant-draft.png" alt="The assistant showing a drafted blood request as a card with a Confirm and post button" width="420" /> |
+
 ## Architecture
 
 ```

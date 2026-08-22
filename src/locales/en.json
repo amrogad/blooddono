@@ -293,7 +293,10 @@
   },
   "errorPage": {
     "title": "Page not found",
-    "body": "This page is not available, or something went wrong loading it."
+    "body": "This page is not available, or something went wrong loading it.",
+    "crashTitle": "Something broke",
+    "crashBody": "That page hit an error on our side. Reloading usually clears it.",
+    "reload": "Reload the page"
   },
   "dash": {
     "openSidebar": "Open sidebar",
