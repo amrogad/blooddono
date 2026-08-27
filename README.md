@@ -45,6 +45,12 @@ One-click demo logins on the login page, no signup:
 | User | `donor@blooddono.demo` | `Demo123!` |
 | Admin | `admin@blooddono.demo` | `Demo123!` |
 
+## Known limitations
+
+- New requests show up on refresh, not live. The feed is served through a name-masking function rather than a direct table read, and Supabase Realtime follows the same row-level security, so live updates would need a broadcast layer rather than a plain subscription.
+- Payments on the funding page are recorded, not processed. There is no payment provider behind the card form.
+- The assistant drafts a request but never submits or accepts one for you. Both commit you to something, so they stay behind a deliberate tap.
+
 ## Stack
 
 Frontend: React 19, Vite, Tailwind CSS 4, DaisyUI 5, React Router 7, Redux Toolkit, React Hook Form, react-i18next.
