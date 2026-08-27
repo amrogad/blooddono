@@ -133,7 +133,7 @@ describe('AssistantBubble', () => {
     renderWithProviders(<AssistantBubble />, { user: donorUser });
     await openPanel(user);
 
-    await user.type(screen.getByPlaceholderText('Ask a question...'), 'Post a request');
+    await user.type(screen.getByPlaceholderText('Ask a question or create a request.'), 'Post a request');
     await user.click(screen.getByRole('button', { name: 'Send message' }));
 
     expect(await screen.findByText('Mona Fahmy')).toBeInTheDocument();

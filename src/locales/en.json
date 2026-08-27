@@ -215,6 +215,7 @@
     "greeting": "Ask me about donating blood, or who can donate to a blood type. No account needed.",
     "disclaimer": "Informational only — not medical advice",
     "inputPlaceholder": "Ask a question...",
+    "inputPlaceholderCreate": "Ask a question or create a request.",
     "sendA11y": "Send message",
     "checkedDatabase": "Checked the donor database",
     "error": "Something went wrong. Try again.",

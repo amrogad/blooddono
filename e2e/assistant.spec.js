@@ -83,7 +83,7 @@ test.describe('AI assistant', () => {
     await page.getByRole('button', { name: 'Ask the assistant' }).click();
 
     const panel = page.getByRole('dialog', { name: 'Eligibility assistant' });
-    await panel.getByPlaceholder('Ask a question...').fill('Post a request for my mother');
+    await panel.getByPlaceholder('Ask a question or create a request.').fill('Post a request for my mother');
     await panel.getByRole('button', { name: 'Send message' }).click();
 
     await expect(panel.getByText('Mona Fahmy')).toBeVisible();
@@ -114,7 +114,7 @@ test.describe('AI assistant', () => {
     await page.getByRole('button', { name: 'Ask the assistant' }).click();
 
     const panel = page.getByRole('dialog', { name: 'Eligibility assistant' });
-    await panel.getByPlaceholder('Ask a question...').fill('Post a request for my mother');
+    await panel.getByPlaceholder('Ask a question or create a request.').fill('Post a request for my mother');
     await panel.getByRole('button', { name: 'Send message' }).click();
     await expect(panel.getByText('Mona Fahmy')).toBeVisible();
 

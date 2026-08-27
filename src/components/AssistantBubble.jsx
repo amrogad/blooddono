@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { LuArrowUp, LuDatabase, LuMessageCircle, LuX } from 'react-icons/lu';
 import RequestDraftCard from './RequestDraftCard';
 import { askAssistant } from '../services/assistantService';
@@ -21,6 +22,7 @@ const formatReply = (text) =>
 
 const AssistantBubble = () => {
   const { t, i18n } = useTranslation();
+  const { user } = useSelector((state) => state.auth);
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -179,8 +181,8 @@ const AssistantBubble = () => {
             ref={inputRef}
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={t('assistant.inputPlaceholder')}
-            aria-label={t('assistant.inputPlaceholder')}
+            placeholder={t(user ? 'assistant.inputPlaceholderCreate' : 'assistant.inputPlaceholder')}
+            aria-label={t(user ? 'assistant.inputPlaceholderCreate' : 'assistant.inputPlaceholder')}
             disabled={loading}
             className="h-9 flex-1 rounded-lg bg-transparent px-2.5 text-[13.5px] text-ink placeholder:text-muted focus:outline-none"
           />
