@@ -2,7 +2,6 @@ import useUserRole from '../../hooks/useUserRole';
 import Loading from '../../components/Loading';
 import DonorDashboard from './DonorDashboard';
 import AdminDashboard from './AdminDashboard';
-import VolunteerDashboard from './VolunteerDashboard';
 import Forbidden from '../../components/Forbidden';
 
 const DashboardHome = () => {
@@ -11,12 +10,10 @@ const DashboardHome = () => {
   if (roleLoading) {
     return <Loading></Loading>;
   }
-  if (role === 'donor') {
+  if (role === 'user') {
     return <DonorDashboard></DonorDashboard>;
   } else if (role === 'admin') {
     return <AdminDashboard></AdminDashboard>;
-  } else if (role === 'volunteer') {
-    return <VolunteerDashboard></VolunteerDashboard>;
   } else {
     return <Forbidden></Forbidden>;
   }

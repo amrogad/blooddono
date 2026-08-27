@@ -7,12 +7,7 @@ import { signIn } from '../../services/authService';
 import { getPendingRequests } from '../../services/donationService';
 import { getUrgency } from '../../utils/urgency';
 import BrandMark from '../../components/BrandMark';
-
-const DEMO_ACCOUNTS = [
-  { role: 'admin', email: 'admin@blooddono.demo', password: 'Demo123!' },
-  { role: 'donor', email: 'donor@blooddono.demo', password: 'Demo123!' },
-  { role: 'volunteer', email: 'volunteer@blooddono.demo', password: 'Demo123!' },
-];
+import { DEMO_ACCOUNTS } from '../../auth/demoAccounts';
 
 const inputClass =
   'h-12 w-full rounded-xl border border-line-strong bg-card px-4 text-[15px] text-ink placeholder:text-muted focus:border-crimson focus:outline-none focus:ring-[3px] focus:ring-crimson/15';

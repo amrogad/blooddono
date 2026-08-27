@@ -26,7 +26,7 @@ const useAuthBootstrap = () => {
           email: session.user.email,
           displayName: profile?.display_name ?? session.user.email,
           photoURL: profile?.photo_url ?? null,
-          role: profile?.role ?? 'donor',
+          role: profile?.role ?? 'user',
           status: profile?.status ?? 'active',
           bloodGroup: profile?.blood_group ?? null,
           governorate: profile?.governorate ?? null,

@@ -115,8 +115,7 @@ const AllUsersPage = () => {
               value={user.role}
               onChange={(e) => handleRoleChange(user.id, e.target.value)}
             >
-              <option value="donor">{t('auth.role.donor')}</option>
-              <option value="volunteer">{t('auth.role.volunteer')}</option>
+              <option value="user">{t('auth.role.user')}</option>
               <option value="admin">{t('auth.role.admin')}</option>
             </select>
 

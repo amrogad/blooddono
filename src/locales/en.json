@@ -53,7 +53,7 @@
     "signIn": "Sign in",
     "demoDivider": "exploring? try a demo",
     "loginFailed": "Login failed",
-    "role": { "admin": "Admin", "donor": "Donor", "volunteer": "Volunteer" }
+    "role": { "admin": "Admin", "user": "User" }
   },
   "validation": {
     "emailRequired": "Email is required",
@@ -144,7 +144,12 @@
   },
   "browse": {
     "title": "Open requests",
-    "waiting": "{{count}} people waiting",
+    "waiting_zero": "{{count}} people waiting",
+    "waiting_one": "{{count}} person waiting",
+    "waiting_two": "{{count}} people waiting",
+    "waiting_few": "{{count}} people waiting",
+    "waiting_many": "{{count}} people waiting",
+    "waiting_other": "{{count}} people waiting",
     "newRequest": "New request",
     "filterBlood": "Filter by blood type",
     "filterGov": "Filter by governorate",
@@ -246,12 +251,12 @@
       "Matching that understands compatibility, not just exact type",
       "Donor profiles you can see before you reach out",
       "Requests that reach the widest safe pool of donors nearby",
-      "Role-based access for donors, volunteers, and admins",
+      "Role-based access separating people from administrators",
       "A clean interface that works on any phone"
     ],
     "howTitle": "How it works under the hood",
     "how1": "BloodDono is built with React and Tailwind, with Supabase handling accounts and data. Matching is blood-type aware, so an O- donor is offered to every patient they can safely help, not just an exact match.",
-    "how2": "Every account is real. Create your own, or sign in with a demo account to explore the donor, volunteer, and admin views.",
+    "how2": "Every account is real. Create your own, or sign in with a demo account to explore the user and admin views.",
     "ctaRequests": "See open requests"
   },
   "funds": {
@@ -310,7 +315,7 @@
     "openRequests": "Open requests",
     "registeredUsers": "Registered users",
     "totalCount": "{{count}} total",
-    "usersSub": "donors, volunteers, admins",
+    "usersSub": "people and admins",
     "totalRaised": "total raised",
     "recentRequests": "Recent requests",
     "allRequests": "All requests",
@@ -325,7 +330,6 @@
     "viewAll": "View all",
     "donorEmptyTitle": "You have no requests yet",
     "donorEmptyBody": "Post one and compatible donors nearby will see it right away.",
-    "volunteerIntro": "As a volunteer you can review requests and manage published stories.",
     "cardRequestsTitle": "Blood donation requests",
     "cardRequestsBody": "Review and track every request across the network.",
     "cardBlogsBody": "Write and publish blog posts for the community."

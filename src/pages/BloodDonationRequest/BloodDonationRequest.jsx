@@ -21,7 +21,7 @@ const BloodDonationRequest = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { user } = useSelector((state) => state.auth);
-  const canCreate = user?.role === 'donor' || user?.role === 'admin';
+  const canCreate = !!user;
 
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);

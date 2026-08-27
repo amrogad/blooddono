@@ -18,7 +18,6 @@ import AdminRoute from './auth/AdminRoute';
 const AllUsersPage = lazy(() => import('./pages/Dashboard/AllUsersPage'));
 const AllBloodDonationPage = lazy(() => import('./pages/Dashboard/donations/AllBloodDonationPage'));
 const AdminEditDonationRequest = lazy(() => import('./pages/Dashboard/donations/AdminEditDonationRequest'));
-import MultiRoleRoute from './auth/MultiRoleRoute';
 const SearchPage = lazy(() => import('./pages/Search/SearchPage'));
 const BloodDonationRequest = lazy(
   () => import('./pages/BloodDonationRequest/BloodDonationRequest'),
@@ -124,35 +123,19 @@ const router = createBrowserRouter([
       },
       {
         path: 'my-donation-requests',
-        element: (
-          <MultiRoleRoute allowedRoles={['admin', 'donor']}>
-            <MyDonationRequests></MyDonationRequests>
-          </MultiRoleRoute>
-        ),
+        element: <MyDonationRequests></MyDonationRequests>,
       },
       {
         path: 'create-donation-request',
-        element: (
-          <MultiRoleRoute allowedRoles={['admin', 'donor']}>
-            <CreateDonationRequest></CreateDonationRequest>
-          </MultiRoleRoute>
-        ),
+        element: <CreateDonationRequest></CreateDonationRequest>,
       },
       {
         path: 'donation-details/:id',
-        element: (
-          <MultiRoleRoute allowedRoles={['admin', 'donor']}>
-            <DonationRequestDetails></DonationRequestDetails>
-          </MultiRoleRoute>
-        ),
+        element: <DonationRequestDetails></DonationRequestDetails>,
       },
       {
         path: 'edit-donation-request/:id',
-        element: (
-          <MultiRoleRoute allowedRoles={['admin', 'donor']}>
-            <EditDonationRequest></EditDonationRequest>
-          </MultiRoleRoute>
-        ),
+        element: <EditDonationRequest></EditDonationRequest>,
       },
       {
         path: 'all-users',
@@ -165,9 +148,9 @@ const router = createBrowserRouter([
       {
         path: 'all-blood-donation-request',
         element: (
-          <MultiRoleRoute allowedRoles={['admin', 'volunteer']}>
+          <AdminRoute>
             <AllBloodDonationPage></AllBloodDonationPage>
-          </MultiRoleRoute>
+          </AdminRoute>
         ),
       },
       {
@@ -181,33 +164,33 @@ const router = createBrowserRouter([
       {
         path: 'content-management-page',
         element: (
-          <MultiRoleRoute allowedRoles={['admin', 'volunteer']}>
+          <AdminRoute>
             <ContentManagementPage></ContentManagementPage>
-          </MultiRoleRoute>
+          </AdminRoute>
         ),
       },
       {
         path: 'content-management-page/add-blogs',
         element: (
-          <MultiRoleRoute allowedRoles={['admin', 'volunteer']}>
+          <AdminRoute>
             <AddBlogPage></AddBlogPage>
-          </MultiRoleRoute>
+          </AdminRoute>
         ),
       },
       {
         path: 'content-management-page/blogs/:id',
         element: (
-          <MultiRoleRoute allowedRoles={['admin', 'volunteer']}>
+          <AdminRoute>
             <BlogDetails></BlogDetails>
-          </MultiRoleRoute>
+          </AdminRoute>
         ),
       },
       {
         path: 'content-management-page/edit-blog/:id',
         element: (
-          <MultiRoleRoute allowedRoles={['admin', 'volunteer']}>
+          <AdminRoute>
             <EditBlogPage></EditBlogPage>
-          </MultiRoleRoute>
+          </AdminRoute>
         ),
       },
     ],

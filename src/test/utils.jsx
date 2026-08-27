@@ -31,7 +31,7 @@ export const donorUser = {
   email: 'donor@blooddono.demo',
   displayName: 'Demo Donor',
   photoURL: null,
-  role: 'donor',
+  role: 'user',
   status: 'active',
   bloodGroup: 'O+',
   governorate: 'Cairo',

@@ -83,7 +83,7 @@ const DashboardLayout = () => {
               {t('dash.overview')}
             </NavLink>
 
-            {role === 'donor' && (
+            {role === 'user' && (
               <>
                 <NavLink to="/dashboard/my-donation-requests" className={linkClass}>
                   <LuDroplet className="h-4 w-4" strokeWidth={2} />
@@ -96,7 +96,7 @@ const DashboardLayout = () => {
               </>
             )}
 
-            {(role === 'admin' || role === 'volunteer') && (
+            {role === 'admin' && (
               <>
                 <NavLink to="/dashboard/all-blood-donation-request" className={linkClass}>
                   <LuDroplet className="h-4 w-4" strokeWidth={2} />

@@ -21,7 +21,7 @@ const sampleUser = {
   blood_group: 'A+',
   governorate: 'Cairo',
   city: 'Maadi',
-  role: 'donor',
+  role: 'user',
   status: 'active',
 };
 
