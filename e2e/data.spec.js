@@ -8,7 +8,7 @@ const loginAsDemo = async (page, roleLabel) => {
 
 test.describe('Supabase-backed data', () => {
   test('profile loads the logged-in user real data', async ({ page }) => {
-    await loginAsDemo(page, 'Donor');
+    await loginAsDemo(page, 'User');
     await page.goto('/dashboard/profile');
 
     await expect(page.locator('form input[type="text"]').first()).toHaveValue('Demo Donor');

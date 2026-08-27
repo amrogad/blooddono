@@ -7,8 +7,8 @@ const loginAsDemo = async (page, roleLabel) => {
 };
 
 test.describe('Supabase auth flow', () => {
-  test('demo donor login redirects and can access the dashboard', async ({ page }) => {
-    await loginAsDemo(page, 'Donor');
+  test('demo user login redirects and can access the dashboard', async ({ page }) => {
+    await loginAsDemo(page, 'User');
 
     await page.goto('/dashboard');
     await expect(page).toHaveURL(/\/dashboard/);
@@ -16,7 +16,7 @@ test.describe('Supabase auth flow', () => {
   });
 
   test('logging out clears the user and updates the navbar', async ({ page }) => {
-    await loginAsDemo(page, 'Donor');
+    await loginAsDemo(page, 'User');
     await page.goto('/');
 
     const profileTrigger = page.locator('.dropdown.dropdown-end [role="button"]').first();

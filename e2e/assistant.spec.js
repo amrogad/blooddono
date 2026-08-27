@@ -68,7 +68,7 @@ test.describe('AI assistant', () => {
   });
 
   test('the chat is reachable from a dashboard page too', async ({ page }) => {
-    await loginAsDemo(page, 'Donor');
+    await loginAsDemo(page, 'User');
     await page.goto('/dashboard');
 
     await page.getByRole('button', { name: 'Ask the assistant' }).click();
@@ -79,7 +79,7 @@ test.describe('AI assistant', () => {
     await stubAssistantDraft(page);
     const insert = await stubRequestInsert(page);
 
-    await loginAsDemo(page, 'Donor');
+    await loginAsDemo(page, 'User');
     await page.getByRole('button', { name: 'Ask the assistant' }).click();
 
     const panel = page.getByRole('dialog', { name: 'Eligibility assistant' });
@@ -110,7 +110,7 @@ test.describe('AI assistant', () => {
     await stubAssistantDraft(page);
     const insert = await stubRequestInsert(page);
 
-    await loginAsDemo(page, 'Donor');
+    await loginAsDemo(page, 'User');
     await page.getByRole('button', { name: 'Ask the assistant' }).click();
 
     const panel = page.getByRole('dialog', { name: 'Eligibility assistant' });
